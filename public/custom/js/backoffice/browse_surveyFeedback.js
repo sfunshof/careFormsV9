@@ -70,7 +70,7 @@ ready(function() {
         //statusID 2 Sent not received => Re-send we use date_posted
         //statusID 3 Received => view
         //const token = document.head.querySelector("[name~=csrf-token][content]").content;
-        
+   
         let sms = document.getElementById(unique_value+1).checked;
         let email = document.getElementById(unique_value+2).checked;
         function convertToNumber(input) {
@@ -89,6 +89,9 @@ ready(function() {
             return 0;
         }
         //sent by sms 
+        let smsPreText=smsPreTextEmp
+        if (responseTypeID==1) smsPreText=smsPreTextSu
+
         let smsMsg= smsPreText + ' ' +  URLbase + "/" + unique_value
         if (isSMS==1){
             if (isServiceUser==1){

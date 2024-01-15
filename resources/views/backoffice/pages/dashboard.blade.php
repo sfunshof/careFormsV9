@@ -52,7 +52,8 @@
                     $postedCountArray= $postedCountArray_emp;
                     $quesOptions = $quesOptions_emp; 
                     $CQCids = $CQCids_emp;
-                    $quesTypeIDs =$quesTypeIDs_emp; 
+                    $quesTypeIDs =$quesTypeIDs_emp;  // "2023-12-01" => ["yes", "no"]
+                  
                     $quesNames = $quesNames_emp;
                     $employeeDates = $employeeDates_emp;
                     $responseKeyArray = $responseKeyArray_emp;
@@ -60,7 +61,7 @@
                     $userType="_emp_";
                     $userTypeName="employee";
                     $MnNo=$MnNo_emp; 
-                    $YrNo=$YrNo_emp;   
+                    $YrNo=$YrNo_emp;
                 }
                     
                 if (!isset($chartDateArray[0])) {

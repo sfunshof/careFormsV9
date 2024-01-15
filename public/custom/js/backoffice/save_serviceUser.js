@@ -59,6 +59,7 @@ ready(function() {
             'lastName' : document.querySelector('input[name="lastName"]').value,
             'postCode':  document.querySelector('input[name="postCode"]').value,
             'mobile':   document.querySelector('input[name="mobile"]').value,
+            'email':    document.querySelector('input[name="email"]').value,
             'proxy':    document.querySelector('select[name="proxy"]').value,
             'companyID': companyID,
             'userID' : userID

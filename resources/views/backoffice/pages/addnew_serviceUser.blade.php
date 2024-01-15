@@ -6,7 +6,7 @@
 
     <section class="section">
         <div class="row">
-            <div class="col-lg-9">
+            <div class="col-lg-10">
                 @include('backoffice.inc.serviceUserFields')              
             </div>
         </div>

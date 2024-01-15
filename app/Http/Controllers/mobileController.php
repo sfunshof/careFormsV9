@@ -24,11 +24,12 @@ class mobileController extends Controller
             ->where(['unique_value'=>$unique_value])
             ->whereNull('date_received')
             ->get();
+                
         //If combination not found after tampering with Service user not found
         if (!count($resp)){
             return view('mobile.pages.userNotFound', ['userType' =>'User', 'username'=>'', 'campaign'=>$campaign, 'date_of_interest'=>''] );
         }
-      
+        
 
         //Hey we found a user, check if it has nt yet been submitted
         if (!is_null($resp[0]->date_received)){
@@ -96,7 +97,7 @@ class mobileController extends Controller
    
         //Get the service users question form
         $quesForm=DB::select('select * from ' . $quesFormTable . ' where companyID=? and responseTypeID =? ', [$companyID, $responseTypeID]);
-
+          
         return view($quesFormPage, ['username' => $fullusername,'quesType' =>$quesType,'unique_value'=> $resp[0]->unique_value,
            'quesForm' => $quesForm ,  'quesCount'=>count($quesForm), 'userID' => $resp[0]->userID, 
            'campaign' => $campaign, 'responseTypeID' => $responseTypeID , 'date_of_interest' =>$date_of_interest ]);

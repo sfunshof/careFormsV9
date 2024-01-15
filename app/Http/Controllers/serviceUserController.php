@@ -21,7 +21,8 @@ class serviceUserController extends Controller
             'firstName' => 'required|max:20',
             'lastName' => 'required|max:20', 
             'postCode' => 'required|min:6|max:10',
-            'mobile' => 'required'
+            'mobile' => 'required',
+            'email' => 'required',
         ]);
         $validator = Validator::make($req->all(), $rules);
         if ($validator->passes()) {
@@ -32,7 +33,8 @@ class serviceUserController extends Controller
                 'address' =>$req->postCode,
                 'tel'=>$req->mobile,
                 'proxy'=>$req->proxy,
-                'companyID'=>$req->companyID
+                'companyID'=>$req->companyID,
+                'email'=>$req->email
             ];
             if ($userID==-1){
                 $insertStatus=DB::table('serviceuserdetailstable')->insert($fieldSet);

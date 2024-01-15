@@ -47,13 +47,21 @@ class utilityController extends Controller
         }
     }
 
-    public function send_emailMsg($userID,$subject, $msgX){
+    public function send_emailMsg($userID,$subject, $msgX,$emp_or_su){
         $company_setting=$this->company_settings[0];
         $companyID=$company_setting->companyID;
         $companyName=$company_setting->companyName;
-        $preText=$company_setting->smsPreText;
+        $preText=$company_setting->smsPreTextSu;
+        $table='serviceuserdetailstable';
+        $titlemsg="Service User Feedback";
+        if ($emp_or_su==2){
+            $preText=$company_setting->smsPreTextEmp;
+            $table='employeedetailstable';
+            $titlemsg="Employee Feedback";
+        }
+
         //get the email address
-        $user = DB::table("employeedetailstable")
+        $user = DB::table($table)
         ->select('email')
         ->where(['userID'=>$userID,  'companyID' => $companyID])
         ->get();
@@ -66,9 +74,9 @@ class utilityController extends Controller
                 'msg'=> $msgX,
                 'name'=> $companyName,
                 'subject' => $companyName . ' ' . 'Monthly survey',
-                'title' => 'Employee Feedback'
+                'title' => $titlemsg
         ];    
-        Mail::to($email)->send(new employee_feedbackMail($details));
+        Mail::to($email)->send(new employee_feedbackMail($details)); 
         return 1;
        
     }
@@ -127,6 +135,7 @@ class utilityController extends Controller
             }
             //return response()->json([$unique_value ]); 
         }
+        $feedbackMsg="";
         $smsPreText="";
         $lineBreak=" %0a " ;
         $URL= url( '/' .  $unique_value); 
@@ -134,10 +143,15 @@ class utilityController extends Controller
             $lineBreak=" <br> " ;
             $URL= "<a href= " . $URL . "> " .  $URL . "</a>";
         }
-        if  (($responseTypeID==1) || ($responseTypeID==2)){
-            $smsPreText=$company_setting->smsPreText;
+        if  ($responseTypeID==1) {
+            $smsPreText=$company_setting->smsPreTextSu;
+            $feedbackMsg="Service User Feedback";
         }
-                
+        
+        if  ($responseTypeID==2){
+            $smsPreText=$company_setting->smsPreTextEmp;
+            $feedbackMsg="Employee Feedback";
+        }
         $msg= $smsPreText  .$lineBreak . $URL;
               
         //If this is the first time or a first resend  send it already
@@ -157,7 +171,7 @@ class utilityController extends Controller
             if ($isSMS==1){
                 $result=$this->send_smsMsg($from,$to,$msg);
             }else if ($isSMS==0){
-                $result=$this->send_emailMsg($userID,"Employee Feedback", $msg);
+                $result=$this->send_emailMsg($userID, $feedbackMsg, $msg, $responseTypeID);
             }    
 
             //On success delivery the table should be updated

@@ -53,6 +53,7 @@ let fadeIn =function(element) {
 ready(function() {
     //survey feedback table
     extractData_thenDisplay=function(url){
+        //alert(url)
         //Function to get data
         async function getData(url) {
             // Storing response

@@ -3,11 +3,9 @@
     <?php 
         $title="Browse Employees Survey Feedback";
         $address_or_emailLabel="Email";
-        $disabled="";
-       if ($isServiceUser==1){
-            $disabled="disabled";
+        if ($isServiceUser==1){
             $title="Browse Service Users Survey Feedback";
-            $address_or_emailLabel="Post Code";
+            $address_or_emailLabel="Email" ;  //"Post Code";
         }
    
     ?>
@@ -91,12 +89,13 @@
                                 $userTelArray=[];
                                 $userProxyArray=[];
                                 $company_setting=$company_settings[0]; 
-                                $preText=$company_setting->smsPreText;
+                                $preTextEmp=$company_setting->smsPreTextEmp;
+                                $preTextSu=$company_setting->smsPreTextSu;
 
                                 foreach($usersDetails as $userDetails){
                                     if ($isServiceUser==1){
                                         $userNameArray[$userDetails->userID]= $userDetails->title . ' ' . $userDetails->firstName . ' ' . $userDetails->lastName;
-                                        $userAddress_or_emailArray[$userDetails->userID]=$userDetails->address;
+                                        $userAddress_or_emailArray[$userDetails->userID]=$userDetails->email;    //->address;
                                         $userProxyArray[$userDetails->userID]=$userDetails->proxy;
                                     }else if ($isServiceUser==0){
                                         $userNameArray[$userDetails->userID]= $userDetails->firstName . ' ' . substr($userDetails->middleName,0,1) . ' ' . $userDetails->lastName;
@@ -161,11 +160,11 @@
                                         </td>
                                         <td> 
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="{{$unique_value}}" id="{{$unique_value}}1" value="option1"  {{$checked1}} {{ $disabled }}>
+                                                <input class="form-check-input" type="radio" name="{{$unique_value}}" id="{{$unique_value}}1" value="option1"  {{$checked1}} >
                                                 <label class="form-check-label" for="{{$unique_value}}1">SMS</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="{{$unique_value}}" id="{{$unique_value}}2" value="option2"  {{$checked2}} {{ $disabled }}>
+                                                <input class="form-check-input" type="radio" name="{{$unique_value}}" id="{{$unique_value}}2" value="option2"  {{$checked2}} >
                                                 <label class="form-check-label" for="{{$unique_value}}2">Email</label>
                                              </div>
 
@@ -183,7 +182,8 @@
             let token = "{{ csrf_token() }}";
             let _sendSMSURL= "{{ url('utility/user_sendsms')}}"; 
             let URLbase="{{ url('')}}";
-            let smsPreText= @json($preText);
+            let smsPreTextSu= @json($preTextSu);
+            let smsPreTextEmp= @json($preTextEmp);
             let user_viewURL= "{{ url('user/view_feedback')}}";
             let isServiceUser={{ $isServiceUser }};
             //adjust the datatable 's page

@@ -20,6 +20,19 @@
                 $pageNo=0;
                 $pageNostr="";
                 $successURL= 'user/successSaved/' . $mobile_companyName[0]->companyID;
+                
+                //Now add the thank you. B/c the last questionnaire needs to be pushed
+                $thanksData = [
+                    'responseTypeID' => 2,
+                    'CQCid' => 0,
+                    'quesTypeID' => 0,
+                    'quesName' => " That is all. Please click the submit button to complete this survey. Thank you ",
+                    'quesAttrib' =>[],
+                    'quesID' => -5
+                ];
+                $quesCount++;
+                array_push($quesForm, (object)$thanksData);
+                 
             ?>
             @foreach($quesForm as $ques)   
                 <?php 
@@ -45,6 +58,8 @@
                     }    
                     
                     $parentIndex=$loop->index;
+                    $hidden2="";
+                    if ($ques->quesID==-5) $hidden2='style=display:none';
                     if ($parentIndex==1) $hidden='style=display:none';//hide all the other pages except page 1
                     $pageNo=$parentIndex+1;
                 ?>
@@ -79,7 +94,7 @@
                         @endif
                     @endif  
                     <div> 
-                        <p class="fw-normal text-center mt-2">{{ $pageNo}} out of {{ $quesCount}}   </p>
+                        <p  {{$hidden2}} class="fw-normal text-center mt-2">{{ $pageNo}} out of {{ $quesCount -1}}   </p>
                     </div>
                 </div>
             @endforeach

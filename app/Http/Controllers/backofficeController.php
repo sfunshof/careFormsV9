@@ -58,7 +58,7 @@ class backofficeController extends Controller
         
         //responses produce Yes, Yes, No, Maybe, No for each 2023-03-01
         $responses = DB::table("responsetable")
-            ->select('responses', 'quesName', 'CQCid','quesTypeID','quesOptions')
+            ->select(DB::raw("COALESCE(responses, '[]') as responses"), 'quesName', 'CQCid','quesTypeID','quesOptions')
             ->where(['companyID'=> $companyID,'responseTypeID' => $type ])
             ->whereDate('date_of_interest', $date)
             ->get();
@@ -102,16 +102,20 @@ class backofficeController extends Controller
         //** For each date get the values */
         //$responseKeyArray=[];   //"yes", "no","maybe"
         //$responseValueArray=[]; //0,2,4
+        
+        //$employeeDates=[2023-12-01, 2023-11-01];
+
         foreach ($employeeDates as $employeeDate) {
              //put here 
             $result=$this->get_employee_or_serviceUserVariables($employeeDate->date,$type);
-            $postedCount= $result['postedCount'];
-            $respCount=$result['respCount'];
-            $responses= $result['responses'];
-
+            $postedCount= $result['postedCount']; //0
+            $respCount=$result['respCount']; //1 or 2 0r 3 depending on dates
+            $responses= $result['responses']; // each field may show null, null, null not empty
             $responseArray=[];
             $respArray=json_decode($responses[0]->responses); //[0] b/c it is same for each eamployee AT THAT TIME!!!
-            for ($i=0; $i<count($respArray);$i++){ //c
+            
+            $noOfResp  = is_array($respArray) ? count($respArray) : 0 ; //[yes, no, excellent]==3
+            for ($i=0; $i<$noOfResp;$i++){ //c
                 $responseArray[$i]=[];
                 $outputArray[$i]=[];
             }
@@ -149,6 +153,7 @@ class backofficeController extends Controller
             $postedCountArray[$employeeDate->date]=$postedCount[0]->countX;
             $quesNameArray[$employeeDate->date]=json_decode($responses[0]->quesName);
             $quesTypeIDArray[$employeeDate->date]=json_decode($responses[0]->quesTypeID);
+            if ($quesTypeIDArray[$employeeDate->date]==null) $quesTypeIDArray[$employeeDate->date]=[];
             $CQCArray[$employeeDate->date]=json_decode($responses[0]->CQCid);
             $quesOptionsArray[$employeeDate->date]= json_decode($responses[0]->quesOptions);
            
@@ -312,7 +317,8 @@ class backofficeController extends Controller
             'companyName' => 'required|max:30',
             'contactEmail' => 'required|max:50', 
             'smsName' => 'required|max:12',
-            'smsPreText' => 'required'
+            'smsPreTextEmp' => 'required',
+            'smsPreTextSu' => 'required',
         ]);
         $validator = Validator::make($req->all(), $rules);
         if ($validator->passes()) {
@@ -320,7 +326,8 @@ class backofficeController extends Controller
                 'companyName'=>$req->companyName,
                 'contactEmail'=>$req->contactEmail,
                 'smsName' =>$req->smsName,
-                'smsPreText' =>$req->smsPreText,
+                'smsPreTextEmp' =>$req->smsPreTextEmp,
+                'smsPreTextSu' =>$req->smsPreTextSu,
             ];
              $updateStatus= DB::table('companyprofiletable')
                 ->where('companyID', $this->company_settings[0]->companyID)

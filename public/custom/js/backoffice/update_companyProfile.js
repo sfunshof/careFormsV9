@@ -57,7 +57,8 @@ ready(function() {
             'companyName': document.querySelector('input[name="companyName"]').value,
             'contactEmail': document.querySelector('input[name="contactEmail"]').value,
             'smsName' : document.querySelector('input[name="smsName"]').value,
-            'smsPreText':  document.querySelector('textarea[name="smsPreText"]').value,
+            'smsPreTextEmp':  document.querySelector('textarea[name="smsPreTextEmp"]').value,
+            'smsPreTextSu':  document.querySelector('textarea[name="smsPreTextSu"]').value,
         }
         let URLpath=update_companyProfileURL;;
         const asyncPostCall = async () => {

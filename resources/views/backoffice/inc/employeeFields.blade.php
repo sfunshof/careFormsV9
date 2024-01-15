@@ -44,7 +44,7 @@
             
             <div class="col-md-5">
                 <div class="form-floating">
-                    <input name="email"  type="text" class="form-control" id="emailID" placeholder="Post Code" value="{{ $email}}" required>
+                    <input name="email"  type="text" class="form-control" id="emailID" placeholder="Email" value="{{ $email}}" required>
                     <label for="email">Email</label>
                 </div>
                 <span class="text-danger email_err"></span>   

@@ -31,14 +31,16 @@
                 $lastName='';
                 $postCode='';
                 $mobile='';
+                $email='';
                 if ($user){
                     $firstName=$user->firstName;
                     $lastName=$user->lastName;   
                     $postCode=$user->address;
                     $mobile=$user->tel;
+                    $email=$user->email;
                 }
             ?>
-            <div class="col-md-5">
+            <div class="col-md-3">
                 <div class="form-floating">
                     <input  name="firstName"   type="text" class="form-control" id="suFirstNameID" placeholder="First Name"  value="{{$firstName}}"  required>
                     <label for="suFirstNameID">First Name</label>
@@ -46,7 +48,7 @@
                 <span class="text-danger firstName_err"></span>   
             </div>
         
-            <div class="col-md-5">
+            <div class="col-md-4">
                 <div class="form-floating">
                     <input name="lastName"   type="text" class="form-control" id="suLastNameID" placeholder="Last Name" value="{{$lastName}}" required>
                     <label for="suLasttNameID">Last Name</label>
@@ -54,7 +56,7 @@
                 <span class="text-danger lastName_err"></span>   
             </div>
             
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-floating">
                     <input name="postCode"  type="text" class="form-control" id="postCodeID" placeholder="Post Code" value="{{ $postCode}}" required>
                     <label for="postCodeID">Post Code</label>
@@ -70,6 +72,15 @@
                 <span class="text-danger mobile_err"></span>   
             </div>
             
+            <div class="col-md-4">
+                <div class="form-floating">
+                    <input name="email"  type="text" class="form-control" id="emailID" placeholder="Email" value="{{ $email}}" required>
+                    <label for="emailID">Email</label>
+                </div>
+                <span class="text-danger email_err"></span>   
+            </div>
+            
+
             <div class="col-md-4">
                 <div class="form-floating">
                     <div class="form-floating mb-3">

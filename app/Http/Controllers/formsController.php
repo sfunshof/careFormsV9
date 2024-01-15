@@ -199,11 +199,13 @@ class formsController extends Controller
         if ($responseTypeID==1){
             $user = DB::table("serviceuserdetailstable")
             ->select("*")
+            ->where(['userID'=>$userID])
             ->get();
             $fullName=$user[0]->title . ' ' . $user[0]->firstName . ' ' . $user[0]->lastName; 
         }else if  ($responseTypeID==2){
             $user = DB::table("employeedetailstable")
             ->select("*")
+            ->where(['userID'=>$userID])           
             ->get();
             $fullName=$user[0]->firstName . ' ' . $user[0]->middleName . ' ' . $user[0]->lastName; 
         }    
