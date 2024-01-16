@@ -113,6 +113,7 @@ class utilityController extends Controller
         //if it is the first time, statusID==1 we need to generate a unique ID
         $unique_value=substr(md5(uniqid(rand(), true)),0,7);
         
+
         if ($statusID==2){ //2nd time please check if thius is 1st 2nd time 
            
             $date = Carbon::parse($date_of_interest);
@@ -153,7 +154,8 @@ class utilityController extends Controller
             $feedbackMsg="Employee Feedback";
         }
         $msg= $smsPreText  .$lineBreak . $URL;
-              
+       
+      
         //If this is the first time or a first resend  send it already
         //done at the clients
         $ok_to_send=1;
@@ -171,9 +173,9 @@ class utilityController extends Controller
             if ($isSMS==1){
                 $result=$this->send_smsMsg($from,$to,$msg);
             }else if ($isSMS==0){
-                $result=$this->send_emailMsg($userID, $feedbackMsg, $msg, $responseTypeID);
+                 $result=$this->send_emailMsg($userID, $feedbackMsg, $msg, $responseTypeID);
             }    
-
+ 
             //On success delivery the table should be updated
             //return  response()->json([$result, $statusID]); 
             if (($result==1)&& ($statusID==1)) { //1st time

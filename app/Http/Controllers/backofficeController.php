@@ -266,7 +266,6 @@ class backofficeController extends Controller
         $responseKeyArray_su=$result_su['responseKeyArray'];   // [Yes,No,maybe] 
         $responseValueArray_su= $result_su['responseValueArray']; 
 
-
         $DataArray=[
             'years' => $years,
             'months' => $months, 
@@ -300,6 +299,7 @@ class backofficeController extends Controller
             'responseKeyArray_su'  => $responseKeyArray_su,   /*[Yes,No,maybe] */
             'responseValueArray_su' => $responseValueArray_su /*[2,1,0] */
         ];
+       
         return view('backoffice.pages.dashboard', $DataArray);
     }
 

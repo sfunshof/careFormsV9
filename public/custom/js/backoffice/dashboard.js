@@ -57,7 +57,7 @@ let draw_chart=function(idChart, dataValue,labelValue,labelCaption){
     
 }
 
-//alert(label_array) //
+
 let get_dateDetails=function(date,id,responseKeyArray,responseValueArray){ //2024-05-01 quesNo
     if ((date==date_const)|| (responseValueArray.length==0)) {
         let result=[];
@@ -66,9 +66,18 @@ let get_dateDetails=function(date,id,responseKeyArray,responseValueArray){ //202
         return result
     }
     
+    //console.log(JSON.stringify(responseValueArray));
+    //console.log(JSON.stringify(date));
+    
     let labelC =responseKeyArray[date]
     let dataC =responseValueArray[date]
-  
+    if (dataC.length==0){ //No one has submitted for this date
+        let result=[];
+        result[0]=[];
+        result[1]=[];
+        return result
+    }
+    
     
     let data=dataC[id] //['A,B,C]
     let label=labelC[id]
@@ -207,8 +216,6 @@ let set_charDateArray=function(chartDateArray){
        date_previous=chartDateArray[1] 
     }
 }    
-set_charDateArray(chartDateArray_su)
-set_charDateArray(chartDateArray_emp)
 
 let get_tableData=function(date_current,date_previous,i, responseKeyArray,responseValueArray, quesOptionsArray){
     let result_current=get_dateDetails(date_current,i, responseKeyArray,responseValueArray)
@@ -243,7 +250,7 @@ let set_setupGraphData=function(userType,quesTypeID,CQCArray,responseKeyArray,re
         if ((CQCArray[i]>0)&&(quesTypeID[i]==2)){
             let idChart= "chart" + userType +i
             let idTable=  "table" + userType +i
-            let result=get_tableData(date_current,date_previous,i,responseKeyArray,responseValueArray, quesOptionsArray)
+             let result=get_tableData(date_current,date_previous,i,responseKeyArray,responseValueArray, quesOptionsArray)
             let optionsArray=result[0]
             let current_array=result[1]
             let previous_array=result[2]
@@ -263,7 +270,10 @@ let set_setupGraphData=function(userType,quesTypeID,CQCArray,responseKeyArray,re
     }
 }
 
+set_charDateArray(chartDateArray_su)
 set_setupGraphData("_su_", quesTypeID_su,CQCArray_su,responseKeyArray_su,responseValueArray_su, pieChartArray_su, quesOptionsArray_su)
+
+set_charDateArray(chartDateArray_emp)
 set_setupGraphData("_emp_", quesTypeID_emp,CQCArray_emp,responseKeyArray_emp,responseValueArray_emp, pieChartArray_emp, quesOptionsArray_emp)
 
 
