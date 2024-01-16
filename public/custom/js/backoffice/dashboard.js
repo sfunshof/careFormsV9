@@ -112,7 +112,7 @@ let get_quesOptionsArray=function(date_curr, date_prev, quesPos, quesOptionsArra
 let merge_arrays=function(data,labels, all_labels){
     // Convert Y to percentages
     let sum = data.reduce((a, b) => a + b, 0);
-    let percentages = data.map(value => (value / sum) * 100);
+    let percentages = data.map(value => ((value / sum) * 100).toFixed(2));
 
     // Merge X, percentages, and Z into object Q
     let output = {};
