@@ -20,7 +20,7 @@ class utilityController extends Controller
         $config = ClickSend\Configuration::getDefaultConfiguration()
         ->setUsername(config('care.click_send_username'))
         ->setPassword(config('care.click_send_password'));
-
+        
         $apiInstance = new ClickSend\Api\SMSApi(
             // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
             // This is optional, `GuzzleHttp\Client` will be used as default.
@@ -37,7 +37,7 @@ class utilityController extends Controller
         $sms_messages->setMessages([$msg]);
 
         try {
-               //$result = $apiInstance->smsSendPost($sms_messages);
+               $result = $apiInstance->smsSendPost($sms_messages);
             
             //print_r($result);
             return 1;

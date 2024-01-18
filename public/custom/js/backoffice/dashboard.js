@@ -298,14 +298,14 @@ ready(function() {
         
     //this returns 2023-04-01 
     function get_updatedData(id,userType){
+                
         let updatePieChart =function (myChart, dataArray, labelArray){
             myChart.updateSeries(dataArray);
             myChart.updateOptions({
                 labels: labelArray
             });   
-             
         }
-        
+        //part of the update not first time draw
         let draw_allGraphs = function(pieChartArray, chartDateArray, responseKeyArray,responseValueArray, quesOptionsArray){
             let typeID=userType +id
             let mnID="month" +typeID;
@@ -317,8 +317,10 @@ ready(function() {
             let yr=document.getElementById(yrID).value
             let date=yr + "-" + mn + "-01"
             let obj = pieChartArray.find(item => item.id === chID)
+            
             let myChart=null ;
-            if (obj) obj.myChart
+            if (obj)  myChart=obj.myChart
+            
             //check if the date exist
             let dateIndex=chartDateArray.indexOf(date)
             if (dateIndex >= 0){
@@ -343,6 +345,7 @@ ready(function() {
                 updatePieChart(myChart, dataArray, labelArray)  
             }else{
                 //alert("date not found")
+                
                 updatePieChart(myChart, [], [])
                 draw_table([],[],[],'',tbID)
             }

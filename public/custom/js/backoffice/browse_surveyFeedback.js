@@ -93,6 +93,16 @@ ready(function() {
         if (responseTypeID==1) smsPreText=smsPreTextSu
 
         let smsMsg= smsPreText + ' ' +  URLbase + "/" + unique_value
+        
+        goAheadWithSendingMsg=function(){
+            //Send SMS/Email to the clients
+            let result=get_reloadURL();
+            let date_of_interest=result.date_of_interest;
+            let URLreload=result.URLreload;
+            sms_toUsers(userID,statusID, tel,responseTypeID,URLpath,date_of_interest,URLreload,isSMS,sentCount,sentEmailCount)
+            hide_modal()
+        }
+
         if (isSMS==1){
             if (isServiceUser==1){
                 if ((statusID==2) && (sentCount==2)){
@@ -112,7 +122,18 @@ ready(function() {
                     return 0;
                 }
 
-            }    
+            } 
+            //Now send the sms but give warning
+            let title ="Warning: Anti spam policy in place ";
+            let bodyMsg="Do you really want to send this by sms?";
+            //We do not know how to pass userID so we use a general function update_employeeModalFunc
+            let btn='<button type="buttton" class="btn btn-primary"  onClick="goAheadWithSendingMsg()" >Send by SMS</button>';
+            let btns= btn + closeBtn
+            show_modal(title, bodyMsg, btns)
+            modalDialogID.classList.remove('modal-lg');
+            modalDialogID.classList.add('modal-md');
+            
+
         }else if (isSMS==0){ //sent by email
             if ((statusID==2) && (sentEmailCount==2) && (sentCount < 2) ){
                 //Email full send by SMS
@@ -123,16 +144,11 @@ ready(function() {
                 //SMS full , email full
                 too_manySMS(smsMsg,tel, 0)
                 return 0;
-            }   
+            }
+            goAheadWithSendingMsg()   
         }
-        
-       //Send SMS/Email to the clients
-        let result=get_reloadURL();
-        let date_of_interest=result.date_of_interest;
-        let URLreload=result.URLreload;
-        sms_toUsers(userID,statusID, tel,responseTypeID,URLpath,date_of_interest,URLreload,isSMS,sentCount,sentEmailCount)
-        
     }
+    
     let get_reloadURL=function(){
         let monthStr=monthVal < 10 ? "0" + monthVal: monthVal
         let date_of_interest=  year + "-" + monthStr + "-01"    

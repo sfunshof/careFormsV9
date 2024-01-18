@@ -5,7 +5,7 @@
 @section('contents')
     <section class="section">
         <div class="row">
-            <div class="col-lg-10">
+            <div class="col-md-11">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -34,7 +34,7 @@
                                 <div class="col-md-4">
                                     <div class="form-floating">
                                         <input name="smsName"  type="text" class="form-control" id="smsNameID" placeholder="SMS Name" value="{{ $companyProfile->smsName}}" required>
-                                        <label for="smsNameID">SMS Name</label>
+                                        <label for="smsNameID">SMS Name - Max 11 Chars </label>
                                     </div>
                                     <span class="text-danger smsName_err"></span>   
                                 </div>

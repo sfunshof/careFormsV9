@@ -75,11 +75,12 @@ let hide_spinner=function(){
         spinner_modal.setAttribute('hidden', '');
     }else{ //This must be modal
         spinner.setAttribute('hidden', '');
-    }
+    } 
 
 }
 let show_modal=function(titleText, bodyMsg, footerBtn){
     modalDialogID.classList.remove('modal-sm');
+    modalDialogID.classList.remove('modal-md');
     modalDialogID.classList.add('modal-lg');
     modalTitle.innerHTML=titleText
     modalBody.innerHTML=bodyMsg;
@@ -96,5 +97,6 @@ let disable_modalFunc=function(){}
 let update_modalFunc=function(){}
 let delete_modalFunc=function(){}
 let printToPdf_modalFunc=function(){}
+let goAheadWithSendingMsg=function(){}
 ;
 

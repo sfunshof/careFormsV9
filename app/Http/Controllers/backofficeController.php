@@ -316,9 +316,9 @@ class backofficeController extends Controller
         $rules= ([
             'companyName' => 'required|max:30',
             'contactEmail' => 'required|max:50', 
-            'smsName' => 'required|max:12',
-            'smsPreTextEmp' => 'required',
-            'smsPreTextSu' => 'required',
+            'smsName' => 'required|max:11',
+            'smsPreTextEmp' => 'required|max:245',
+            'smsPreTextSu' => 'required|max:245',
         ]);
         $validator = Validator::make($req->all(), $rules);
         if ($validator->passes()) {
