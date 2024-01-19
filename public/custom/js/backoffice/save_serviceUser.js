@@ -85,6 +85,7 @@ ready(function() {
                 if (status==1){
                     show_alertInfo("Data Successfully Saved")
                     if (userID < 0) document.getElementById("addnew_formID").reset();
+                    if (userID >=0)document.getElementById('simulateLink').click();
                 }else if(status==-1) {
                     show_alertDanger("Database problem please try again later")  
                 }else if(status==0){

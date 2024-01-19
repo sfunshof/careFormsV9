@@ -315,7 +315,7 @@ class backofficeController extends Controller
     public function update_companyProfile(Request $req){
         $rules= ([
             'companyName' => 'required|max:30',
-            'contactEmail' => 'required|max:50', 
+            'contactEmail' => 'required|email', 
             'smsName' => 'required|max:11',
             'smsPreTextEmp' => 'required|max:245',
             'smsPreTextSu' => 'required|max:245',

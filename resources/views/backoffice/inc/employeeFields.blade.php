@@ -53,7 +53,7 @@
             <div class="col-md-4">
                 <div class="form-floating">
                     <input name="mobile" type="text" class="form-control" id="phoneID" placeholder="Mobile Number" value="{{$mobile}}" required>
-                    <label for="phoneID">Mobile Number</label>
+                    <label for="phoneID">Mobile Number (inc +44)</label>
                 </div>
                 <span class="text-danger mobile_err"></span>   
             </div>
@@ -88,3 +88,5 @@
     </div>   
 
 </div> 
+{{--  After Updating we simulate a click here so that browsing gets reloaded  --}}
+<a id="simulateLink" class="d-none" href="{{ url('/employee/browse')}}"> Update  </a>

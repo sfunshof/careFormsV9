@@ -22,8 +22,8 @@ class employeeController extends Controller
         $rules= ([
             'firstName' => 'required|max:30',
             'lastName' => 'required|max:40', 
-            'email' => 'required|email',
-            'mobile' => 'required'
+            'mobile' =>  ['required', 'regex:/^\+44\d{7,11}$/'],
+            'email' => 'required|email'
         ]);
         $validator = Validator::make($req->all(), $rules);
         if ($validator->passes()) {

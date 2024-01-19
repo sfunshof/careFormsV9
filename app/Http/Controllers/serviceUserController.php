@@ -21,8 +21,8 @@ class serviceUserController extends Controller
             'firstName' => 'required|max:20',
             'lastName' => 'required|max:20', 
             'postCode' => 'required|min:6|max:10',
-            'mobile' => 'required',
-            'email' => 'required',
+            'mobile' =>  ['required', 'regex:/^\+44\d{7,11}$/'],
+            'email' => 'required|email',
         ]);
         $validator = Validator::make($req->all(), $rules);
         if ($validator->passes()) {

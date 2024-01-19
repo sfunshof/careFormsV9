@@ -72,7 +72,7 @@ ready(function() {
                  const data = await response.json();
                    // enter you logic when the fetch is successful
                    //alert(JSON.stringify(data));
-                    hide_spinner()
+                    hide_spinner() 
                     let title ="Update the Service User Details";
                     let bodyMsg=data;
                     //We do not know how to pass userID so we use a general function update_serviceUserModalFunc
