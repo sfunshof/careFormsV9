@@ -71,6 +71,12 @@ let get_dateDetails=function(date,id,responseKeyArray,responseValueArray){ //202
     
     let labelC =responseKeyArray[date]
     let dataC =responseValueArray[date]
+    if (typeof dataC === 'undefined') {
+        let result=[];
+        result[0]=[];
+        result[1]=[];
+        return result
+    }
     if (dataC.length==0){ //No one has submitted for this date
         let result=[];
         result[0]=[];

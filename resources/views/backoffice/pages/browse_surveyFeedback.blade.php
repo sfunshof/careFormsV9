@@ -32,10 +32,30 @@
                                     }else{    
                                         $selected_month = date('m'); //current month
                                     }
-                                    for ($i_month = 1; $i_month <= 12; $i_month++) { 
-                                        $selected = $selected_month == $i_month ? ' selected' : '';
-                                        echo '<option value="'.$i_month.'"'. $selected. '>'. date('F', mktime(0,0,0,$i_month)).'</option>'."\n";
+                                   
+                                    $months = array(
+                                        1 => "January",
+                                        2 => "February",
+                                        3 => "March",
+                                        4 => "April",
+                                        5 => "May",
+                                        6 => "June",
+                                        7 => "July",
+                                        8 => "August",
+                                        9 => "September",
+                                        10 => "October",
+                                        11 => "November",
+                                        12 => "December"
+                                    );
+                                    foreach ($months as $key => $value) {
+                                        $selected = $selected_month == $key ? ' selected' : '';
+                                        echo '<option value="'.$key.'"'. $selected. '>'. $value .'</option>'."\n";
                                     }
+
+                                    //for ($i_month = 1; $i_month <= 12; $i_month++) { 
+                                    //    $selected = $selected_month == $i_month ? ' selected' : '';
+                                    //    echo '<option value="'.$i_month.'"'. $selected. '>'. date('F', mktime(0,0,0,$i_month,1)).'</option>'."\n";
+                                    //}
                                 ?>
                             </select>
                             <label for="selectMonthID">Month</label>
