@@ -207,17 +207,20 @@ let formatDate =function(dateString) {
     return `${month} ${year}`;
 }
 //Get the options for the date
+//Note this is read in once and must be prev date must be rest 
 let date_current=date_const
 let date_previous=date_const
 
 let set_charDateArray=function(chartDateArray){
     if (chartDateArray[0] === undefined) {
         // myArray is undefined
+        date_current =date_const //may be usless here
     }else{
        date_current=chartDateArray[0] 
     }
     if (chartDateArray[1] === undefined) {
         // myArray is undefined
+        date_previous=date_const //this must be put here otherwise, it will use a previous date for either su or emp
     }else{
        date_previous=chartDateArray[1] 
     }
@@ -276,7 +279,8 @@ let set_setupGraphData=function(userType,quesTypeID,CQCArray,responseKeyArray,re
     }
 }
 
-set_charDateArray(chartDateArray_su)
+
+set_charDateArray(chartDateArray_su) //2023-12-01, 2023-11-01
 set_setupGraphData("_su_", quesTypeID_su,CQCArray_su,responseKeyArray_su,responseValueArray_su, pieChartArray_su, quesOptionsArray_su)
 
 set_charDateArray(chartDateArray_emp)

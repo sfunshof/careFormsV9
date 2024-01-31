@@ -90,7 +90,10 @@ let show_modal=function(titleText, bodyMsg, footerBtn){
 let hide_modal=function(){
     let myModalEl = document.getElementById('myModal');
     let modal = bootstrap.Modal.getInstance(myModalEl)
-    modal.hide();
+    if (modal !== null) {
+        modal.hide(); 
+    } 
+   
 }   
 
 let disable_modalFunc=function(){}

@@ -59,8 +59,11 @@ ready(function() {
         modalDialogID.classList.add('modal-sm');
       
         delete_modalFunc=function(){
-            document.getElementById("main_" + id)
-            .outerHTML = "";
+            let mainDoc= document.getElementById("main_" + id)
+            if (mainDoc !== null) {
+                mainDoc.outerHTML = "";
+            } 
+           
             hide_modal()
         }
     }
