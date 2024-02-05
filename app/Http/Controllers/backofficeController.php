@@ -114,7 +114,7 @@ class backofficeController extends Controller
             $responseArray=[];
             $respArray=json_decode($responses[0]->responses); //[0] b/c it is same for each eamployee AT THAT TIME!!!
             
-            $noOfResp  = is_array($respArray) ? count($respArray) : 0 ; //[yes, no, excellent]==3
+            $noOfResp  = 5000 ; // arbirtually large number cannot be bothered is_array($respArray) ? count($respArray) : 0 ; //[yes, no, excellent]==3
             for ($i=0; $i<$noOfResp;$i++){ //c
                 $responseArray[$i]=[];
                 $outputArray[$i]=[];
