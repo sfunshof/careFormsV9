@@ -208,6 +208,27 @@ class backofficeController extends Controller
         return $result;
     }
     
+    private function get_response_per_date($type){
+        $threeYearsAgo = now()->subYears(3);
+        $results = DB::table('responsetable')
+            ->select('date_of_interest', 'quesoptions')
+            ->whereNotNull('date_of_interest')
+            ->where('responseTypeID', $type)
+            ->whereNotNull('quesOptions')
+            ->where('date_of_interest', '>=', $threeYearsAgo)
+            ->groupBy('date_of_interest', 'quesoptions')
+            ->get();
+             // Create an associative array with date_of_interest as keys 
+             //and quesoptions as values
+            $associativeArray = [];
+            foreach ($results as $result) {
+                $associativeArray[$result->date_of_interest] = $result->quesoptions;
+            }
+            return $associativeArray;
+    }
+
+
+    
     public function show_dashboard(){
         
         $years = collect(range(2, 0))->map(function ($year) {
@@ -248,6 +269,7 @@ class backofficeController extends Controller
         $employeeDates_emp=$result_emp['employeeDates'];          /* 2023-02-01, 2023-03-01, 2023-04-01 */
         $responseKeyArray_emp=$result_emp['responseKeyArray'];   /*[Yes,No,maybe] */
         $responseValueArray_emp= $result_emp['responseValueArray']; 
+        $response_per_date_emp=$this->get_response_per_date(2);
         
 
         $result_su=$this->get_employee_or_serviceUserMainDetails($past_3years, $cqc_array_pure, 1);
@@ -265,6 +287,7 @@ class backofficeController extends Controller
         $employeeDates_su=$result_su['employeeDates'];          // 2023-02-01, 2023-03-01, 2023-04-01 
         $responseKeyArray_su=$result_su['responseKeyArray'];   // [Yes,No,maybe] 
         $responseValueArray_su= $result_su['responseValueArray']; 
+        $response_per_date_su=$this->get_response_per_date(1);
 
         $DataArray=[
             'years' => $years,
@@ -284,6 +307,7 @@ class backofficeController extends Controller
             'employeeDates_emp' => $employeeDates_emp,          /* 2023-02-01, 2023-03-01, 2023-04-01 */
             'responseKeyArray_emp'  => $responseKeyArray_emp,   /*[Yes,No,maybe] */
             'responseValueArray_emp' => $responseValueArray_emp, /*[2,1,0] */
+            'response_per_date_emp' => $response_per_date_emp, //2023-12-01 => [[yes, No], [Maybe, No]] 2023-11-01 => [[yes, No], [Maybe, No]]
             'MnNo_su' => $mnth_su,
             'YrNo_su' => $yr_su,   
             'chartDateArray_su' => $chartDateArray_su, // 0=>2023-01-01 1=>2023-03-01
@@ -297,7 +321,8 @@ class backofficeController extends Controller
             'quesNames_su' => $quesNameArray_su,  /* This is repetition , simply take the 1st */
             'employeeDates_su' => $employeeDates_su,          /* 2023-02-01, 2023-03-01, 2023-04-01 */
             'responseKeyArray_su'  => $responseKeyArray_su,   /*[Yes,No,maybe] */
-            'responseValueArray_su' => $responseValueArray_su /*[2,1,0] */
+            'responseValueArray_su' => $responseValueArray_su, /*[2,1,0] */
+            'response_per_date_su' => $response_per_date_su //2023-12-01 => [[yes, No], [Maybe, No]] 2023-11-01 => [[yes, No], [Maybe, No]]
         ];
        
         return view('backoffice.pages.dashboard', $DataArray);

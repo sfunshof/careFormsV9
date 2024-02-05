@@ -57,6 +57,26 @@ let draw_chart=function(idChart, dataValue,labelValue,labelCaption){
     
 }
 
+let getValueByKey=function(obj, key) { //2023-01-01: [yes,no],[no, yes]
+    if (obj.hasOwnProperty(key)) {
+        // Check if the object has the specified key
+        return obj[key]; // Return the value associated with the key
+    } else {
+        return null; // If the key is not found, return null (or any other default value)
+    }
+}
+
+let  convertStringsToArrays=function (obj) {
+    if (obj===null){
+       return null;
+    }
+    if (Array.isArray(obj)) {
+        return obj;
+    }
+    return JSON.parse(obj);
+    
+}
+
 
 let get_dateDetails=function(date,id,responseKeyArray,responseValueArray){ //2024-05-01 quesNo
     if ((date==date_const)|| (responseValueArray.length==0)) {
@@ -208,13 +228,13 @@ let formatDate =function(dateString) {
 }
 //Get the options for the date
 //Note this is read in once and must be prev date must be rest 
+//The current date is set once but can be changed by the select elements
 let date_current=date_const
 let date_previous=date_const
 
 let set_charDateArray=function(chartDateArray){
     if (chartDateArray[0] === undefined) {
         // myArray is undefined
-        date_current =date_const //may be usless here
     }else{
        date_current=chartDateArray[0] 
     }
@@ -224,6 +244,7 @@ let set_charDateArray=function(chartDateArray){
     }else{
        date_previous=chartDateArray[1] 
     }
+    
 }    
 
 let get_tableData=function(date_current,date_previous,i, responseKeyArray,responseValueArray, quesOptionsArray){
@@ -254,12 +275,29 @@ let get_tableData=function(date_current,date_previous,i, responseKeyArray,respon
     return result
 }
 
-let set_setupGraphData=function(userType,quesTypeID,CQCArray,responseKeyArray,responseValueArray,pieChartArray, quesOptionsArray){
+let set_setupGraphData=function(userType,quesTypeID,CQCArray,responseKeyArray,responseValueArray,pieChartArray, quesOptionsArray, response_per_date){
+    let iPos=0; //postion of the table/chart so that we can know the index postion of the response
     for(let i=0; i< quesTypeID.length;i++){
         if ((CQCArray[i]>0)&&(quesTypeID[i]==2)){
-            let idChart= "chart" + userType +i
-            let idTable=  "table" + userType +i
-             let result=get_tableData(date_current,date_previous,i,responseKeyArray,responseValueArray, quesOptionsArray)
+            let idChart= "chart" + userType +iPos
+            let idTable=  "table" + userType +iPos
+
+            //This has not yet been tested
+            let current_resp= convertStringsToArrays(getValueByKey(response_per_date, date_current))
+            let previous_resp= convertStringsToArrays(getValueByKey(response_per_date, date_previous))
+            let curr_resp=current_resp[iPos]
+            let prev_resp=null
+            if (previous_resp !== null){
+                prev_resp=previous_resp[iPos]
+            }
+            let date_previous_x=date_previous                
+            if (curr_resp !== prev_resp){
+                date_previous_x=date_const
+            }
+            //** End of not tested */    
+
+
+            let result=get_tableData(date_current,date_previous_x,iPos,responseKeyArray,responseValueArray, quesOptionsArray)
             let optionsArray=result[0]
             let current_array=result[1]
             let previous_array=result[2]
@@ -275,16 +313,17 @@ let set_setupGraphData=function(userType,quesTypeID,CQCArray,responseKeyArray,re
             chartObj.id=idChart;
             chartObj.myChart=myChart;
             pieChartArray.push(chartObj)
+            iPos++
         }
     }
 }
 
 
 set_charDateArray(chartDateArray_su) //2023-12-01, 2023-11-01
-set_setupGraphData("_su_", quesTypeID_su,CQCArray_su,responseKeyArray_su,responseValueArray_su, pieChartArray_su, quesOptionsArray_su)
+set_setupGraphData("_su_", quesTypeID_su,CQCArray_su,responseKeyArray_su,responseValueArray_su, pieChartArray_su, quesOptionsArray_su, response_per_date_su)
 
 set_charDateArray(chartDateArray_emp)
-set_setupGraphData("_emp_", quesTypeID_emp,CQCArray_emp,responseKeyArray_emp,responseValueArray_emp, pieChartArray_emp, quesOptionsArray_emp)
+set_setupGraphData("_emp_", quesTypeID_emp,CQCArray_emp,responseKeyArray_emp,responseValueArray_emp, pieChartArray_emp, quesOptionsArray_emp, response_per_date_emp)
 
 
 function ready(callbackFunc) {
@@ -306,7 +345,7 @@ function ready(callbackFunc) {
   
 ready(function() { 
         
-    //this returns 2023-04-01 
+    //this returns 2023-04-01  id=0, 1, 2, 3 this is the postion
     function get_updatedData(id,userType){
                 
         let updatePieChart =function (myChart, dataArray, labelArray){
@@ -315,8 +354,9 @@ ready(function() {
                 labels: labelArray
             });   
         }
+        
         //part of the update not first time draw
-        let draw_allGraphs = function(pieChartArray, chartDateArray, responseKeyArray,responseValueArray, quesOptionsArray){
+        let draw_allGraphs = function(pieChartArray, chartDateArray, responseKeyArray,responseValueArray, quesOptionsArray,response_per_date){
             let typeID=userType +id
             let mnID="month" +typeID;
             let yrID="year" + typeID; 
@@ -325,12 +365,14 @@ ready(function() {
             let mn=document.getElementById(mnID).value
             if (mn < 10) mn=0+mn
             let yr=document.getElementById(yrID).value
-            let date=yr + "-" + mn + "-01"
+            let date=yr + "-" + mn + "-01" //23-01-01
             let obj = pieChartArray.find(item => item.id === chID)
             
             let myChart=null ;
             if (obj)  myChart=obj.myChart
             
+           
+
             //check if the date exist
             let dateIndex=chartDateArray.indexOf(date)
             if (dateIndex >= 0){
@@ -342,7 +384,21 @@ ready(function() {
                 }else{
                    date_prev=chartDateArray[dateIndex_prev] 
                 }  
-                  
+                                
+                let current_resp= convertStringsToArrays(getValueByKey(response_per_date, date))
+                let previous_resp= convertStringsToArrays(getValueByKey(response_per_date, date_prev))
+                let curr_resp=current_resp[id]
+                let prev_resp=null
+                if (previous_resp !== null){
+                    prev_resp=previous_resp[id]
+                }
+                                
+                if (curr_resp !== prev_resp){
+                   date_prev=date_const
+                }
+                
+
+
                 let result=get_tableData(date,date_prev,id,responseKeyArray,responseValueArray, quesOptionsArray)
                 let optionsArray=result[0]
                 let current_array=result[1]
@@ -361,16 +417,16 @@ ready(function() {
             }
         }
         if (userType=="_su_"){
-            draw_allGraphs(pieChartArray_su, chartDateArray_su, responseKeyArray_su,responseValueArray_su,quesOptionsArray_su)
+            draw_allGraphs(pieChartArray_su, chartDateArray_su, responseKeyArray_su,responseValueArray_su,quesOptionsArray_su, response_per_date_su)
         }else if (userType=="_emp_"){
-            draw_allGraphs(pieChartArray_emp, chartDateArray_emp, responseKeyArray_emp,responseValueArray_emp,quesOptionsArray_emp)
+            draw_allGraphs(pieChartArray_emp, chartDateArray_emp, responseKeyArray_emp,responseValueArray_emp,quesOptionsArray_emp,response_per_date_emp)
         }
        
         
     }
 
     yearChangeFunc=function(id,subject_){
-        get_updatedData(id,subject_)
+         get_updatedData(id,subject_)
     }
 
 

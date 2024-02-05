@@ -249,6 +249,7 @@
         let quesTypeID_emp=@json($quesTypeIDS_emp);
         let quesOptions_emp=@json($quesOptionS_emp);
         let quesOptionsArray_emp=@json($quesOptions_emp);
+        let response_per_date_emp=@json($response_per_date_emp);
 
         let responseKeyArray_su=@json($responseKeyArray_su);
         let responseValueArray_su=@json($responseValueArray_su);
@@ -257,6 +258,7 @@
         let quesTypeID_su=@json($quesTypeIDS_su);
         let quesOptions_su=@json($quesOptionS_su);
         let quesOptionsArray_su=@json($quesOptions_su);
+        let response_per_date_su=@json($response_per_date_su);
     </script>
 @endsection
 
