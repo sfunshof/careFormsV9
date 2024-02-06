@@ -22,7 +22,22 @@
             $CQCidS_prev= [];
             $quesNameS_prev=[];
             $quesOptionS_prev=[]
-    ?>
+        ?>
+        
+        <div class="row">
+            <div class="col-md-12">   
+                <?php 
+                    $isChecked="";
+                    //if ($isDisabledFlag==0) $isChecked="checked='checked'";
+                ?>
+                <div class="form-check form-switch form-switch-md">
+                    <input class="form-check-input" type="checkbox" id="showDisabledTablesID"       onClick="show_all_hidden_tablesFunc()"  {{ $isChecked }}>
+                    <label class="form-check-label" style="padding-left:.5rem;padding-top:.2rem;"    for="showDisabledTablesID">Show all hidden tables and charts</label>
+                </div>
+                <hr class="bg-primary border-2 border-top border-primary">
+            </div>
+        </div>
+
         @for ($j=1;$j<3;$j++)
             <?php 
                 $status=0;
@@ -164,17 +179,18 @@
                     @foreach ($quesTypeIDS as $queTypeID)
                         @if (($quesTypeIDS[$loop->index]==2) && ($CQCidS[$loop->index] >0))
                             <?php
-                               //with loop->index 0,1, 4,5  ** 2 and 3 are no diplay
-                               //with counter we have 0,1,2,3  which is what dashboard.js will read
-                               $idUserType=  $userType  .  $counter_for_table_and_chart;   // $loop->index; loop->index is wrong it will jump if there is a no-display among them
+                                //with loop->index 0,1, 4,5  ** 2 and 3 are no diplay
+                                //with counter we have 0,1,2,3  which is what dashboard.js will read
+                                $idUserType=  $userType  .  $counter_for_table_and_chart;   // $loop->index; loop->index is wrong it will jump if there is a no-display among them
                                 $idYear="year" . $idUserType;
                                 $idMonth="month" . $idUserType;
                                 $idChart="chart" . $idUserType;
                                 $idTable="table" . $idUserType;
+                                $idBody="body" . $idUserType;
                                 $counter_for_table_and_chart++;
                             ?>
                             <div class="col-md-12">
-                                <div class="card">
+                                <div class="card  border-primary" id="{{$idBody}}"  >
                                     <div class="card-body">
                                         <h6 class="card-title">{{$CQCArray[$CQCidS[$loop->index]]  }}</h6>
                                         <div class="row">

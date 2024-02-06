@@ -3,6 +3,8 @@ let yearChangeFunc=function(){}
 let monthChangeFunc=function(){}
 let pieChartArray_emp=[]
 let pieChartArray_su=[]
+let show_all_hidden_tablesFunc=function(){}
+let hidden_tablesArray=[]
 
 const date_const="3033-01-01"
 //alert(JSON.stringify(responseKeyArray))
@@ -216,6 +218,26 @@ let draw_table=function(firstColumn, secondColumn,thirdColumn, headers, tableID)
     
 }
 
+show_all_hidden_tablesFunc=function(){
+    let hideTables = document.getElementById("showDisabledTablesID");
+    for (let i = 0; i < hidden_tablesArray.length; i++) {
+        let id =  hidden_tablesArray[i];
+        const divElement = document.getElementById(id);
+        if (divElement) {
+            if (hideTables.checked) {
+                divElement.style.display = 'block';
+            }else{
+                divElement.style.display = 'none';
+            }    
+           
+        }
+    }
+    
+  
+
+  
+}
+
 let formatDate =function(dateString) {
     if (dateString==date_const){
         return 'No Previous Data'
@@ -278,9 +300,10 @@ let get_tableData=function(date_current,date_previous,i, responseKeyArray,respon
 let set_setupGraphData=function(userType,quesTypeID,CQCArray,responseKeyArray,responseValueArray,pieChartArray, quesOptionsArray, response_per_date){
     let iPos=0; //postion of the table/chart so that we can know the index postion of the response
     for(let i=0; i< quesTypeID.length;i++){
-        if ((CQCArray[i]>0)&&(quesTypeID[i]==2)){
+        if (quesTypeID[i]==2){
             let idChart= "chart" + userType +iPos
             let idTable=  "table" + userType +iPos
+            let idBody= "body" +  userType +iPos
 
             //This has not yet been tested
             let current_resp= convertStringsToArrays(getValueByKey(response_per_date, date_current))
@@ -295,7 +318,7 @@ let set_setupGraphData=function(userType,quesTypeID,CQCArray,responseKeyArray,re
                 date_previous_x=date_const
             }
             //** End of not tested */    
-
+           
 
             let result=get_tableData(date_current,date_previous_x,iPos,responseKeyArray,responseValueArray, quesOptionsArray)
             let optionsArray=result[0]
@@ -314,6 +337,13 @@ let set_setupGraphData=function(userType,quesTypeID,CQCArray,responseKeyArray,re
             chartObj.myChart=myChart;
             pieChartArray.push(chartObj)
             iPos++
+            if (CQCArray[i]==0){
+                const divElement = document.getElementById(idBody);
+                if (divElement) {
+                    divElement.style.display = 'none';
+                }
+                hidden_tablesArray.push(idBody)
+            }
         }
     }
 }
