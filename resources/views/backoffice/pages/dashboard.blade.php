@@ -108,6 +108,7 @@
                         $posted=0;
                         $resp=0;
                         $per=0;
+                        $counter_for_table_and_chart=0;
                         $survey_sent=" Survey posted to " .  $userTypeName . "s";
                         $survey_resp=" Survey responded to";
                         $respRate= " Response rate";
@@ -163,11 +164,14 @@
                     @foreach ($quesTypeIDS as $queTypeID)
                         @if (($quesTypeIDS[$loop->index]==2) && ($CQCidS[$loop->index] >0))
                             <?php
-                                $idUserType=  $userType  . $loop->index;
+                               //with loop->index 0,1, 4,5  ** 2 and 3 are no diplay
+                               //with counter we have 0,1,2,3  which is what dashboard.js will read
+                               $idUserType=  $userType  .  $counter_for_table_and_chart;   // $loop->index; loop->index is wrong it will jump if there is a no-display among them
                                 $idYear="year" . $idUserType;
                                 $idMonth="month" . $idUserType;
                                 $idChart="chart" . $idUserType;
                                 $idTable="table" . $idUserType;
+                                $counter_for_table_and_chart++;
                             ?>
                             <div class="col-md-12">
                                 <div class="card">

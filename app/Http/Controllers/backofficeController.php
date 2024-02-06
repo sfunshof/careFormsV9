@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class backofficeController extends Controller
 {
@@ -98,6 +99,11 @@ class backofficeController extends Controller
             array_push($chartDateArray, $employeeDate->date);
         }
         //** End of variable definiation  */
+    
+        //If the first response is null then we have a problem, therefore we use 
+        //quesName from table
+        
+
 
         //** For each date get the values */
         //$responseKeyArray=[];   //"yes", "no","maybe"
@@ -108,18 +114,28 @@ class backofficeController extends Controller
         foreach ($employeeDates as $employeeDate) {
              //put here 
             $result=$this->get_employee_or_serviceUserVariables($employeeDate->date,$type);
-            $postedCount= $result['postedCount']; //0
-            $respCount=$result['respCount']; //1 or 2 0r 3 depending on dates
-            $responses= $result['responses']; // each field may show null, null, null not empty
-            $responseArray=[];
-            $respArray=json_decode($responses[0]->responses); //[0] b/c it is same for each eamployee AT THAT TIME!!!
             
-            $noOfResp  = 5000 ; // arbirtually large number cannot be bothered is_array($respArray) ? count($respArray) : 0 ; //[yes, no, excellent]==3
+            $postedCount= $result['postedCount']; //0
+            $respCount=$result['respCount']; //This is the response for each date: 0, 1, 10 20 etc
+            $responses= $result['responses']; // All responses  yes, no for each employee
+            
+            $responseArray=[];
+            // No longer used if there are no reponses we get error what we want is the no of questions
+            //we can assume 5 max but lets use 500
+            //$respArray=json_decode($responses[0]->responses); //[0] b/c it is same for each eamployee AT THAT TIME!!!
+            
+            $noOfResp  = 500 ; // No of employees or service users   is_array($respArray) ? count($respArray) : 0 ; //[yes, no, excellent]==3
             for ($i=0; $i<$noOfResp;$i++){ //c
                 $responseArray[$i]=[];
                 $outputArray[$i]=[];
             }
-            foreach($responses as $response){ // for each employee ["Yes", "No", "Maybe"]
+            //responses => responses: [yes, no], quesName: how many
+
+            $quesNames=null;
+            $quesTypeIDs=null;
+            $cqcIDs=null;
+            $quesOptions=null;
+            foreach($responses as $response){ // for each employee or service user's responses ["Yes", "No", "Maybe"]
                 $respArray=json_decode($response->responses); // converts '["yes", "No"] into proper array 
                 $i=0;
                 if (!is_null( $respArray)){
@@ -131,8 +147,25 @@ class backofficeController extends Controller
                         array_push($responseArray[$i], $respT); // respArray[1]=ques1, respArray[2]=ques2
                         $i++;
                     }
-                }    
+                }
+                //This is to stop the use of response[0]->whatevere
+                //This is because it may be null when it has not yet been filled by the service user
+                //Howvere if at least one is filled, then we use that one
+                if ($response->quesName){
+                    $quesNames= $response->quesName;
+                }
+                if ($response->quesTypeID){
+                    $quesTypeIDs=$response->quesTypeID;
+                }
+                if ($response->CQCid){
+                    $cqcIDs= $response->CQCid;
+                }
+                if ($response->quesOptions){
+                    $quesOptions=$response->quesOptions;
+                }
+
             }
+     
             //1st ques => responseArray[1]=[Yes1, No2, Yes3,No4]       ==>  outputArray[1]=[Yes=>2,No=>2]
             //2nd ques => responseArray[2]=[No1,  Yes2, Yes3,Maybe4]   ==>  outputArray[2]=[Yes=>2, No=>1, Maybe=>1]
             for($i=0;$i<sizeof($responseArray); $i++){
@@ -151,11 +184,11 @@ class backofficeController extends Controller
             
             $respCountArray[$employeeDate->date]=$respCount[0]->countX;
             $postedCountArray[$employeeDate->date]=$postedCount[0]->countX;
-            $quesNameArray[$employeeDate->date]=json_decode($responses[0]->quesName);
-            $quesTypeIDArray[$employeeDate->date]=json_decode($responses[0]->quesTypeID);
+            $quesNameArray[$employeeDate->date]=json_decode($quesNames);              //($responses[0]->quesName);
+            $quesTypeIDArray[$employeeDate->date]=json_decode($quesTypeIDs);            // ($responses[0]->quesTypeID);
             if ($quesTypeIDArray[$employeeDate->date]==null) $quesTypeIDArray[$employeeDate->date]=[];
-            $CQCArray[$employeeDate->date]=json_decode($responses[0]->CQCid);
-            $quesOptionsArray[$employeeDate->date]= json_decode($responses[0]->quesOptions);
+            $CQCArray[$employeeDate->date]=json_decode($cqcIDs);                //$responses[0]->CQCid);
+            $quesOptionsArray[$employeeDate->date]= json_decode($quesOptions);      //$responses[0]->quesOptions);
            
         }
        
@@ -288,7 +321,7 @@ class backofficeController extends Controller
         $responseKeyArray_su=$result_su['responseKeyArray'];   // [Yes,No,maybe] 
         $responseValueArray_su= $result_su['responseValueArray']; 
         $response_per_date_su=$this->get_response_per_date(1);
-
+               
         $DataArray=[
             'years' => $years,
             'months' => $months, 
@@ -324,7 +357,9 @@ class backofficeController extends Controller
             'responseValueArray_su' => $responseValueArray_su, /*[2,1,0] */
             'response_per_date_su' => $response_per_date_su //2023-12-01 => [[yes, No], [Maybe, No]] 2023-11-01 => [[yes, No], [Maybe, No]]
         ];
-       
+        
+        //dd($DataArray);
+
         return view('backoffice.pages.dashboard', $DataArray);
     }
 
