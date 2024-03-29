@@ -616,6 +616,7 @@ class backofficeController extends Controller
         $allValid=$this->get_all_valid_spotcheck_employees();
         $dataArray=$this->get_spotcheck_dashboard_data($mnth);
         $unsedCarerIDs=$this->get_all_employees_not_spotchecked($dataArray['records'],$allValid);    
+        dd($dataArray);
         $dataArray['not_yet_spotCheckedIDs']=$unsedCarerIDs;
         $dataArray['carerNames']=$this->get_all_carerNames();
         return  $dataArray;

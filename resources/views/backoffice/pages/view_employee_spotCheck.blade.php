@@ -4,7 +4,7 @@
             <span class="card-title">
                <span> <strong> {{$companyName}} </strong> :    &nbsp; Spot Checks <span> <br>
                <span> <strong>  Carer </strong> :   {{ $carerName}}: &nbsp; <strong> Client </strong> :  {{ $serviceUserName }} <br>
-                <span> <strong> Supervisor </strong> :  {{ $supervisor}} <strong> Date </strong>  : {{ $date_issue}} 
+                <span> <strong> Accessor </strong> :  {{ $supervisor}} <strong> Date </strong>  : {{ $date_issue}} 
             </span>
         @endif
         <form class="row g-3">  
@@ -97,5 +97,5 @@
 
 <script>
     //This must be o a single line
-    let myTitle = ` <h4> <span class="text-center"> {{ $companyName }} Spot Checks </span> </h4><h5>  <span class="text-center">  Carer: {{ $carerName }} Service user: {{ $serviceUserName }} </span> </h5><h5> <span class="text-center">  Supervisor: {{ $supervisor }} Date: {{ $date_issue }} </span> </h5>`;
+    let myTitle = ` <h4> <span class="text-center"> {{ $companyName }} Spot Checks </span> </h4><h5>  <span class="text-center">  Carer: {{ $carerName }} Service user: {{ $serviceUserName }} </span> </h5><h5> <span class="text-center">  Accessor: {{ $supervisor }} Date: {{ $date_issue }} </span> </h5>`;
 </script>    
