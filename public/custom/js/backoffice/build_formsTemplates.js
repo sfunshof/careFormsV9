@@ -95,6 +95,11 @@ ready(function() {
         }
 
         //console.log(randomNo)
+        //SpotCheck
+        let hideCQC="";
+        if (respTypeID==3){
+            hideCQC="d-none"
+        }
         let template_inside=""+    
         '<div class="row align-items-start p-1 shadow-lg p-4 mb-4 bg-white">' +
             '<div class="col-md-4 "> ' +
@@ -104,7 +109,7 @@ ready(function() {
                     '<span class="text-danger err_quesText_' +  randomNo +  '"  >  </span>' + 
                 '</div>' +
             '</div>' +     
-            '<div class="col-md-3 ">' +
+            '<div class="col-md-3 ' + hideCQC + ' ">' +
                 '<div class="form-floating">' +
                     '<select class="form-select" id="cqcSelect_' + randomNo + '" aria-label="Floating label select" onChange="cqcChangeFunc(' +  "'" + randomNo + "'" + ' )" >' +
                     get_cqcOptions(cqc_) +

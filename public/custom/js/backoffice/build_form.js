@@ -227,6 +227,11 @@ ready(function() {
                     companyID:companyID,
                     responseTypeID:respTypeID
                 }
+                //Spotcheck
+                if (respTypeID==3){
+                    delete obj.CQCid;
+                    delete obj.responseTypeID;
+                }
                 objArray.push(obj) 
                 let ranID=item.replace("quesText_", "err_btnHeading_") 
                 document.getElementsByClassName(ranID)[0].innerHTML=""
@@ -265,7 +270,7 @@ ready(function() {
                     });
                      const data = await response.json();
                        // enter you logic when the fetch is successful
-                       // alert(JSON.stringify(data.data));
+                        //alert(JSON.stringify(data.data));
                         hide_spinner()
                         show_alertInfo("Success: "  + formTitle + "  has been updated")
                     }catch(error) {

@@ -63,7 +63,13 @@ class serviceUserController extends Controller
 
     public function disable_serviceUser(Request $req){
         $userID= $req->userID;
-        DB::update('update serviceuserdetailstable set isdisable = ? where userID = ?',[1,$userID]);
+        //DB::update('update serviceuserdetailstable set isdisable = ? where userID = ?',[1,$userID]);
+        DB::table('serviceuserdetailstable')
+            ->where('userID', $userID)
+            ->update([
+                'isdisable' => 1,
+                'deletedDate' => Carbon::now()
+            ]);
         return response()->json([
             'success'=>'Updated records.',
             'status' => 1]
@@ -72,7 +78,13 @@ class serviceUserController extends Controller
 
     public function enable_serviceUser(Request $req){
         $userID= $req->userID;
-        DB::update('update serviceuserdetailstable set isdisable = ? where userID = ?',[0,$userID]);
+        //DB::update('update serviceuserdetailstable set isdisable = ? where userID = ?',[0,$userID]);
+        DB::table('serviceuserdetailstable')
+        ->where('userID', $userID)
+        ->update([
+            'isdisable' => 0,
+            'deletedDate' => null,
+        ]);
         return response()->json([
             'success'=>'Updated records.',
             'status' => 1]
@@ -83,17 +95,21 @@ class serviceUserController extends Controller
 
     public function browse_serviceUsers(Request $req){
         $pageNo=$req->pageNo;
+        $companyID=$this->company_settings[0]->companyID;
         $user = DB::table("serviceuserdetailstable")
         ->select("*", DB::raw("CONCAT(firstName,' ',lastName) as fullName"))
         ->where('isDisable', 0)
+        ->where('companyID', $companyID)
         ->get();
        return view('backoffice.pages.browse_serviceUsers', ['serviceUsers'=> $user, 'pageNo' => $pageNo, 'isDisabledFlag' => 1]);
     }   
     
     public function browse_all_serviceUsers(Request $req){
         $pageNo=$req->pageNo;
+        $companyID=$this->company_settings[0]->companyID;
         $user = DB::table("serviceuserdetailstable")
         ->select("*", DB::raw("CONCAT(firstName,' ',lastName) as fullName"))
+        ->where('companyID', $companyID)
         ->get();
        return view('backoffice.pages.browse_serviceUsers', ['serviceUsers'=> $user, 'pageNo' => $pageNo, 'isDisabledFlag'=> 0]);
     } 

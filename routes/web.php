@@ -9,6 +9,7 @@ use App\Http\Controllers\utilityController;
 use App\Http\Controllers\serviceUserController;
 use App\Http\Controllers\employeeController; 
 use App\Http\Controllers\homeController; 
+use App\Http\Controllers\mobilespotcheckController;
  
 /*
 |--------------------------------------------------------------------------
@@ -40,8 +41,19 @@ Route::get('{unique_value}', [mobileController::class, 'index']);
 Route::post("user/save_feedback", [mobileController::class, 'save_userFeedback']);
 Route::get("user/successSaved/{companyID}", [mobileController::class, 'successSaved']);
 
+Route::get('/spotcheck/mobile', [mobilespotcheckController::class, 'showLoginForm'])->name('spotchecklogin');
+Route::post('/spotcheck/mobile', [mobilespotcheckController::class, 'login'])->name('spotcheckloginlogic');
+Route::get('/spotcheck/mobileHome', [mobilespotcheckController::class, 'showHomePage'])->name('spotcheckhome');
+Route::post('/spotcheck/mobileSave', [mobilespotcheckController::class, 'saveSpotCheckData'])->name('spotchecksave');
+Route:: post('/spotcheck/mobileHome', [backofficeController::class, 'show_mobile_spotcheck_data']);
+
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get("backoffice/dashboard", [backofficeController::class, 'show_dashboard'])->middleware(['auth','verified']);
+    Route::get("backoffice/feedback_dashboard", [backofficeController::class, 'show_feedback_dashboard'])->middleware(['auth','verified']);
+    Route::get("backoffice/spotcheck_dashboard", [backofficeController::class, 'show_spotcheck_dashboard'])->middleware(['auth','verified']);
+    Route::post("backoffice/spotcheck_dashboard", [backofficeController::class, 'update_spotcheck_dashboard'])->middleware(['auth','verified']);
+
+    
+    //Route::get("/login", [backofficeController::class, 'show_feedback_dashboard'])->middleware(['auth','verified']);
 
     Route::get("serviceUser/addnew", [serviceUserController::class, 'addnew_serviceUser']);
     Route::post("serviceUser/save", [serviceUserController::class, 'save_serviceUser']);
@@ -64,11 +76,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post("employee/get_details", [employeeController::class, 'get_employeeDetails']);
     Route::get("employee/browse_surveyfeedback", [employeeController::class, 'browse_surveyFeedback_employee']);
     Route::get("employee/browse_surveyfeedback/{month}/{year}/{pageNo}", [employeeController::class, 'browse_surveyFeedback_employee']);
+    Route::get("employee/browse_spotcheck", [employeeController::class, 'browse_employee_spotCheck']);
+    Route::post("employee/browse_spotcheck", [employeeController::class, 'update_employee_spotCheck']);
+    Route::post("employee/view_spotcheck", [employeeController::class, 'view_employee_spotCheck']);
+    Route::get("employee/pdf_spotcheck", [employeeController::class, 'pdf_employee_spotCheck']);
+
 
     Route::get("user/view_feedback/{userID}/{unique_value}/{responseTypeID}", [formsController::class, 'view_feedback'])->where(['userID'=>'[0-9]+',  'responseTypeID'=>'[0-9]+']);
 
     Route::get("buildforms/serviceUserFeedback", [formsController::class, 'build_serviceUserFeedback']);
     Route::get("buildforms/employeeFeedback", [formsController::class, 'build_employeeFeedback']);
+    Route::get("buildforms/spotCheck", [formsController::class, 'build_spotcheck']);
     Route::post("buildforms/update_form", [formsController::class, 'update_form']);
 
     Route::post("utility/user_sendsms", [utilityController::class, 'user_sendSMS']);

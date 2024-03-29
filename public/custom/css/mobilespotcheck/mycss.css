@@ -1,0 +1,198 @@
+            /* Hide the vertical scrollbar for the parent */
+            .parent {
+                overflow: hidden;
+            }
+
+                        
+            /* Custom scrollbar style for the child elements */
+            .child::-webkit-scrollbar {
+                width: 20px;
+            }
+
+            .child::-webkit-scrollbar-track {
+                background: #f1f1f1;
+            }
+
+            .child::-webkit-scrollbar-thumb {
+                background: #888;
+            }
+
+            .child::-webkit-scrollbar-thumb:hover {
+                background: #555;
+            }
+    
+            /* Allow vertical scrolling for the child */
+            .child {
+                overflow-y: auto;
+                height: 100vh;
+            }
+            .goog-te-banner-frame.skiptranslate {
+                display: none !important;
+            }
+
+        /* Basic styling for the list item */
+        .custom-list-item {
+            position: relative;
+            padding-right: 20px; /* Add some padding to make space for the arrow */
+            border-bottom: 1px solid #ddd; /* Optional: Add a bottom border */
+        }
+
+        /* Styling for the right arrow (>) */
+        .custom-list-item::after {
+            content: '>'; /* Display the arrow character */
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            font-size: 16px; /* Adjust the size as needed */
+            color: #999; /* Optional: Set the arrow color */
+        }
+        
+        .list-group-item:focus {
+            background-color: yellow; /* Change the background color as desired */
+            outline: none; /* Remove the default focus outline */
+        }
+
+        .modal-header .close {
+            display:none;
+            visibility: hidden;
+        }
+         
+        /* Style for the disabled icon */
+        .disabled-icon {
+            color: grey;
+            pointer-events: none; /* Disable click events */
+        }
+        .hidden-icon {
+            display: none;
+        }
+        /* Display Custom styles */
+        .custom-box {
+            width: 80%;
+            margin: 0 auto; /* Center horizontally */
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+        .label-font {
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .value-font {
+            font-style: italic;
+            font-size: 14px;
+        }
+        
+
+        /* Custom styles for larger text and increased spacing */
+        .form-label {
+            font-size: 1.2rem;
+            margin-right: 1rem; /* Increase the spacing between label and radio button */
+        }
+        .form-check-label {
+            font-size: 1.1rem;
+            margin-left: 0.5rem; /* Increase the spacing between radio button and text */
+        }
+        .form-check-input {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+        .showBottom {
+            border-bottom: 1px solid black; /* Only the bottom border */
+            padding-bottom: 10px; /* Add some spacing below the stars */
+            margin-bottom: 10px;
+        }
+        
+        
+        /* Style for the star container */
+        .star-container {
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Center horizontally */
+            border-bottom: 1px solid black; /* Only the bottom border */
+            padding-bottom: 10px; /* Add some spacing below the stars */
+            margin-bottom: 10px;
+        }
+        .star {
+            font-size: 38px;
+            color: gray;
+            cursor: pointer;
+         }
+        .star.yellow {
+            color: yellow;
+        }
+        /* Center the submit button */
+        .submit-button {
+            text-align: center;
+        }
+
+        /** Scrollable Table **/
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            padding: 20px;
+        }
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            max-height: 70vh;
+            overflow-y: scroll;
+        }
+        table {
+            border-collapse: collapse;
+        }
+        thead {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #ddd;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        tbody tr:hover {
+            background-color: #f5f5f5;
+        }
+        th {
+            background-color: #4caf50;
+            color: white;
+        }
+        .fixed-column {
+            position: sticky;
+            left: 0;
+            z-index: 1;
+        }
+        td.fixed-column {
+            background-color: #fff;
+        }
+        tfoot {
+            background-color: #4a524a;
+            color: white;
+            position: sticky;
+            bottom: 0;
+            z-index: 2;
+        }
+         /* Alternatively, you can use transform scale */ 
+        input[type="radio"] {
+            /* transform: scale(1.1); */
+            accent-color: blue; 
+            border-color: blue;
+         }
+         
+        
+        #durationSelectID {
+            overflow: hidden;
+        }
+        [v-cloak] {
+            display: none;
+        }

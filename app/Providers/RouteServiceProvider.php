@@ -17,7 +17,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/backoffice/dashboard';
+    public const HOME = '/backoffice/feedback_dashboard';
 
     /**
      * Define your route model bindings, pattern filters, etc.

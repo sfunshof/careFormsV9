@@ -18,10 +18,18 @@ class formsController extends Controller
         $ques = DB::table("questable")
         ->select("*")
         ->get();
-        $forms=DB::table("buildformtable")
-        ->select("*")
-        ->where(['companyID'=>$companyID, 'responseTypeID' => $resTypeID])
-        ->get(); 
+        if ($resTypeID < 3) {
+            $forms=DB::table("buildformtable")
+            ->select("*")
+            ->where(['companyID'=>$companyID, 'responseTypeID' => $resTypeID])
+            ->get();
+        }else if  ($resTypeID == 3){
+            $forms=DB::table("buildformtable_spotcheck")
+            ->select("*")
+            ->where(['companyID'=>$companyID])
+            ->get();
+        }
+        
         $options=DB::table("optionstable")
         ->select("*")
         ->get(); 
@@ -39,17 +47,29 @@ class formsController extends Controller
         //keep the old form data but delete afterwards by setting everything to -1
         //This is excellent for rollback
         $companyID=$this->company_settings[0]->companyID;
-        DB::table('buildformtable')
-        ->where(['companyID' => $companyID, 'responseTypeID' => $resTypeID])
-        ->update(['companyID' => $companyID *-1, 'responseTypeID'=> $resTypeID *-1, 
-        'updateDate'=>now()]);
-              
-        $status=-1;
-        foreach ($insertData as $item) {
-            $status=DB::table('buildformtable')->insert($item);
+        if ($resTypeID< 3){
+            DB::table('buildformtable')
+            ->where(['companyID' => $companyID, 'responseTypeID' => $resTypeID])
+            ->update(['companyID' => $companyID *-1, 'responseTypeID'=> $resTypeID *-1, 
+            'updateDate'=>now()]);
+                          
+            $status=-1;
+            foreach ($insertData as $item) {
+                $status=DB::table('buildformtable')->insert($item);
+            }
+        }else if ($resTypeID== 3){
+             DB::table('buildformtable_spotcheck')
+            ->where(['companyID' => $companyID])
+            ->update(['companyID' => $companyID *-1, 
+            'updateDate'=>now()]);
+             $status=-1;
+             foreach ($insertData as $item) {
+                 $status=DB::table('buildformtable_spotcheck')->insert($item);
+            }
+            
         }
         return response()->json([
-            'status' => 1]
+            'status' => $insertData]
         );
     }
 
@@ -76,17 +96,28 @@ class formsController extends Controller
         ['cqcArray' => $cqc, 'quesArray'=>$ques, 'forms' =>$forms, 
          'title' =>' Employee Feedback forms', 'respTypeID' => 2, 'options' =>$options]);
     }   
-    
+    //SpotCheck ***********
+    public function build_spotcheck(){
+        $result= $this->build_formFunction(3);
+        $cqc=$result['cqc']; //useless
+        $ques=$result['ques'];
+        $forms=$result['forms'];
+        $options=$result['options'];
+        return view('backoffice.pages.build_form', 
+        ['cqcArray' => $cqc, 'quesArray'=>$ques, 'forms' =>$forms, 
+         'title' =>' Spot Check forms', 'respTypeID' => 3, 'options' =>$options]);
+    }   
+
     //** This is for service user and employee survey */
     static function survey_status($date,$userTable,$resTypeID,$companyID,$sendByEmail){
         // Insert everytime when date_posted is not null
         $insert=  "insert into responsetable (userID, responseTypeID, companyID,sendByEmail) 
         select userID," . $resTypeID .  "," .  $companyID .  "," . $sendByEmail  . " from " . $userTable . " WHERE
-        userID not in 
+        companyID = ? AND userID not in 
         (select userID from responsetable  where date_posted  is null
-            and responseTypeID =? and userID in (select userID from " . $userTable . " )
+            and responseTypeID =?  and userID in (select userID from " . $userTable . ")
          )";
-        $insertStatus=DB::insert($insert,  [$resTypeID]);    
+        $insertStatus=DB::insert($insert,  [$companyID, $resTypeID]);    
         //** End of insert  */
         //Do not allow for sending of sms to Deactivated users
         $disabled=" Delete from responsetable where date_posted is null  

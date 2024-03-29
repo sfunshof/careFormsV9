@@ -12,7 +12,6 @@
   <link href="{{asset('assets/vendor/simple-datatables/style.css')}}" rel="stylesheet">
 
   {{-- Custom --}}  
-  <link href="{{asset('custom/css/backoffice/mycss.css')}}" rel="stylesheet">
 
   {{-- Template Main CSS File --}}
   <link href="{{asset('assets/css/style.css')}}" rel="stylesheet">

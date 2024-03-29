@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <meta http-equiv="Cache-Control" content="max-age=0, no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
@@ -17,8 +17,11 @@
    
   {{-- CSS Header --}}
   @include('backoffice.inc.cssheader')
+  @include('backoffice.inc.instylecss')
+  @yield('cssCustom')
   {{--- End CSS Header --}}
-
+  
+  
   <!-- =======================================================
   * Template Name: NiceAdmin
   * Updated: Mar 09 2023 with Bootstrap v5.2.3
@@ -66,9 +69,15 @@
       @include('backoffice.inc.alerts')
   {{--  --}}    
 
-  {{--  Spinner for ajax calls --}}
+  {{--  Spinner for ajax calls --}} 
    <div hidden  id="spinner"></div> 
    {{--  End of Spinner  --}}
+   
+   {{-- Spinner element -->
+   <div class="spinner-border spinner-border-sm text-success" id="spinner" role="status">
+       <span class="visually-hidden">Loading...</span>
+   </div>
+   --}}
    
    {{--  Modal --}}
       @include('backoffice.inc.modal')

@@ -60,6 +60,7 @@ let show_alertDanger=function(xText){
 function isABootstrapModalOpen() {
     return document.querySelectorAll('.modal.show').length > 0;
 }
+
 let show_spinner=function(){
     if (isABootstrapModalOpen()){
         // This is the main page
@@ -76,8 +77,21 @@ let hide_spinner=function(){
     }else{ //This must be modal
         spinner.setAttribute('hidden', '');
     } 
-
 }
+
+
+/*
+let show_spinner=function(){
+    const spinner = document.getElementById('spinner'); // Assuming you have an element with the ID 'spinner'
+    spinner.style.display = 'block'; // Show the spinner
+}
+
+let hide_spinner=function(){
+    const spinner = document.getElementById('spinner'); // Assuming you have an element with the ID 'spinner'
+    spinner.style.display = 'none'; // Hide the spinner
+}
+*/
+
 let show_modal=function(titleText, bodyMsg, footerBtn){
     modalDialogID.classList.remove('modal-sm');
     modalDialogID.classList.remove('modal-md');

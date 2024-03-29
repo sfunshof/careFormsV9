@@ -5,59 +5,65 @@
     @section('contents')
     <section class="section">
         <div class="row">
-            <div class="col-lg-12">   
-                    <?php 
-                        $isChecked="";
-                        if ($isDisabledFlag==0) $isChecked="checked='checked'";
-                    ?>
-                
-                    <div class="form-check form-switch form-switch-md">
-                        <input class="form-check-input" type="checkbox" id="showDisabledUsersID"   onClick="browse_all_employeesFunc()"  {{ $isChecked }}>
-                        <label class="form-check-label" style="padding-left:.5rem;padding-top:.2rem;" for="showDisabledUsersID">Show Disengaged Users</label>
-                    </div>
-                
-                <hr class="bg-primary border-2 border-top border-primary">
-                
-                <table class="table table-striped"   id="employeeBrowseTableID" >
-                    <thead>
-                        <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Email</th>
-                            <th>Mobile No</th>
-                            <th>Action </th>   
-                        </tr>
-                    </thead>
-                    <tbody>  
-                        @foreach($employees as $employee)
-                            <?php
-                                $textColor="";
-                                $disableFont="";
-                                if ($employee->isDisable==1){
-                                    $disableFont="text-decoration-line-through";
-                                }
-                            ?> 
+            @if (count($employees) ==0)
+                <h4 class="text-danger">
+                    There are no employee records registered on the system
+                </h4>
+            @else
+                <div class="col-lg-12">   
+                        <?php 
+                            $isChecked="";
+                            if ($isDisabledFlag==0) $isChecked="checked='checked'";
+                        ?>
+                    
+                        <div class="form-check form-switch form-switch-md">
+                            <input class="form-check-input" type="checkbox" id="showDisabledUsersID"   onClick="browse_all_employeesFunc()"  {{ $isChecked }}>
+                            <label class="form-check-label" style="padding-left:.5rem;padding-top:.2rem;" for="showDisabledUsersID">Show Disengaged Users</label>
+                        </div>
+                    
+                    <hr class="bg-primary border-2 border-top border-primary">
+                    
+                    <table class="table table-striped"   id="employeeBrowseTableID" >
+                        <thead>
                             <tr>
-                                <td> <span class="{{$disableFont}}">{{ $employee->firstName }} </span> </td>
-                                <td><span class="{{$disableFont}}"> {{ $employee->lastName }} </span>  </td>
-                                <td><span class="{{$disableFont}}"> {{ $employee->email }} </span>  </td>
-                                <td><span class="{{$disableFont}}"> {{ $employee->tel }} </span>  </td>
-                                <td> 
-                                    <div class="row">
-                                        <div class="col"> <i  role="button"    data-bs-toggle="tooltip" data-bs-placement="top"   title="Update"   class =" ri-edit-2-fill  text-success"  onClick="employeedetailsUpdateFunc({{$employee->userID}})" ></i>   </div>
-                                        @if ($disableFont)
-                                            <div class="col"> <i  role="button"  data-bs-toggle="tooltip"  data-bs-placement="top" title="Restore"    class = "bx bxs-analyse text-primary "  onClick="employeeEnableFunc({{$employee->userID}})"></i> </div>
-                                        @else
-                                            <div class="col"> <i  role="button"  data-bs-toggle="tooltip"  data-bs-placement="top" title="Disable"     class = "ri-forbid-line text-danger "  onClick="employeeDisableFunc({{$employee->userID}}, '{{ $employee->fullName }}')"></i> </div>
-                                        @endif
-                                    </div>
-                                </td>
-                            </tr>   
-                        @endforeach
-                    </tbody>
-                </table>          
-             
-            </div>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Email</th>
+                                <th>Mobile No</th>
+                                <th>Action </th>   
+                            </tr>
+                        </thead>
+                        <tbody>  
+                            @foreach($employees as $employee)
+                                <?php
+                                    $textColor="";
+                                    $disableFont="";
+                                    if ($employee->isDisable==1){
+                                        $disableFont="text-decoration-line-through";
+                                    }
+                                ?> 
+                                <tr>
+                                    <td> <span class="{{$disableFont}}">{{ $employee->firstName }} </span> </td>
+                                    <td><span class="{{$disableFont}}"> {{ $employee->lastName }} </span>  </td>
+                                    <td><span class="{{$disableFont}}"> {{ $employee->email }} </span>  </td>
+                                    <td><span class="{{$disableFont}}"> {{ $employee->tel }} </span>  </td>
+                                    <td> 
+                                        <div class="row">
+                                            <div class="col"> <i  role="button"    data-bs-toggle="tooltip" data-bs-placement="top"   title="Update"   class =" ri-edit-2-fill  text-success"  onClick="employeedetailsUpdateFunc({{$employee->userID}})" ></i>   </div>
+                                            @if ($disableFont)
+                                                <div class="col"> <i  role="button"  data-bs-toggle="tooltip"  data-bs-placement="top" title="Restore"    class = "bx bxs-analyse text-primary "  onClick="employeeEnableFunc({{$employee->userID}})"></i> </div>
+                                            @else
+                                                <div class="col"> <i  role="button"  data-bs-toggle="tooltip"  data-bs-placement="top" title="Disable"     class = "ri-forbid-line text-danger "  onClick="employeeDisableFunc({{$employee->userID}}, '{{ $employee->fullName }}')"></i> </div>
+                                            @endif
+                                        </div>
+                                    </td>
+                                </tr>   
+                            @endforeach
+                        </tbody>
+                    </table>          
+                
+                </div>
+             @endif   
         </div>
     </section>     
     <script>

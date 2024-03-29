@@ -1,3 +1,16 @@
+<style>
+    /* Hide the spinner by default */
+/*
+#spinner {
+  display: none;
+}
+/* Show the spinner when the body has the 'busy' class 
+body.busy #spinner {
+  display: block;
+}
+*/
+
+
 #spinner:not([hidden]) {
     position: fixed;
     top: 0;
@@ -20,8 +33,10 @@
     /*
     will-change: transform;
     animation: spin 1s infinite linear;
-    */
+    */    
 }
+
+
 #spinner_modal:not([hidden]) {
     position: fixed;
     top: 0;
@@ -132,4 +147,39 @@
   .accordion-button::focus{
       box-shadow: inherit;
   }
-  
+
+  /* Partial color of Review Star */
+ :root {
+  --star-size: 35px;
+  --star-color: #fff;
+  --star-background: #fc0;
+}
+
+.stars-landing {
+  --percent: calc(var(--rating) / 5 * 100%);
+  display: inline-block;
+  font-size: var(--star-size);
+  /* font-family: Times; */
+  line-height: 1; 
+  text-align:left;
+  letter-spacing:-8px;
+  padding-left:0px;
+  padding-right:0px;
+  margin-top: -2em; 
+  padding-top: 0px; /* Set top padding to 0 */
+}
+
+.stars-landing::before {
+  content: '★★★★★';
+  letter-spacing:-8px;
+  background:
+    linear-gradient(90deg, var(--star-background) 0%, var(--star-background) var(--percent), rgba(0,0,0,1) var(--percent), rgba(0,0,0,1) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transform: translatey(35px);
+  display: block;
+  position: relative;
+  /* font-family: Times; */
+}
+
+</style>

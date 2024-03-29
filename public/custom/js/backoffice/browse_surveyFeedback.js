@@ -85,7 +85,7 @@ ready(function() {
         if (statusID==3){
             URLpath=user_viewURL + "/" + userID + "/" + unique_value + "/" +  responseTypeID;
             // Calling that async function to display the feedback form's data
-            extractData_thenDisplay(URLpath);
+             extractData_thenDisplay(URLpath);
             return 0;
         }
         //sent by sms 

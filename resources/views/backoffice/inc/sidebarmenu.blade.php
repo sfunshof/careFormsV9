@@ -1,13 +1,32 @@
 <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
-
+      {{--
       <li class="nav-item">
         <a class="nav-link " href="{{ url('backoffice/dashboard')}}">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
       </li>
+      --}}
+      
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#dashboard-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Dashboards</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="dashboard-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{{ url('/backoffice/feedback_dashboard')}}">
+              <i class="bi bi-circle"></i><span>Feedback Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ url('/backoffice/spotcheck_dashboard')}}">
+               <i class="bi bi-circle"></i><span>SpotCheck Dashboard</span>
+            </a>
+          </li>
+        </ul>
+      </li>   
       {{-- End Dashboard Nav --}}
 
       
@@ -68,6 +87,11 @@
               <i class="bi bi-circle"></i><span>Employee Survey</span>
             </a>
           </li>
+          <li>
+            <a href="{{ url('/employee/browse_spotcheck')}}">
+              <i class="bi bi-circle"></i><span>Employee Spot Check</span>
+            </a>
+          </li>
         </ul>
       </li>
       {{-- End employee Nav --}}
@@ -88,6 +112,11 @@
                     <i class="bi bi-circle"></i><span>Employee Feedback</span>
                   </a>
               </li>
+              <li>
+                <a href="{{ url('/buildforms/spotCheck')}}">
+                  <i class="bi bi-circle"></i><span>Spot Checks</span>
+                </a>
+            </li>
           </ul>
       </li>
       {{-- End Forms Nav --}}

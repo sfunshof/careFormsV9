@@ -7,6 +7,9 @@
             $title="Browse Service Users Survey Feedback";
             $address_or_emailLabel="Email" ;  //"Post Code";
         }
+        //Incase there are feednback data
+        $preTextSu=[];
+        $preTextEmp=[];
    
     ?>
     {{ $title }}
@@ -93,106 +96,112 @@
                     </div>   
                     {{--  Table is shown here --}}
                     <div class="col-md-12 mt-2 border border-top">
-                        <table   class="table table-striped"   id="surveyFeedbackTableID">
-                            <thead>
-                                <tr>
-                                    <th> Name </th>
-                                    <th> {{ $address_or_emailLabel }} </th>
-                                    <th> Telephone </th>
-                                    <th> Status -Action</th>
-                                    <th> Delivery</th>
-                                </tr>
-                            </thead>
-                            <?php 
-                                $userNameArray=[];
-                                $userAddress_or_emailArray=[];
-                                $userTelArray=[];
-                                $userProxyArray=[];
-                                $company_setting=$company_settings[0]; 
-                                $preTextEmp=$company_setting->smsPreTextEmp;
-                                $preTextSu=$company_setting->smsPreTextSu;
-
-                                foreach($usersDetails as $userDetails){
-                                    if ($isServiceUser==1){
-                                        $userNameArray[$userDetails->userID]= $userDetails->title . ' ' . $userDetails->firstName . ' ' . $userDetails->lastName;
-                                        $userAddress_or_emailArray[$userDetails->userID]=$userDetails->email;    //->address;
-                                        $userProxyArray[$userDetails->userID]=$userDetails->proxy;
-                                    }else if ($isServiceUser==0){
-                                        $userNameArray[$userDetails->userID]= $userDetails->firstName . ' ' . substr($userDetails->middleName,0,1) . ' ' . $userDetails->lastName;
-                                        $userAddress_or_emailArray[$userDetails->userID]=$userDetails->email;
-                                        $userProxyArray[$userDetails->userID]=0;
-                                    }    
-                                    $userTelArray[$userDetails->userID]=$userDetails->tel;
-                                }
-                            ?>
-                            <tbody>
-                                @foreach($responseStatus as $response)
+                        @if (count($responseStatus)==0)
+                            <h4 class="text-danger">
+                                There are no feedback records on the system
+                            </h4>
+                        @else    
+                            <table   class="table table-striped"   id="surveyFeedbackTableID">
+                                <thead>
                                     <tr>
-                                        <?php 
-                                            //1. Just created   2. Not yet received  3. Received 
-                                            $status="";
-                                            $btn_color="";
-                                            $btn_icon="";
-                                            $statusID=0;
-                                            if ($response->date_posted == null){
-                                                $status="Created - now send";
-                                                $btn_color="text-primary";
-                                                $btn_icon="bi bi-send";
-                                                $statusID=1;
-                                            }elseif ($response->date_received == null){
-                                                $status= "Posted - may resend";
-                                                $btn_color="text-warning";
-                                                $btn_icon="bi bi-send-plus-fill";
-                                                $statusID=2;
-                                            }else {
-                                                $status= "Replied - may view";
-                                                $btn_color="text-success";
-                                                $btn_icon="bi bi-eye";
-                                                $statusID=3;                       
-                                            } 
-                                            //If there is proxy, warn on the telephone
-                                            $proxyColor="";
-                                            if ($userProxyArray[$response->userID]==1){
-                                                $proxyColor="text-warning";
-                                            }
-                                            //This is used to group check boxes for delivery
-                                            $unique_value=$response->unique_value;
-                                            if (is_null($response->unique_value)){
-                                                $unique_value=substr(md5(uniqid(rand(), true)),0,7);
-                                            }
-                                            $checked1="";
-                                            $checked2="";
-                                            if ($response->sendByEmail==1){
-                                                $checked2="checked";
-                                            }else if ($response->sendByEmail==0){
-                                                $checked1="checked";
-                                            }
-                                           
-                                        ?>
-                                        
-                                        <td> {{$userNameArray[$response->userID]}} </td>
-                                        <td> {{$userAddress_or_emailArray[$response->userID]}} </td>
-                                        <td> 
-                                            <span class="{{$proxyColor}}">  {{$userTelArray[$response->userID]}} </span>   
-                                        </td>
-                                        <td> 
-                                           <span style="cursor:pointer" onClick="surveyFunc({{$response->userID}},{{$statusID}}, {{$response->responseTypeID}},   '{{$unique_value}}',   {{$response->sentCount}}, {{$response->sentEmailCount}},   '{{$userTelArray[$response->userID]}}' )">   {{$status}}  <i class="{{$btn_icon}}  {{$btn_color}}"></i> </span>
-                                        </td>
-                                        <td> 
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="{{$unique_value}}" id="{{$unique_value}}1" value="option1"  {{$checked1}} >
-                                                <label class="form-check-label" for="{{$unique_value}}1">SMS</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="{{$unique_value}}" id="{{$unique_value}}2" value="option2"  {{$checked2}} >
-                                                <label class="form-check-label" for="{{$unique_value}}2">Email</label>
-                                             </div>
-
-                                        </td>
+                                        <th> Name </th>
+                                        <th> {{ $address_or_emailLabel }} </th>
+                                        <th> Telephone </th>
+                                        <th> Status -Action</th>
+                                        <th> Delivery</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>   
+                                </thead>
+                                <?php 
+                                    $userNameArray=[];
+                                    $userAddress_or_emailArray=[];
+                                    $userTelArray=[];
+                                    $userProxyArray=[];
+                                    $company_setting=$company_settings[0]; 
+                                    $preTextEmp=$company_setting->smsPreTextEmp;
+                                    $preTextSu=$company_setting->smsPreTextSu;
+
+                                    foreach($usersDetails as $userDetails){
+                                        if ($isServiceUser==1){
+                                            $userNameArray[$userDetails->userID]= $userDetails->title . ' ' . $userDetails->firstName . ' ' . $userDetails->lastName;
+                                            $userAddress_or_emailArray[$userDetails->userID]=$userDetails->email;    //->address;
+                                            $userProxyArray[$userDetails->userID]=$userDetails->proxy;
+                                        }else if ($isServiceUser==0){
+                                            $userNameArray[$userDetails->userID]= $userDetails->firstName . ' ' . substr($userDetails->middleName,0,1) . ' ' . $userDetails->lastName;
+                                            $userAddress_or_emailArray[$userDetails->userID]=$userDetails->email;
+                                            $userProxyArray[$userDetails->userID]=0;
+                                        }    
+                                        $userTelArray[$userDetails->userID]=$userDetails->tel;
+                                    }
+                                ?>
+                                <tbody>
+                                    @foreach($responseStatus as $response)
+                                        <tr>
+                                            <?php 
+                                                //1. Just created   2. Not yet received  3. Received 
+                                                $status="";
+                                                $btn_color="";
+                                                $btn_icon="";
+                                                $statusID=0;
+                                                if ($response->date_posted == null){
+                                                    $status="Created - now send";
+                                                    $btn_color="text-primary";
+                                                    $btn_icon="bi bi-send";
+                                                    $statusID=1;
+                                                }elseif ($response->date_received == null){
+                                                    $status= "Posted - may resend";
+                                                    $btn_color="text-warning";
+                                                    $btn_icon="bi bi-send-plus-fill";
+                                                    $statusID=2;
+                                                }else {
+                                                    $status= "Replied - may view";
+                                                    $btn_color="text-success";
+                                                    $btn_icon="bi bi-eye";
+                                                    $statusID=3;                       
+                                                } 
+                                                //If there is proxy, warn on the telephone
+                                                $proxyColor="";
+                                                if ($userProxyArray[$response->userID]==1){
+                                                    $proxyColor="text-warning";
+                                                }
+                                                //This is used to group check boxes for delivery
+                                                $unique_value=$response->unique_value;
+                                                if (is_null($response->unique_value)){
+                                                    $unique_value=substr(md5(uniqid(rand(), true)),0,7);
+                                                }
+                                                $checked1="";
+                                                $checked2="";
+                                                if ($response->sendByEmail==1){
+                                                    $checked2="checked";
+                                                }else if ($response->sendByEmail==0){
+                                                    $checked1="checked";
+                                                }
+                                            
+                                            ?>
+                                            
+                                            <td> {{$userNameArray[$response->userID]}} </td>
+                                            <td> {{$userAddress_or_emailArray[$response->userID]}} </td>
+                                            <td> 
+                                                <span class="{{$proxyColor}}">  {{$userTelArray[$response->userID]}} </span>   
+                                            </td>
+                                            <td> 
+                                            <span style="cursor:pointer" onClick="surveyFunc({{$response->userID}},{{$statusID}}, {{$response->responseTypeID}},   '{{$unique_value}}',   {{$response->sentCount}}, {{$response->sentEmailCount}},   '{{$userTelArray[$response->userID]}}' )">   {{$status}}  <i class="{{$btn_icon}}  {{$btn_color}}"></i> </span>
+                                            </td>
+                                            <td> 
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="{{$unique_value}}" id="{{$unique_value}}1" value="option1"  {{$checked1}} >
+                                                    <label class="form-check-label" for="{{$unique_value}}1">SMS</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="{{$unique_value}}" id="{{$unique_value}}2" value="option2"  {{$checked2}} >
+                                                    <label class="form-check-label" for="{{$unique_value}}2">Email</label>
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>   
+                        @endif   
                     </div>    
 
                 </form>

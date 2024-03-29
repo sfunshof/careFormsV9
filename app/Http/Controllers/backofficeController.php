@@ -262,7 +262,7 @@ class backofficeController extends Controller
 
 
     
-    public function show_dashboard(){
+    public function show_feedback_dashboard(){
         
         $years = collect(range(2, 0))->map(function ($year) {
             return \Carbon\Carbon::now()->subYears($year)->year;
@@ -360,8 +360,278 @@ class backofficeController extends Controller
         
         //dd($DataArray);
 
-        return view('backoffice.pages.dashboard', $DataArray);
+        return view('backoffice.pages.feedback_dashboard', $DataArray);
     }
+    
+    public function customRound($number) {
+        // Check if the number has decimal places
+        if (strpos($number, '.') !== false) {
+            // Extract the decimal part
+            $decimalPart = substr($number, strpos($number, '.') + 1);
+    
+            // If the decimal part is greater than 0, round to one decimal place
+            if ((int)$decimalPart > 0) {
+                return round($number, 1);
+            }
+        }
+    
+        // Otherwise, round to the nearest integer
+        return round($number);
+    }
+    
+    private function get_employee_records(){
+        $companyID = null;
+        if (isset($this->company_settings[0])) {
+            $companyID = $this->company_settings[0]->companyID;
+        } else {
+            $companyID = session()->get('companyID');
+        }
+        // Query to get the required data
+        $employeeData = DB::table('employeedetailstable')
+        ->select('userID', 'firstName', 'middleName', 'lastName')
+        ->where('companyID', $companyID)
+        ->get();
+
+        // Initialize an empty associative array
+        $array_name = [];
+
+        // Populate the array with concatenated names
+        foreach ($employeeData as $employee) {
+            $fullName = $employee->firstName . ' ' . substr($employee->middleName, 0, 1) . ' ' . $employee->lastName;
+            $array_name[$employee->userID] = $fullName;
+        }
+        return $array_name;
+    }
+
+
+
+
+
+    //*** SPOT CHECKS   ******/
+
+    //write a laravel query builder to  return  the number 
+    //of unique field userID  where a datetime field deletedDate is null or  
+    //deletedDate is less than the current date - N  
+    //N is number of months : table is called usertable
+    private function get_spotcheck_users($userTable, $N){
+        $companyID = null;
+        if (isset($this->company_settings[0])) {
+            $companyID = $this->company_settings[0]->companyID;
+        } else {
+            $companyID = session()->get('companyID');
+        }
+        
+        $whereArray=[
+           'companyID'=>$companyID,
+           'jobFunction' => 0
+        ];
+        if ($userTable =="serviceuserdetailstable"){
+            $whereArray=[
+                'companyID'=>$companyID
+            ];
+        };
+        
+        $uniqueUserCount = DB::table($userTable)
+            ->select(DB::raw('COUNT(DISTINCT userID) as unique_user_count'))
+            ->where($whereArray)
+            ->where(function ($query) use ($N) {
+                $query->whereNull('deletedDate')
+                    ->orWhere('deletedDate', '<', DB::raw("DATE_SUB(NOW(), INTERVAL $N MONTH)"));
+            })
+        ->get();
+        //dd( $uniqueUserCount[0]->unique_user_count);
+        return $uniqueUserCount[0]->unique_user_count;
+    }
+
+
+    private function get_spotcheck_response_users($userID, $N){
+        $companyID = null;
+        if (isset($this->company_settings[0])) {
+            $companyID = $this->company_settings[0]->companyID;
+        } else {
+            $companyID = session()->get('companyID');
+        }
+        $uniqueUserCount = DB::table('responsetable_spotcheck')
+        ->where('date_issue', '>=', now()->subMonths($N))
+        ->where('companyID', $companyID) // Additional condition for companyID
+        ->distinct($userID) // Get distinct carerIDs
+        ->count();
+        return $uniqueUserCount;
+    }
+    
+    private function get_spotcheck_review($N){
+        $companyID = null;
+        if (isset($this->company_settings[0])) {
+            $companyID = $this->company_settings[0]->companyID;
+        } else {
+            $companyID = session()->get('companyID');
+        }
+        // Initialize an array to store star counts
+        $array_star = [];
+        // Query to get star counts
+        for ($i = 1; $i <= 5; $i++) {
+            $starCount = DB::table('responsetable_spotcheck')
+                ->where('date_issue', '>=', now()->subMonths($N))
+                ->where('companyID', $companyID)
+                ->where('star', $i) // Filter by star value
+                ->count();
+
+            // Store the count in the array
+            $array_star[] = $starCount;
+        }
+        return  $array_star;
+    }
+    
+    private function get_spotcheck_dashboard_table_data($N){
+        $companyID = null;
+        if (isset($this->company_settings[0])) {
+            $companyID = $this->company_settings[0]->companyID;
+        } else {
+            $companyID = session()->get('companyID');
+        }
+        // Query to get the desired data
+        $carerData = DB::table('responsetable_spotcheck')
+        ->select(
+            'carerID',
+            DB::raw('COUNT(*) as countN'),
+            DB::raw('MAX(DATE(date_issue)) as latest_date'),
+            DB::raw('AVG(star) as rating')
+        )
+        ->where('date_issue', '>=', now()->subMonths($N))
+        ->where('companyID', $companyID)
+        ->groupBy('carerID')
+        ->orderBy('latest_date', 'desc') // Orde
+        ->get();
+        foreach ($carerData as $data) {
+            $data->rating = $this->customRound($data->rating); //     is_int($data->rating) ? $data->rating : number_format($data->rating, 1);
+        }
+       return $carerData;    
+    }
+    
+    private function init_spotcheck_dashboard($Mnth){
+        $total_carers=$this->get_spotcheck_users("employeedetailstable", $Mnth);
+        $total_serviceUsers=$this->get_spotcheck_users("serviceuserdetailstable", $Mnth);
+        $unique_carerCount=$this->get_spotcheck_response_users('carerID',$Mnth);
+        $unique_serviceUserCount=$this->get_spotcheck_response_users('serviceUserID',$Mnth);
+        $review=$this->get_spotcheck_review($Mnth);
+        $data=$this->get_spotcheck_dashboard_table_data($Mnth);
+
+        $users['review']=$review;  
+        $users['total_carers']=$total_carers;
+        $users['total_serviceUsers']=$total_serviceUsers;
+        $users['unique_carers']=$unique_carerCount;
+        $users['unique_serviceUsers']=$unique_serviceUserCount;
+        $users['data']=$data;
+        return $users;
+    }
+
+    private function get_spotcheck_dashboard_data($Mnth){
+        //go into database table to get the review per star
+        //select sum(*) groupby star
+        $spotcheck_users=$this->init_spotcheck_dashboard($Mnth);
+        //dd($spotcheck_users['review']);
+        $employee_records=$this->get_employee_records();
+
+        $array_star =$spotcheck_users['review'];       //[3, 5, 10, 7, 9];
+        $totalRatings = array_sum($array_star);
+        $weightedScore = 0;
+        for ($i = 0; $i < count($array_star); $i++) {
+                $weightedScore += (($i + 1) * $array_star[$i]);
+        }
+        $weightedScoreOutOf5=0;
+        if ($totalRatings > 0){
+             $weightedScoreOutOf5= $this->customRound(($weightedScore / ($totalRatings * 5)) * 5);
+        }
+        $dataArray=[
+            'total_carers' => $spotcheck_users['total_carers'],
+            'total_serviceUsers' => $spotcheck_users['total_serviceUsers'],
+            'unique_carers' => $spotcheck_users['unique_carers'],
+            'unique_serviceUsers' => $spotcheck_users['unique_serviceUsers'],
+            'records' => $spotcheck_users['data'],
+            'array_star' =>$array_star,
+            'total_star' =>$totalRatings,
+            'employee_data' =>$employee_records,
+            'selected' => $Mnth,
+            'weighted_star' => $weightedScoreOutOf5
+        ]; 
+        return $dataArray;
+    }
+
+    public function show_spotcheck_dashboard(){
+        $dataArray=$this->get_spotcheck_dashboard_data(3);
+        return view('backoffice.pages.spotcheck_dashboard', $dataArray);
+    }
+    
+    public function update_spotcheck_dashboard(Request $req){
+        $selectMnth=$req->selectedMnth;
+        $dataArray=$this->get_spotcheck_dashboard_data($selectMnth);
+        return view('backoffice.pages.spotcheck_component_dashboard', $dataArray);        
+    }
+
+    
+      
+    //copied but modified from employeeController: spot Checked
+    private function get_all_valid_spotcheck_employees(){
+        $companyID = session()->get('companyID');
+        // Query to get the required data
+        $employee_spotCheckData = DB::table('employeedetailstable')
+        ->select('userID')
+        ->where('companyID', $companyID)
+        ->where('jobFunction', 0)
+        ->where('isDisable', 0)
+        ->get();
+        return  $employee_spotCheckData;
+    }
+    private function get_all_carerNames(){
+        $companyID = session()->get('companyID');
+        // Query to get the required data
+        $employeeData = DB::table('employeedetailstable')
+        ->select('userID', 'firstName', 'middleName', 'lastName')
+        ->where('companyID', $companyID)
+        ->get();
+
+        // Initialize an empty associative array
+        $array_name = [];
+        // Populate the array with concatenated names
+        foreach ($employeeData as $employee) {
+            $fullName = $employee->firstName . ' ' . substr($employee->middleName, 0, 1) . ' ' . $employee->lastName;
+            $array_name[$employee->userID] = $fullName;
+        }
+        return $array_name;
+    }
+    private function get_all_employees_not_spotchecked($spotcheck, $pure){
+        // Extracting the userID values from the $spotcheck array
+        $spotcheckUserIDs = collect($spotcheck)->pluck('carerID')->unique();
+        // Extracting the userID values from the $pure array
+        $pureUserIDs = collect($pure)->pluck('userID');
+        // Calculating the difference between $pureUserIDs and $spotcheckUserIDs
+        $diff = $pureUserIDs->diff($spotcheckUserIDs);
+        //dd($diff->values()->all());
+        return $diff->values()->all();
+    }
+    
+    //This is called externally by mobilespotcheckController
+    //to intitally populate the modal reports
+    private function init_mobile_spotcheck($mnth){
+        $allValid=$this->get_all_valid_spotcheck_employees();
+        $dataArray=$this->get_spotcheck_dashboard_data($mnth);
+        $unsedCarerIDs=$this->get_all_employees_not_spotchecked($dataArray['records'],$allValid);    
+        $dataArray['not_yet_spotCheckedIDs']=$unsedCarerIDs;
+        $dataArray['carerNames']=$this->get_all_carerNames();
+        return  $dataArray;
+    }
+    public function get_mobile_spotcheck_data(){
+        $dataArray=$this->init_mobile_spotcheck(3);
+        return $dataArray;
+    }
+    //This is also used by the mobile spot check     
+    public function show_mobile_spotcheck_data(Request $req){
+        $selectMnth=$req->selectedMnth;
+        $dataArray=$this->init_mobile_spotcheck($selectMnth);
+        return view('mobilespotcheck.fakecomponents.reportTable', $dataArray);
+    }
+   
+
 
     public function show_companyProfile(){
         $companyID=$this->company_settings[0]->companyID;
