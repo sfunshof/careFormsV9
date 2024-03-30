@@ -7,9 +7,9 @@
     }
 @endphp
 
-<p class="fs-4 text-center  {{ $color }}  "> {{ $status }} </p>
+<p class="fs-4 text-center  mt-3 {{ $color }}  "> {{ $status }} </p>
 
-<div class="overflow-auto" style="max-height: 65vh;">
+<div class="overflow-auto" style="max-height: 60vh;">
     <ul class="list-group">
         @foreach ($carers as $carer)
             <?php  
@@ -18,8 +18,10 @@
             <li  tabindex="0"  onclick="confirmCarerFunc('{{$carer['userID']}}', '{{ $name}} ')"  class="list-group-item custom-list-item">{{$name}}</li>
         @endforeach
         <!-- Add more list items here -->
-        @for ($i = 1; $i <= 20; $i++)
-            <li class="list-group-item custom-list-item" >Item {{ $i }}</li>
-        @endfor
+        {{--
+            @for ($i = 1; $i <= 20; $i++)
+                <li class="list-group-item custom-list-item" >Item {{ $i }}</li>
+            @endfor
+        --}}
     </ul>
 </div>
