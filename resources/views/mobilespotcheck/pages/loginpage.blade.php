@@ -19,6 +19,7 @@
                         </div>
 
                         <h3 class="card-title text-center">Login</h3>
+                        <h6 class="text-center">Spot Checks</h6>
                         <form method="POST" action="{{ route('spotcheckloginlogic') }}" id="loginFormID">
                             @csrf
                             <div class="mb-3">
@@ -44,6 +45,7 @@
                            
                             <button type="submit" class="btn btn-primary w-100">Login</button>
                         </form>
+                        <p class="mt-4 fs-6  fst-italic  fw-lighter  text-end"> Powered by Metricsart.com</p>
                     </div>
                 </div>
             </div>
