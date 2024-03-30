@@ -430,6 +430,7 @@ class backofficeController extends Controller
                 'companyID'=>$companyID
             ];
         };
+        dd($companyID);
         
         $uniqueUserCount = DB::table($userTable)
             ->select(DB::raw('COUNT(DISTINCT userID) as unique_user_count'))
@@ -439,7 +440,7 @@ class backofficeController extends Controller
                     ->orWhere('deletedDate', '<', DB::raw("DATE_SUB(NOW(), INTERVAL $N MONTH)"));
             })
         ->get();
-        dd( $uniqueUserCount[0]->unique_user_count);
+        //dd( $uniqueUserCount[0]->unique_user_count);
         return $uniqueUserCount[0]->unique_user_count;
     }
 
