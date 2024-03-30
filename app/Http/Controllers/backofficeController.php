@@ -430,8 +430,8 @@ class backofficeController extends Controller
                 'companyID'=>$companyID
             ];
         };
-        dd($companyID);
-        
+        //dd($companyID);
+
         $uniqueUserCount = DB::table($userTable)
             ->select(DB::raw('COUNT(DISTINCT userID) as unique_user_count'))
             ->where($whereArray)
