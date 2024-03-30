@@ -14,7 +14,7 @@
             <span class="text-white"  onClick="reportFunc()">
                 <i class="fas fa-eye"></i>
                 <br>
-                View
+                 Report
             </span>
         </div>
         <div class="col">

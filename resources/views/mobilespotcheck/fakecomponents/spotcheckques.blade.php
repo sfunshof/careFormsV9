@@ -28,7 +28,7 @@
                     <label for="radio{{$i}}" class="form-label"> {{ $pageNoStr}}    {{ $quesName}} </label>
                     @if ($quesTypeID==2 )
                         @foreach($options as $option)
-                            <div class="form-check m-1">
+                            <div class="form-check m-4">
                                 <input class="form-check-input"   onClick="radioClickFunc({{$i}}, '{{$option}}')"   id="{{$option}}{{$i}}"  type= "radio"  name="radio{{$i}}" value="{{ $option}}">
                                 <label class="form-check-label"  for="{{$option}}{{$i}}">{{ $option}}</label>
                             </div>    
