@@ -65,10 +65,5 @@
         document.getElementById('loginFormID').addEventListener('submit', function () {
             document.getElementById('spinner').style.display = 'block';
         });
-        //when you click the back on browser stop the spiiner
-        function stopSpinner(){
-            document.getElementById('spinner').style.display = 'none'; 
-        }
-        setTimeout(stopSpinner, 3000);
     </script>
 @endpush   
