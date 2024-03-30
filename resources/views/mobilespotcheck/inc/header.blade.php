@@ -6,7 +6,7 @@
         </button>
 
         <!-- Centered company name -->
-        <span class="navbar-brand">{{$companyName}}</span>
+        <span class="navbar-brand text-center">{{$companyName}}</span>
 
         <!-- Right section with next button -->
         <button id="nextId" class="navbar-btn btn btn-link text-white" style="width: 120px;" onClick="nextIconFunc()">
