@@ -439,7 +439,7 @@ class backofficeController extends Controller
                     ->orWhere('deletedDate', '<', DB::raw("DATE_SUB(NOW(), INTERVAL $N MONTH)"));
             })
         ->get();
-        //dd( $uniqueUserCount[0]->unique_user_count);
+        dd( $uniqueUserCount[0]->unique_user_count);
         return $uniqueUserCount[0]->unique_user_count;
     }
 
@@ -616,7 +616,6 @@ class backofficeController extends Controller
         $allValid=$this->get_all_valid_spotcheck_employees();
         $dataArray=$this->get_spotcheck_dashboard_data($mnth);
         $unsedCarerIDs=$this->get_all_employees_not_spotchecked($dataArray['records'],$allValid);    
-        dd($dataArray);
         $dataArray['not_yet_spotCheckedIDs']=$unsedCarerIDs;
         $dataArray['carerNames']=$this->get_all_carerNames();
         return  $dataArray;
