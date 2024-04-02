@@ -29,9 +29,8 @@ Route::domain('spotcheck.caretrail.co.uk')->group(function () {
 
 Route::middleware('web')
     ->domain(env('caretrail.co.uk')) // Specify the root domain here
-    ->namespace($this->namespace)
     ->group(base_path('routes/web.php'));
-    
+
 Route::get('/', [homeController::class, 'index']);
 
 //** Auth */
