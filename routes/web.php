@@ -22,6 +22,11 @@ use App\Http\Controllers\mobilespotcheckController;
 |
 */
 
+//This is the actual production one
+Route::domain('spotcheck.caretrail.co.uk')->group(function () {
+    Route::get('/spotcheck/mobile', [mobilespotcheckController::class, 'showLoginForm'])->name('spotchecklogin');
+});
+
 Route::get('/', [homeController::class, 'index']);
 
 //** Auth */
@@ -48,10 +53,6 @@ Route::post('/spotcheck/mobile', [mobilespotcheckController::class, 'login'])->n
 Route::get('/spotcheck/mobileHome', [mobilespotcheckController::class, 'showHomePage'])->name('spotcheckhome');
 Route::post('/spotcheck/mobileSave', [mobilespotcheckController::class, 'saveSpotCheckData'])->name('spotchecksave');
 Route:: post('/spotcheck/mobileHome', [backofficeController::class, 'show_mobile_spotcheck_data']);
-//This is the actual production one
-Route::domain('spotcheck.caretrail.co.uk')->group(function () {
-    Route::get('/spotcheck/mobile', [mobilespotcheckController::class, 'showLoginForm'])->name('spotchecklogin');
-});
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get("backoffice/feedback_dashboard", [backofficeController::class, 'show_feedback_dashboard'])->middleware(['auth','verified']);
