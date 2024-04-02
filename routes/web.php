@@ -24,12 +24,8 @@ use App\Http\Controllers\mobilespotcheckController;
 
 //This is the actual production one
 Route::domain('spotcheck.caretrail.co.uk')->group(function () {
-    Route::get('/spotcheck/mobile', [mobilespotcheckController::class, 'showLoginForm'])->name('spotchecklogin');
+    Route::get('/', [mobilespotcheckController::class, 'showLoginForm'])->name('spotchecklogin');
 });
-
-Route::middleware('web')
-    ->domain(env('caretrail.co.uk')) // Specify the root domain here
-    ->group(base_path('routes/web.php'));
 
 Route::get('/', [homeController::class, 'index']);
 
