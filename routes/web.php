@@ -41,11 +41,17 @@ Route::get('{unique_value}', [mobileController::class, 'index']);
 Route::post("user/save_feedback", [mobileController::class, 'save_userFeedback']);
 Route::get("user/successSaved/{companyID}", [mobileController::class, 'successSaved']);
 
+//This is for testing
 Route::get('/spotcheck/mobile', [mobilespotcheckController::class, 'showLoginForm'])->name('spotchecklogin');
+
 Route::post('/spotcheck/mobile', [mobilespotcheckController::class, 'login'])->name('spotcheckloginlogic');
 Route::get('/spotcheck/mobileHome', [mobilespotcheckController::class, 'showHomePage'])->name('spotcheckhome');
 Route::post('/spotcheck/mobileSave', [mobilespotcheckController::class, 'saveSpotCheckData'])->name('spotchecksave');
 Route:: post('/spotcheck/mobileHome', [backofficeController::class, 'show_mobile_spotcheck_data']);
+//This is the actual production one
+Route::domain('spotcheck.caretrail.co.uk')->group(function () {
+    Route::get('/spotcheck/mobile', [mobilespotcheckController::class, 'showLoginForm'])->name('spotchecklogin');
+});
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get("backoffice/feedback_dashboard", [backofficeController::class, 'show_feedback_dashboard'])->middleware(['auth','verified']);
