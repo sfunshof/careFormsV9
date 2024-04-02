@@ -47,7 +47,7 @@ Route::post("user/save_feedback", [mobileController::class, 'save_userFeedback']
 Route::get("user/successSaved/{companyID}", [mobileController::class, 'successSaved']);
 
 //This is for testing
-Route::get('/spotcheck/mobile', [mobilespotcheckController::class, 'showLoginForm'])->name('spotchecklogin');
+Route::get('/spotcheck/mobile', [mobilespotcheckController::class, 'showLoginForm']);
 
 Route::post('/spotcheck/mobile', [mobilespotcheckController::class, 'login'])->name('spotcheckloginlogic');
 Route::get('/spotcheck/mobileHome', [mobilespotcheckController::class, 'showHomePage'])->name('spotcheckhome');
