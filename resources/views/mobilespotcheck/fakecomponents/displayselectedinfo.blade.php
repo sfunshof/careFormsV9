@@ -1,4 +1,4 @@
-<div class="container custom-box mt-4">
+<div class="container custom-box mt-4"> 
     <h5 class="text-center">Here are the selected information</h5>
     <div class="row">
         <div class="col-6">

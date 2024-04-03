@@ -52,6 +52,10 @@
         </div>
     </div>
     <script>
+        var PWA_name="Spot Check" 
+     </script>
+     <script  src="{{ asset('custom/js/pwa/install.js')}}"></script>  
+    <script>
        if (document.querySelector('.alert-danger')) {
             const errorMessage = document.querySelector('.alert-danger');
             setTimeout(function() {

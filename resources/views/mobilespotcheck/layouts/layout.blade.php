@@ -10,6 +10,7 @@
         <link rel="apple-touch-icon" href="{{ asset('logo.png') }}">
         <link rel="manifest" href="{{ asset('/manifest.json') }}">
         <link rel="icon" type="image/png" href="{{asset('logo.png')}}">
+        {{--  End PWA --}}
         <meta name="description" content="" />
         <meta name="keywords" content="">
         <meta name="author" content="" />
