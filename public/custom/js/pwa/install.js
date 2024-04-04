@@ -46,7 +46,7 @@ function resetRoutine() {
 
 //resetRoutine();
 
-if (showIosInstallModal()){
+if (!showIosInstallModal()){
     function openMyModal() {
        //title
         const modalTitle = document.getElementById('modalTitle');
@@ -62,15 +62,16 @@ if (showIosInstallModal()){
         const footerContent = document.createElement("div");
         footerContent.classList.add("modal-footer", "d-flex", "justify-content-center", "align-items-center");
         const textElement1 = document.createElement("p");
-        textElement1.classList.add("me-2");
+        //textElement1.classList.add("me-2");
         textElement1.classList.add("fs-5");
         textElement1.textContent = "Just tap";
         const imgElement = document.createElement("img");
-        imgElement.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAACXBIWXMAAAsTAAALEwEAmpwYAAACy0lEQVR4nO2azW7TQBhF3ccru+5o/FUqrHiGeHhVWNAV8AAdhxLkdEAizZ9jx+cqvkeaTWLLx/d+EyWRq8qYsYmU33fLyQoQKT9Gyr/KeqR9Zk00+UPd5JdI7fp15d8Pn9tPtNcsiTdluBTBMlrvFL0yWpeiV0brUi5NnfLH7TJ2lbPrmO7ciwvOidi5M16/Ub3ZFQeOpe/jKogjAW8Xcso55kJl7Ctk87pLGZc4MdB9hbgUoIxjhWze904ZRvQM8FghLmXCMk4tZHOcd0o/zg0sTizEpUxQRt9CNsd7pxxmkfJiyK/r6FnIoV/9nUs1b9Y3dco/h/zVEWcUsq+UaPKPzqmaL+ubLoQh/zvFmYXsKqVO+fvMC6mqevl815XShVE3+b7v+UMK2Vy/yff/rr98vut7vhm5EDMy4UK0CBeiRbgQLcKFaBEuRItwIVqEC9EiXIgW4UJ2BzF01an9sliubqcu5CGt3nXXHvt+qqkZ+wZKKU9DPXqf37TfLnEv1dS4kPa6C6E+shbL1e1VfmRNLlCwh4PQHAxcoGAPB6E5GLhAwR4OQnMwcIGCPRyE5mDgAgV7OAjNwcAFCvZwEJqDgQsU7OEgNAcDFyjYw0FoDgYuULCHg9AcDFygYA8HoTkYuEDBHg5CczBwgYI9HITmYOACBXs4CM3BwAUK9nAQmoOBCxTqpv3616F7aLqCwPPABf5/ev2pW+c8PX81eeACYuB54AJi4HngAmLgeeACYuB54AJi4HngAmLgeeACYuB54AJi4HngAmLgeeACYuB54AJi4HngAmLgeeACYuB54AJi4HngAmLgeeACYuB54AJi4HngAmLgeeACYuB54AJi4HngAmLgeeACYuB54AJi4HngAmLgeeACYuB54AJi4HngAmLgeeACYuB54AJi4HngAmLgeWwLeLUuJIQHwTsk8SW4kMQHP3YhfwBDhGSY83tIYQAAAABJRU5ErkJggg=="
+        imgElement.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABM0lEQVR4nO2YQWrDMBBF5xSJ6ckEGsg5igS6W7NJV3GhNO1BuvBsVBTkYozlFKq0X8l8GCxsbOvN/7aFia4sDnGTilrWLsTOOnlLlcbUosxj3Fonr+wlprJePkz4fKCWIbhFmF2IHXs55cmP2+n4BB8zM3XCyXvq/jdIiJvxGLQzZgEi7R9BzmN0GFOAmINAw5gViCUQWBjr5WXtIV4Cmb8UrJOe/lvsh2f2ciy9iUogkw9mb91wIHTxCkhTYgUBkzpSU/NFX6msH/aXrlE6ns796X3o2iDshqcmQOgXgrgGI0yCFASsm6SOgHWT1BGwbpI6AtZNUkfAuknqCFg3CcSR8zJ9ZZn/J/NgkB8HrCBZ6khlsUYrS6NVWazRytJoVRZrtLI0WpXFGq1bjRaDFN0DyBepFQErw7dHKQAAAABJRU5ErkJggg=="
+        
         imgElement.alt = "Add to Home Screen";
         const textElement2 = document.createElement("p");
         textElement2.textContent = "then 'Add to Home Screen'";
-        textElement2.classList.add("me-2");
+        //textElement2.classList.add("me-2");
         textElement2.classList.add("fs-5");
 
         // Append the elements to the footer
