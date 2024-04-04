@@ -196,3 +196,11 @@
         [v-cloak] {
             display: none;
         }
+        
+        /* Custom CSS to remove padding and margin from modal footer */
+        .modal-footer {
+            padding-left: 0;
+            padding-right: 0;
+            margin-left: 0;
+            margin-right: 0;
+        }

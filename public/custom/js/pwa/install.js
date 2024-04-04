@@ -44,9 +44,9 @@ function resetRoutine() {
     localStorage.removeItem('callCount');
 }
 
-//resetRoutine();
+resetRoutine();
 
-if (!showIosInstallModal()){
+if (showIosInstallModal()){
     function openMyModal() {
        //title
         const modalTitle = document.getElementById('modalTitle');
@@ -62,17 +62,23 @@ if (!showIosInstallModal()){
         const footerContent = document.createElement("div");
         footerContent.classList.add("modal-footer", "d-flex", "justify-content-center", "align-items-center");
         const textElement1 = document.createElement("p");
-        //textElement1.classList.add("me-2");
-        textElement1.classList.add("fs-5");
+        textElement1.classList.add("me-2", "fs-5");
         textElement1.textContent = "Just tap";
         const imgElement = document.createElement("img");
         imgElement.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABM0lEQVR4nO2YQWrDMBBF5xSJ6ckEGsg5igS6W7NJV3GhNO1BuvBsVBTkYozlFKq0X8l8GCxsbOvN/7aFia4sDnGTilrWLsTOOnlLlcbUosxj3Fonr+wlprJePkz4fKCWIbhFmF2IHXs55cmP2+n4BB8zM3XCyXvq/jdIiJvxGLQzZgEi7R9BzmN0GFOAmINAw5gViCUQWBjr5WXtIV4Cmb8UrJOe/lvsh2f2ciy9iUogkw9mb91wIHTxCkhTYgUBkzpSU/NFX6msH/aXrlE6ns796X3o2iDshqcmQOgXgrgGI0yCFASsm6SOgHWT1BGwbpI6AtZNUkfAuknqCFg3CcSR8zJ9ZZn/J/NgkB8HrCBZ6khlsUYrS6NVWazRytJoVRZrtLI0WpXFGq1bjRaDFN0DyBepFQErw7dHKQAAAABJRU5ErkJggg=="
-        
         imgElement.alt = "Add to Home Screen";
         const textElement2 = document.createElement("p");
         textElement2.textContent = "then 'Add to Home Screen'";
-        //textElement2.classList.add("me-2");
-        textElement2.classList.add("fs-5");
+        textElement2.classList.add("me-2", "fs-5");
+
+        // Append all elements to the footerContent div
+        footerContent.appendChild(textElement1);
+        footerContent.appendChild(imgElement);
+        footerContent.appendChild(textElement2);
+
+        // Append the footerContent to the modal footer
+        myModal.querySelector(".modal-footer").appendChild(footerContent);
+
 
         // Append the elements to the footer
         footerContent.appendChild(textElement1);

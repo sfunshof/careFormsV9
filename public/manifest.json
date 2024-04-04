@@ -1,9 +1,9 @@
 {
     "name": "Home Care Spot Check",
-    "short_name": "SP",
+    "short_name": "Spot Check",
     "start_url": "/index.php",
     "background_color": "#6777ef",
-    "description": "This is a home carenspot check",
+    "description": "This is Care giver Spot Check",
     "display": "fullscreen",
     "theme_color": "#6777ef",
     "icons": [
