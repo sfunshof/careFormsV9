@@ -47,11 +47,10 @@ function resetRoutine() {
 //resetRoutine();
 
 if (showIosInstallModal()){
-    alert("pass")
     function openMyModal() {
        //title
         const modalTitle = document.getElementById('modalTitle');
-        modalTitle.textContent = "Install Spot Check";
+        modalTitle.textContent = "Install " + PWA_name;
         //boyText
         let  bodyText= " <p class='fs-5'>  Install this application on your home screen for quick and easy access when you are on the go </p>";
         const modalBody = document.getElementById('modalBodyID');
@@ -99,3 +98,55 @@ if (showIosInstallModal()){
     // Call the function to open the modal
     openMyModal();
 }
+
+let showAndroidInstallModal=function(){
+    let deferredPrompt;
+    let promptCount = 0;
+
+    // Function to check if prompt can be shown
+    function canShowPrompt() {
+        // Reset prompt count if new day
+        const lastPromptDate = localStorage.getItem('lastPromptDate');
+        const today = new Date().toDateString();
+        if (lastPromptDate !== today) {
+            localStorage.setItem('lastPromptDate', today);
+            promptCount = 0;
+        }
+        // Check if prompt count is less than 3
+        return promptCount < 30;
+    }
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault(); // Prevent default Chrome prompt
+
+        if (canShowPrompt()) {
+            deferredPrompt = e; // Save the event for later
+            let infoBar = document.querySelector('#custom-info-bar');
+            if (infoBar) {
+                infoBar.style.display = ''; // Show custom install button
+
+                let installBtn = document.querySelector('#custom-install-button');
+                installBtn.addEventListener('click', (e) => {
+                    deferredPrompt.prompt(); // Show prompt
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        if (choiceResult.outcome === 'accepted') {
+                            infoBar.style.display = 'none'; // Hide info bar
+                            deferredPrompt = null; // Reset deferredPrompt
+                            promptCount++; // Increment prompt count
+                            localStorage.setItem('promptCount', promptCount);
+                        }
+                    });
+                });
+            }
+        }
+    });
+
+    // Check and set prompt count on page load
+    window.addEventListener('load', () => {
+        const storedPromptCount = localStorage.getItem('promptCount');
+        if (storedPromptCount) {
+            promptCount = parseInt(storedPromptCount);
+        }
+    });
+}
+showAndroidInstallModal()

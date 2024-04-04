@@ -46,7 +46,15 @@
                             <button type="submit" class="btn btn-primary w-100">Login</button>
                         </form>
                         <p class="mt-4 fs-6  fst-italic  fw-lighter  text-end"> Powered by Metricsart.com</p>
+                        {{--  IOS modal prompt --}}
                         @include('backoffice.inc.modal') 
+                        
+                        {{--  Adroid modal prompt  --}}
+                        <div id="custom-info-bar" style="display: none;">
+                            <p class='fs-5'>  Install this application on your home screen for quick and easy access when you are on the go </p>
+                            <button id="custom-install-button">Install Spot Check</button>
+                        </div>
+
                     </div>
                 </div>
             </div>
