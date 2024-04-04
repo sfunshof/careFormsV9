@@ -46,15 +46,12 @@
                             <button type="submit" class="btn btn-primary w-100">Login</button>
                         </form>
                         <p class="mt-4 fs-6  fst-italic  fw-lighter  text-end"> Powered by Metricsart.com</p>
+                        @include('backoffice.inc.modal') 
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        var PWA_name="Spot Check" 
-     </script>
-     <script  src="{{ asset('custom/js/pwa/install.js')}}"></script>  
     <script>
        if (document.querySelector('.alert-danger')) {
             const errorMessage = document.querySelector('.alert-danger');
@@ -64,10 +61,18 @@
         }
     </script>
 @endsection
+
 @push('scripts')
     <script>
         document.getElementById('loginFormID').addEventListener('submit', function () {
             document.getElementById('spinner').style.display = 'block';
         });
     </script>
+    
+    <script>
+        var PWA_name="Spot Check" 
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/6.0.0/bootbox.min.js" integrity="sha512-oVbWSv2O4y1UzvExJMHaHcaib4wsBMS5tEP3/YkMP6GmkwRJAa79Jwsv+Y/w7w2Vb/98/Xhvck10LyJweB8Jsw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script  src="{{ asset('custom/js/pwa/install.js')}}"></script>  
 @endpush   
+
