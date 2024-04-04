@@ -32,7 +32,7 @@ let  showIosInstallModal=function() {
         callCount++;
         localStorage.setItem('callCount', callCount);
         // Return true if called once or twice, false otherwise
-        return callCount <= 2;
+        return callCount <= 2000;
     }
 
     const shouldShowModalResponse = isIos() && !isInStandaloneMode()  && checkCallFrequency() ;
@@ -44,9 +44,10 @@ function resetRoutine() {
     localStorage.removeItem('callCount');
 }
 
-resetRoutine();
+//resetRoutine();
 
 if (showIosInstallModal()){
+    alert("pass")
     function openMyModal() {
        //title
         const modalTitle = document.getElementById('modalTitle');
