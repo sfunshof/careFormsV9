@@ -50,9 +50,9 @@
                         @include('backoffice.inc.modal') 
                         
                         {{--  Adroid modal prompt  --}}
-                        <div id="custom-info-bar" style="display: none;">
+                        <div id="custom-info-bar" style="display: none;"  class="border border-success rounded p-2">
                             <p class='fs-5'>  Install this application on your home screen for quick and easy access when you are on the go </p>
-                            <button id="custom-install-button">Install Spot Check</button>
+                            <button   class="btn btn-success w-100"   id="custom-install-button">Install</button>
                         </div>
 
                     </div>

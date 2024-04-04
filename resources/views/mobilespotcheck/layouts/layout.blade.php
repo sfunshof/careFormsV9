@@ -7,9 +7,9 @@
         {{-- PWA  --}}
         <meta name="theme-color" content="#6777ef"/>
         <meta name="apple-mobile-web-app-status-bar" content="#6777ef"/>
-        <link rel="apple-touch-icon" href="{{ asset('logo.png') }}">
+        <link rel="apple-touch-icon" href="{{ asset('custom/icons/ios/logo180.png') }}">
         <link rel="manifest" href="{{ asset('/manifest.json') }}">
-        <link rel="icon" type="image/png" href="{{asset('logo.png')}}">
+        <link rel="icon" type="image/png" href="{{asset('custom/icons/android/android-launchericon-512-512.png')}}">
         {{--  End PWA --}}
         <meta name="description" content="" />
         <meta name="keywords" content="">
