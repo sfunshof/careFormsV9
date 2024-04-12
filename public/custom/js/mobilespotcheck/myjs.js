@@ -61,6 +61,33 @@ function hideSpinner_modal() {
 
   
 ready(function() {
+    //Repeated
+    let isInStandaloneMode = () => {
+      return (
+          "standalone" in window.navigator &&
+          window.navigator.standalone
+      );
+    };
+
+    let adjustCarerSelect=function(){
+        var careSelectElement = document.getElementById('carerSelectID');
+        // Check the condition and set max-height accordingly
+        if (isInStandaloneMode()) {
+            careSelectElement.style.maxHeight = '70vh';
+        } else {
+            careSelectElement.style.maxHeight = '60vh';
+        }
+    }
+
+    let adjustServiceUserSelect=function(){
+      var careSelectElement = document.getElementById('carerSelectID');
+      // Check the condition and set max-height accordingly
+      if (isInStandaloneMode()) {
+          careSelectElement.style.maxHeight = '80vh';
+      } else {
+          careSelectElement.style.maxHeight = '60vh';
+      }
+  }
     let showCarerPageFunc=function(){
         root.showSelectCarersPage=true
         root.showSelectServiceUsersPage=false
@@ -68,7 +95,7 @@ ready(function() {
         root.showSuccessSavedPage=false
         toggleShowPrevIconFunc(0)
         toggleShowNextIconFunc(0)
-    } 
+     } 
 
     let showServiceUserPageFunc=function(){
         root.showSelectCarersPage=false
@@ -91,8 +118,7 @@ ready(function() {
         animation:'slide-bottom', 
       });
     }
-    
-
+   
     function validateResponse(current_index){
       function checkElementExistence(pos) {
         // Check if a radio button with the name "radio" exists and is visible
@@ -682,7 +708,9 @@ ready(function() {
     //reportRadioFunc('3 Months',3)
 
     //hide the two icons until such a time
-     toggleShowPrevIconFunc(0)
-     toggleShowNextIconFunc(0)
-   
+    toggleShowPrevIconFunc(0)
+    toggleShowNextIconFunc(0)
+    
+    adjustCarerSelect()
+    //alert("Test")
   })  
