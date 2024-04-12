@@ -26,6 +26,9 @@ use App\Http\Controllers\mobilespotcheckController;
 Route::domain('spotcheck.caretrail.co.uk')->group(function () {
     Route::get('/', [mobilespotcheckController::class, 'showLoginForm'])->name('spotchecklogin');
 });
+Route::domain('www.spotcheck.caretrail.co.uk')->group(function () {
+    Route::get('/', [mobilespotcheckController::class, 'showLoginForm'])->name('spotchecklogin');
+});
 
 Route::get('/', [homeController::class, 'index']);
 
