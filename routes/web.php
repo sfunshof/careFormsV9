@@ -10,6 +10,7 @@ use App\Http\Controllers\serviceUserController;
 use App\Http\Controllers\employeeController; 
 use App\Http\Controllers\homeController; 
 use App\Http\Controllers\mobilespotcheckController;
+
  
 /*
 |--------------------------------------------------------------------------
@@ -23,10 +24,6 @@ use App\Http\Controllers\mobilespotcheckController;
 */
 
 //This is the actual production one
-Route::domain('www.spotcheck.caretrail.co.uk')->group(function () {
-    Route::get('/', [mobilespotcheckController::class, 'showLoginForm'])->name('spotchecklogin');
-});
-
 Route::domain('spotcheck.caretrail.co.uk')->group(function () {
     Route::get('/', [mobilespotcheckController::class, 'showLoginForm'])->name('spotchecklogin');
 });
