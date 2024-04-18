@@ -6,34 +6,34 @@
     <section class="section">
               
         <div class="row">
-            <div class="col-md-12" > 
+            <div class="col-md-12" >
+                <div id="noQuesID" class="text-success" style="display:none">
+                    <p>
+                        There are currently no questionnaires on this form. You may use the 
+                        <span class="fw-bold text-danger"> Reset All Questions </span > button to add system inputted questions
+                    </p>    
+                </div>
+                
                 <div class="accordion accordion-flush " id="accordionBodyID">
-                     {{--  This is where the form details are written to by js --}}
+                    {{--  This is where the form details are written to by js --}}
                 </div>
 
                 <hr class="bg-danger border-2 border-top border-danger">
-                <div class="text-left">
-                    <button class="btn btn-primary" type="button" onClick="add_quesFunc(1)">Add Question</button>
-                    <button class="btn btn-primary" type="button" onClick="update_formFunc()"  >Update Form</button>
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <button class="btn btn-primary" type="button" onClick="add_quesFunc(1)">Add Question</button>
+                        <button class="btn btn-primary" type="button" onClick="update_formFunc()">Update Form</button>
+                    </div>
+                    <div>
+                        <button class="btn btn-danger" type="button" onClick="reset_quesFunc()">Reset All Questions</button>
+                    </div>
                 </div>
             </div>
         </div>
     </section>   
-    <script>
-        const accordionBody = document.getElementById('accordionBodyID');
-        const cqcOptionsArray=@json($cqcArray);
-        const quesOptionsArray=@json($quesArray);
-        const formDetails= @json($forms); 
-        const optionsArray=@json($options);
-        let formTitle=@json($title); 
-        let respTypeID={{$respTypeID}}; //This is for the different forms
-        let companyID={{ $company_settings[0]->companyID }}; //No need any more can be used in the controller
-        let token = "{{ csrf_token() }}";
-        let update_formURL= "{{ url('buildforms/update_form')}}"; 
-    </script>       
+ 
 @endsection
 
 @section('jscontents')
-    <script src="{{asset('custom/js/backoffice/build_formsTemplates.js')}}"></script>
-    <script src="{{asset('custom/js/backoffice/build_form.js')}}"></script>
+    @include('backoffice.fakecomponents.ques_component')
 @endsection 

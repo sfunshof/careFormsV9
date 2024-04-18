@@ -96,6 +96,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get("buildforms/employeeFeedback", [formsController::class, 'build_employeeFeedback']);
     Route::get("buildforms/spotCheck", [formsController::class, 'build_spotcheck']);
     Route::post("buildforms/update_form", [formsController::class, 'update_form']);
+    Route::post("buildforms/reset_form", [formsController::class, 'reset_form']);
 
     Route::post("utility/user_sendsms", [utilityController::class, 'user_sendSMS']);
     Route::post("utility/serviceuser_viewresponse", [utilityController::class, 'serviceuser_viewResponse']);

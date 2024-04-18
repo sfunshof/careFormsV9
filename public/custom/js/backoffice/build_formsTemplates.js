@@ -101,7 +101,7 @@ ready(function() {
             hideCQC="d-none"
         }
         let template_inside=""+    
-        '<div class="row align-items-start p-1 shadow-lg p-4 mb-4 bg-white">' +
+        '<div class="row align-items-start p-1 shadow-lg p-4 mb-4 bg-white justify-content-between">' +
             '<div class="col-md-4 "> ' +
                 '<div class="form-floating">' +
                     '<textarea class="form-control" placeholder="Ask a question" id="quesText_' + randomNo +   '" style="height: 70px"    onChange="quesChangeFunc(' +  "'" + randomNo + "'" + ' )" >' + names_  + '</textarea> ' +

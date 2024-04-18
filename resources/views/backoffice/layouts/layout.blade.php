@@ -70,8 +70,8 @@
   {{--  --}}    
 
   {{--  Spinner for ajax calls --}} 
-   <div hidden  id="spinner"></div> 
-   {{--  End of Spinner  --}}
+     <div hidden  id="spinner"></div> 
+  {{--  End of Spinner  --}}
    
    {{-- Spinner element -->
    <div class="spinner-border spinner-border-sm text-success" id="spinner" role="status">

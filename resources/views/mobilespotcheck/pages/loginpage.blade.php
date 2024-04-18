@@ -45,7 +45,7 @@
                            
                             <button type="submit" class="btn btn-primary w-100">Login</button>
                         </form>
-                        <p class="mt-4 fs-6  fst-italic  fw-lighter  text-end"> Powered by Metricsart.com</p>
+                        <p class="mt-4 fs-6  fst-italic  fw-lighter  text-end"> Powered by CareTrail.co.uk</p>
                         {{--  IOS modal prompt --}}
                         @include('backoffice.inc.modal') 
                         

@@ -5,7 +5,7 @@
                 All Rights Reserved
             @else
                 Powered by <br>
-                metricsart.com
+                CareTrail
             @endif    
     </small> 
 </div>

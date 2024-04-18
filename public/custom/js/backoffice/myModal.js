@@ -18,6 +18,7 @@ const closeBtn= '<button type="button"  class="btn btn-info" data-bs-dismiss="mo
 //We do not know how to pass userID so we use a general function update_serviceUserModalFunc
 const disableBtn='<button type="buttton" class="btn btn-danger"  onClick="disable_modalFunc()" >Disable</button>';
 const deleteBtn='<button type="buttton" class="btn btn-danger"  onClick="delete_modalFunc()" >Delete</button>';
+const resetBtn='<button type="buttton" class="btn btn-danger"  onClick="reset_modalFunc()" >Reset</button>';
 const updateBtn='<button type="buttton" class="btn btn-danger"  onClick="update_modalFunc()" >Update</button>'
 const pdfBtn= '<button type="button" class="btn btn-primary"  onClick="printToPdf_modalFunc()" >Print to PDF </button>';
 
@@ -45,6 +46,7 @@ let show_alertInfo=function(xText){
     }    
 }
 
+
 let show_alertDanger=function(xText){
     if (isABootstrapModalOpen()){
         alertDanger_mobileID.innerHTML=xText;
@@ -58,7 +60,21 @@ let show_alertDanger=function(xText){
 }
 //Determines if modal is present or not
 function isABootstrapModalOpen() {
-    return document.querySelectorAll('.modal.show').length > 0;
+    //return document.querySelectorAll('.modal.show').length > 0;
+    // Select the modal element by ID
+    var modal = document.querySelector("#modal-dialogID");
+  
+    // Check if the modal element exists and is visible
+    if (modal && (modal.style.display == "block")) {
+         // Check if the modal contains the class modal-lg
+         if (modal.classList.contains("modal-lg")) {
+             return 1; // Return 1 if the modal is visible and contains the class modal-lg
+         } else {
+             return 0; // Return 0 if the modal is visible but doesn't contain the class modal-lg
+         }
+     } else {
+         return 0; // Return 0 if the modal is not visible or doesn't exist
+     }
 }
 
 let show_spinner=function(){
@@ -79,19 +95,6 @@ let hide_spinner=function(){
     } 
 }
 
-
-/*
-let show_spinner=function(){
-    const spinner = document.getElementById('spinner'); // Assuming you have an element with the ID 'spinner'
-    spinner.style.display = 'block'; // Show the spinner
-}
-
-let hide_spinner=function(){
-    const spinner = document.getElementById('spinner'); // Assuming you have an element with the ID 'spinner'
-    spinner.style.display = 'none'; // Hide the spinner
-}
-*/
-
 let show_modal=function(titleText, bodyMsg, footerBtn){
     modalDialogID.classList.remove('modal-sm');
     modalDialogID.classList.remove('modal-md');
@@ -101,6 +104,7 @@ let show_modal=function(titleText, bodyMsg, footerBtn){
     modalFooter.innerHTML= footerBtn;
     modalBtnID.click();
 }
+
 let hide_modal=function(){
     let myModalEl = document.getElementById('myModal');
     let modal = bootstrap.Modal.getInstance(myModalEl)
@@ -111,6 +115,7 @@ let hide_modal=function(){
 }   
 
 let disable_modalFunc=function(){}
+let reset_modalFunc=function(){}
 let update_modalFunc=function(){}
 let delete_modalFunc=function(){}
 let printToPdf_modalFunc=function(){}

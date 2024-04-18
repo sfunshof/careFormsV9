@@ -16,12 +16,12 @@
         </a>
         <ul id="dashboard-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="{{ url('/backoffice/feedback_dashboard')}}">
+            <a href="{{ url('/backoffice/feedback_dashboard')}}"  onclick="show_spinner()"> 
               <i class="bi bi-circle"></i><span>Feedback Dashboard</span>
             </a>
           </li>
           <li>
-            <a href="{{ url('/backoffice/spotcheck_dashboard')}}">
+            <a href="{{ url('/backoffice/spotcheck_dashboard')}}" onclick="show_spinner()">
                <i class="bi bi-circle"></i><span>SpotCheck Dashboard</span>
             </a>
           </li>
@@ -36,17 +36,17 @@
         </a>
         <ul id="serviceuser-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="{{ url('/serviceUser/addnew')}}">
+            <a href="{{ url('/serviceUser/addnew')}}" onclick="show_spinner()">
               <i class="bi bi-circle"></i><span>Add New Service User</span>
             </a>
           </li>
           <li>
-            <a href="{{ url('/serviceUser/browse')}}">
+            <a href="{{ url('/serviceUser/browse')}}" onclick="show_spinner()">
               <i class="bi bi-circle"></i><span>Browse Service Users</span>
             </a>
           </li>
           <li>
-            <a href="{{ url('/serviceUser/browse_surveyfeedback')}}">
+            <a href="{{ url('/serviceUser/browse_surveyfeedback')}}" onclick="show_spinner()">
               <i class="bi bi-circle"></i><span>Service User Survey</span>
             </a>
           </li>
@@ -73,22 +73,22 @@
         </a>
         <ul id="employee-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="{{ url('/employee/addnew')}}">
+            <a href="{{ url('/employee/addnew')}}" onclick="show_spinner()">
               <i class="bi bi-circle"></i><span>Add New Employee</span>
             </a>
           </li>
           <li>
-            <a href="{{ url('/employee/browse')}}">
+            <a href="{{ url('/employee/browse')}}" onclick="show_spinner()">
               <i class="bi bi-circle"></i><span>Browse Employees</span>
             </a>
           </li>
           <li>
-            <a href="{{ url('/employee/browse_surveyfeedback')}}">
+            <a href="{{ url('/employee/browse_surveyfeedback')}}" onclick="show_spinner()">
               <i class="bi bi-circle"></i><span>Employee Survey</span>
             </a>
           </li>
           <li>
-            <a href="{{ url('/employee/browse_spotcheck')}}">
+            <a href="{{ url('/employee/browse_spotcheck')}}" onclick="show_spinner()">
               <i class="bi bi-circle"></i><span>Employee Spot Check</span>
             </a>
           </li>
@@ -103,17 +103,17 @@
           </a>
           <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
               <li>
-                  <a href="{{ url('/buildforms/serviceUserFeedback')}}">
+                  <a href="{{ url('/buildforms/serviceUserFeedback')}}" onclick="show_spinner()">
                     <i class="bi bi-circle"></i><span>Service user feedback</span>
                   </a>
               </li>
               <li>
-                  <a href="{{ url('/buildforms/employeeFeedback')}}">
+                  <a href="{{ url('/buildforms/employeeFeedback')}}" onclick="show_spinner()">
                     <i class="bi bi-circle"></i><span>Employee Feedback</span>
                   </a>
               </li>
               <li>
-                <a href="{{ url('/buildforms/spotCheck')}}">
+                <a href="{{ url('/buildforms/spotCheck')}}" onclick="show_spinner()">
                   <i class="bi bi-circle"></i><span>Spot Checks</span>
                 </a>
             </li>
@@ -123,7 +123,7 @@
 
       {{--  Company Profile --}}
       <li class="nav-item">
-        <a class="nav-link " href="{{ url('/backoffice/companyprofile')}}">
+        <a class="nav-link " href="{{ url('/backoffice/companyprofile')}}" onclick="show_spinner()">
           <i class="bi bi-person"></i>
           <span>Company Profile</span>
         </a>

@@ -30,7 +30,7 @@ class employee_feedbackMail extends Mailable
      */
     public function build()
     {
-        return $this->from( address:'info@metricsart.com', name:$this->details['name']) 
+        return $this->from( address:'info@caretrail.co.uk', name:$this->details['name']) 
                      ->subject(subject: $this->details['subject'])  
                      ->view('mail.employee_feedbackMail');
     }

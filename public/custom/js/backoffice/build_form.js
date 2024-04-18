@@ -1,6 +1,7 @@
 "use strict";
 let add_quesFunc=function(){}
 let update_formFunc=function(){}
+let reset_quesFunc=function(){}
 let del_quesFunc=function(){}
 let quesChangeFunc=function(){}
 let cqcChangeFunc=function(){}
@@ -56,7 +57,7 @@ ready(function() {
         let btns=deleteBtn + closeBtn
         show_modal("Warning ", bodyMsg, btns);
         modalDialogID.classList.remove('modal-lg');
-        modalDialogID.classList.add('modal-sm');
+        modalDialogID.classList.add('modal-md');
       
         delete_modalFunc=function(){
             let mainDoc= document.getElementById("main_" + id)
@@ -68,6 +69,66 @@ ready(function() {
         }
     }
     
+    reset_quesFunc=function(){
+        let bodyMsg="Do you want to reset the form by replacing all questions with the ones from the system ? <br>";
+        let btns=resetBtn + closeBtn
+        show_modal("Warning ", bodyMsg, btns);
+        modalDialogID.classList.remove('modal-lg');
+        modalDialogID.classList.add('modal-md');
+
+        let reset_ajaxQuesFunc=function(){
+            show_spinner()
+            const asyncPostCall = async () => {
+                let post_data={
+                    respTypeID:respTypeID
+                }
+                
+                try {
+                    const response = await fetch(reset_formURL, {
+                        method: 'POST',
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Accept": "application/json, text-plain, */*",
+                            "X-Requested-With": "XMLHttpRequest",
+                            "X-CSRF-TOKEN": token
+                        },
+                        body: JSON.stringify(post_data)
+                    });
+                    //const data = await response.json();
+                    let data = await response.text(); //server returns text
+                    //document.documentElement.innerHTML = data;
+                    // Update the content of the target element
+                    //Here we aonly pass the variables no need for the form
+                    document.getElementById('reset_formID').innerHTML =data;
+                    //we need to extract the form details which has changed
+                    //the other fields do not change
+                    let obj = JSON.parse(data);
+                    formDetails= obj.forms
+                    //clear the accordion
+                     accordionBody.innerHTML = ''
+                    show_quesFunc()
+                    show_alertInfo("Forms has been successfully reset")
+                    // enter you logic when the fetch is successful
+                    //alert(JSON.stringify(data));
+                    //show_alertInfo("Dashboard  Successfully updated")
+                    //alert(JSON.stringify(formDetails))
+                    hide_spinner()
+                                              
+                } catch(error) {
+                    // enter your logic for when there is an error (ex. error toast)
+                    alert(error);
+                    hide_spinner()
+                } 
+            }    
+            asyncPostCall()
+        }
+        
+        reset_modalFunc=function(){
+            reset_ajaxQuesFunc()          
+            hide_modal()
+        }
+    }
+
     quesTypeChangeFunc=function(id){
         //get the value
         let resID= 'resSelect_' + id
@@ -141,7 +202,7 @@ ready(function() {
         let btns=deleteBtn + closeBtn
         show_modal("Warning ", bodyMsg, btns);
         modalDialogID.classList.remove('modal-lg');
-        modalDialogID.classList.add('modal-sm');
+        modalDialogID.classList.add('modal-md');
         
         delete_modalFunc=function(){
             let id="options_" + origRan + "_X_"  + newRan
@@ -152,12 +213,15 @@ ready(function() {
     }
     
     update_formFunc=function(){
-         
+        //alert(respTypeID)
+        //return 0; 
+
         //Bring up the modal
         let bodyMsg="The existing form will be replaced. Do you wish to continue ?"
         let btns=updateBtn + closeBtn
         show_modal("Warning ", bodyMsg, btns);
-       
+        modalDialogID.classList.remove('modal-lg');
+        modalDialogID.classList.add('modal-md');
         //** Start of update  */
         update_modalFunc=function(){
             hide_modal()
@@ -292,20 +356,30 @@ ready(function() {
     //This is the JS function called after the page loads. It fills all the 
     //fields and select options and sets their values, Note that 
     //add_serviceUserSurveyQuesFunc function triggers a select change
-    let quesNameArray=[]
-    let quesTypeIDArray=[]
-    let quesAttribArray=[]
-    let cqcArray=[]
-    let  myFunction= function(item, index) {
-        quesNameArray[index]=item.quesName
-        quesTypeIDArray[index]=item.quesTypeID
-        quesAttribArray[index]=item.quesAttrib
-        cqcArray[index]=item.CQCid
-     }
-    formDetails.forEach(myFunction)
-    let formCount=formDetails.length
-    add_quesFunc(formCount, quesNameArray, quesTypeIDArray,quesAttribArray,cqcArray);
-   
+    
+    //*** All these are wrapped in a function so thath reset can use it */
+    let show_quesFunc=function(){
+        let quesNameArray=[]
+        let quesTypeIDArray=[]
+        let quesAttribArray=[]
+        let cqcArray=[]
+        let  myFunction= function(item, index) {
+            quesNameArray[index]=item.quesName
+            quesTypeIDArray[index]=item.quesTypeID
+            quesAttribArray[index]=item.quesAttrib
+            cqcArray[index]=item.CQCid
+        }
+        formDetails.forEach(myFunction)
+        let formCount=formDetails.length
+        if (formCount == 0) {
+            document.getElementById('noQuesID').style.display = 'block';
+        } else {
+            document.getElementById('noQuesID').style.display = 'none';
+        }
+        add_quesFunc(formCount, quesNameArray, quesTypeIDArray,quesAttribArray,cqcArray);
+    }
+    
+    show_quesFunc()   
 
 
                 

@@ -73,40 +73,103 @@ class formsController extends Controller
         );
     }
 
+    public function reset_form(Request $req){
+        $respTypeID=$req->respTypeID;
+        $buildTableName="";
+        $fieldsToCopy=['quesName','quesAttrib','quesID','quesTypeID', 'CQCid','responseTypeID'];
+        $updateArray = [
+            'responseTypeID' => DB::raw('responseTypeID * -1'),
+            'companyID' => DB::raw('companyID * -1'),
+            'updateDate' => now()->toDateString()
+        ];
+        switch ($respTypeID) {
+            case 1: //service user feedback
+                $buildTableName="buildformtable";
+                break;
+            case 2: //employee feedback
+                $buildTableName="buildformtable";
+                break;
+            case 3:
+                $buildTableName="buildformtable_spotcheck";
+                $fieldsToCopy=['quesName','quesAttrib','quesID','quesTypeID' ];
+                $updateArray = [
+                   'companyID' => DB::raw('companyID * -1'),
+                    'updateDate' => now()->toDateString()
+                ];
+              break;
+            case 4:
+                $buildTableName="buildformtable_accessment";
+            break;
+        } 
+        $companyID=$this->company_settings[0]->companyID;
+        DB::table($buildTableName)
+            ->where('companyID', $companyID)
+            ->update($updateArray);
+
+        // Retrieve all records from reset table
+        $resetRecs = DB::table('buildformtable_reset')
+                    ->where('responseTypeID', '=', $respTypeID)
+                    ->get();
+        // Insert records into $buildTableName while setting companyID
+        foreach ($resetRecs as $record) {
+            $data = ['companyID' => $companyID];
+            foreach ($fieldsToCopy as $field) {
+                $data[$field] = $record->$field;
+            }
+            DB::table($buildTableName)->insert($data);
+        }
+        
+        $build_array=$this->build_common_functions($respTypeID);
+        $build_array['respTypeID']=30;
+        return $build_array; //This is pasted to a hidden div in the blade
+        //return view('backoffice.fakecomponents.ques_component', $build_array);
+        
+    }    
+
+    private function build_common_functions($respTypeID){
+        $title="";
+        switch ($respTypeID) {
+            case 1: //service user feedback
+                $title = ' Service User Feedback forms' ;     
+              break;
+            case 2: //employee feedback
+                $title = ' Employee Feedback forms' ;     
+              break;
+            case 3:
+                $title = ' Spot Checks forms' ;     
+              break;
+            case 4:
+                $title = ' Accessment forms' ;     
+            break;
+        } 
+
+        $result= $this->build_formFunction($respTypeID);
+        $cqc=$result['cqc'];
+        $ques=$result['ques'];
+        $forms=$result['forms'];
+        $options=$result['options'];
+        $build_array= ['cqcArray' => $cqc, 'quesArray'=>$ques, 'forms' =>$forms, 
+        'title' => $title, 'respTypeID' => $respTypeID, 'options' =>$options ];
+        return $build_array; 
+    }
+
 
     //From here downwards begin to build the forms for each category
     public function build_serviceUserFeedback(){
-        $result= $this->build_formFunction(1);
-        $cqc=$result['cqc'];
-        $ques=$result['ques'];
-        $forms=$result['forms'];
-        $options=$result['options'];
-        return view('backoffice.pages.build_form', 
-        ['cqcArray' => $cqc, 'quesArray'=>$ques, 'forms' =>$forms, 
-         'title' =>' Service User Feedback forms', 'respTypeID' => 1, 'options' =>$options ]);
+        $build_array=$this->build_common_functions(1);
+        return view('backoffice.pages.build_form', $build_array);
     }   
     
     public function build_employeeFeedback(){
-        $result= $this->build_formFunction(2);
-        $cqc=$result['cqc'];
-        $ques=$result['ques'];
-        $forms=$result['forms'];
-        $options=$result['options'];
-        return view('backoffice.pages.build_form', 
-        ['cqcArray' => $cqc, 'quesArray'=>$ques, 'forms' =>$forms, 
-         'title' =>' Employee Feedback forms', 'respTypeID' => 2, 'options' =>$options]);
+        $build_array=$this->build_common_functions(2);
+        return view('backoffice.pages.build_form', $build_array);
     }   
     //SpotCheck ***********
     public function build_spotcheck(){
-        $result= $this->build_formFunction(3);
-        $cqc=$result['cqc']; //useless
-        $ques=$result['ques'];
-        $forms=$result['forms'];
-        $options=$result['options'];
-        return view('backoffice.pages.build_form', 
-        ['cqcArray' => $cqc, 'quesArray'=>$ques, 'forms' =>$forms, 
-         'title' =>' Spot Check forms', 'respTypeID' => 3, 'options' =>$options]);
+        $build_array=$this->build_common_functions(3);
+        return view('backoffice.pages.build_form', $build_array);
     }   
+    
 
     //** This is for service user and employee survey */
     static function survey_status($date,$userTable,$resTypeID,$companyID,$sendByEmail){

@@ -79,9 +79,11 @@ ready(function() {
                     let btn='<button type="buttton" class="btn btn-primary"  onClick="update_serviceUserModalFunc()" >Update</button>';
                     let btns= btn + closeBtn
                     show_modal(title, bodyMsg, btns)
+                    modalDialogID.classList.remove('modal-md');
+                    modalDialogID.classList.add('modal-lg');
                 }catch(error) {
                     // enter your logic for when there is an error (ex. error toast)
-                    alert(error);
+                    //alert(error);
                     hide_spinner()
                 } 
         }    
@@ -94,7 +96,7 @@ ready(function() {
         let btns=disableBtn + closeBtn
         show_modal("Warning ", bodyMsg, btns);
         modalDialogID.classList.remove('modal-lg');
-        modalDialogID.classList.add('modal-sm');
+        modalDialogID.classList.add('modal-md');
         
 
         disable_modalFunc=function(){
