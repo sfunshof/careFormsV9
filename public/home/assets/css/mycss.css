@@ -1,3 +1,35 @@
 .noShadow {
     box-shadow: none !important;
 }
+/** cookies **/
+#cc-main {
+    /** Change font **/
+    --cc-font-family: Roboto;
+
+    /** Change button primary color to black **/
+    --cc-btn-primary-bg: #6013c5;
+    --cc-btn-primary-border-color: #6013c5;
+    --cc-btn-primary-hover-bg: #6013c5;
+    --cc-btn-primary-hover-border-color: #6013c5;
+
+    /** Also make toggles the same color as the button **/
+    --cc-toggle-on-bg: var(--cc-btn-primary-bg);
+
+    /** Make the buttons a bit rounder **/
+    --cc-btn-border-radius: 10px;
+}
+
+    /* Custom CSS for changing list style */
+    ul.checkmark-list {
+        list-style-type: none;
+        padding: 0;
+      }
+  
+      ul.checkmark-list li::before {
+        content: "\2713"; /* Unicode character for checkmark symbol */
+        display: inline-block;
+        width: 1em;
+        margin-right: 0.5em; /* Adjust as needed */
+        font-size: 1.2em; /* Adjust as needed */
+        color: #ff0000; /* Custom color */
+      }

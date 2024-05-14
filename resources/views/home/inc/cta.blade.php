@@ -3,14 +3,21 @@
     <div class="row g-5">
 
       <div class="col-lg-8 col-md-6 content d-flex flex-column justify-content-center order-last order-md-first">
-        <h3>Alias sunt quas <em>Cupiditate</em> oluptas hic minima</h3>
-        <p> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        <a class="cta-btn align-self-start" href="#">Call To Action</a>
+        <h3>Discover how <em>Care Trail</em> can revolutionise your home care agency</h3>
+        <p> Unlock the power of innovation in home care with our cutting-edge software 
+          solutions tailored for the UK market.
+        </p>
+        <p>
+          Let's embark on a journey together towards exceptional care delivery 
+          and client satisfaction.
+        </p>
+
+        <a class="cta-btn align-self-start" href="{{url('/register')}}"> Get Started</a>
       </div>
 
       <div class="col-lg-4 col-md-6 order-first order-md-last d-flex align-items-center">
         <div class="img">
-          <img src="assets/img/cta.jpg" alt="" class="img-fluid">
+          <img src="{{asset('home/assets/img/cta.jpg')}}" alt="" class="img-fluid">
         </div>
       </div>
 

@@ -101,7 +101,7 @@
                                 There are no feedback records on the system
                             </h4>
                         @else    
-                            <table   class="table table-striped"   id="surveyFeedbackTableID">
+                            <table  class="table table-striped"   id="surveyFeedbackTableID">
                                 <thead>
                                     <tr>
                                         <th> Name </th>

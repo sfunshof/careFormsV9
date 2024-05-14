@@ -1,12 +1,13 @@
 <div class="container" data-aos="fade-up">
 
     <div class="section-header">
-      <h2></h2>
-      <p>Ea vitae aspernatur deserunt voluptatem impedit deserunt magnam occaecati dssumenda quas ut ad dolores adipisci aliquam.</p>
+      <p>
+        Getting Started is free. Simply register by entering your details below
+      </p>
     </div>
 
     <div class="col-lg-6">
-      <form action="{{route('register') }}" method="post">
+      <form action="{{route('register') }}" method="post" onsubmit="showPreloader();">
           @csrf
           <div class="form-floating mb-3">
               <input type="text" class="form-control noShadow  @error('name') is-invalid @enderror  "  name="name"  value="{{old('name')}}"    id="name" placeholder="Your Comaony Name">

@@ -1,14 +1,16 @@
 <div class="container" data-aos="fade-up">
-    <div class="section-header">
-        <h2></h2>
-    </div>
     
-    <div class="col-lg-6">
+    <div class="section-header">
+        {{--
+        <h2></h2>
+         --}}
         <p>
             Sign in with the data you registered with during registration
         </p>
-            
-        <form action="{{route('login') }}" method="post">
+    </div>
+    
+    <div class="col-lg-6">
+        <form action="{{route('login') }}" method="post" onsubmit="showPreloader();"> 
             @csrf
             <div class="form-floating mb-3">
                 <input type="email" class="form-control noShadow   @error('email') is-invalid @enderror  " name="email"   value="{{old('email')}}"   id="email" placeholder="email@yourcompany.com">

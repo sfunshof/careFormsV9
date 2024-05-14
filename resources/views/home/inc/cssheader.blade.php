@@ -27,6 +27,8 @@
 <link href="{{asset('home/assets/vendor/glightbox/css/glightbox.min.css')}}" rel="stylesheet">
 <link href="{{asset('home/assets/vendor/swiper/swiper-bundle.min.css')}}" rel="stylesheet">
 
+<link href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.0.1/dist/cookieconsent.css" rel="stylesheet">
+
 <!-- Variables CSS Files. Uncomment your preferred color scheme -->
 <link href="{{asset('home/assets/css/variables.css')}}" rel="stylesheet">
 <!-- <link href="assets/css/variables-blue.css" rel="stylesheet"> -->

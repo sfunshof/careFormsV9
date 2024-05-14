@@ -13,10 +13,16 @@
 <div class="container position-relative">
   <div class="row gy-5" data-aos="fade-in">
     <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center text-center text-lg-start">
-      <h2>Welcome to <span>Impact</span></h2>
-      <p>Sed autem laudantium dolores. Voluptatem itaque ea consequatur eveniet. Eum quas beatae cumque eum quaerat.</p>
-      <div class="d-flex justify-content-center justify-content-lg-start">
-        <a href="#about" class="btn-get-started">Get Started</a>
+      <h2>Exceptional <span> Home Care </span> Simplified</h2>
+       <p>Mobile-first software solutions designed 
+        to streamline home care operations and ensure service users satisfaction.</p>
+         <ul class="checkmark-list">
+            <li> Enhance Communication between Agency and clients</li>
+            <li> Ensure care givers offer more quality service</li>
+            <li> Boost CQC Ratings </li>
+          </ul> 
+        <div class="d-flex justify-content-center justify-content-lg-start">
+        <a href="{{url('/register')}}" class="btn-get-started">Get Started</a>
         <a href="https://www.youtube.com/watch?v=LXb3EKWsInQ" class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
       </div>
     </div>

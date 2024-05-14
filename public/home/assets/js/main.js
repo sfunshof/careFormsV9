@@ -5,6 +5,8 @@
 * Author: BootstrapMade.com
 * License: https://bootstrapmade.com/license/
 */
+
+let showPreloader =function() {}
 document.addEventListener('DOMContentLoaded', () => {
   "use strict";
 
@@ -15,7 +17,14 @@ document.addEventListener('DOMContentLoaded', () => {
   if (preloader) {
     window.addEventListener('load', () => {
       preloader.remove();
+      cookieShow() //show cookie after everything is loaded
     });
+  }
+
+  showPreloader =function() {
+    const spinner = document.createElement('div');
+    spinner.id = 'preloader';
+    document.body.appendChild(spinner);
   }
 
   /**
@@ -295,4 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
     aos_init();
   });
 
+
 });
+
+ 
