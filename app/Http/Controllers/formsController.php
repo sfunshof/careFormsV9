@@ -73,7 +73,17 @@ class formsController extends Controller
                  $status=DB::table('buildformtable_spotcheck')->insert($item);
             }
             
+        }else if ($resTypeID== 4){
+            DB::table('buildformtable_prospect')
+           ->where(['companyID' => $companyID])
+           ->update(['companyID' => $companyID *-1, 
+           'updateDate'=>now()]);
+            $status=-1;
+            foreach ($insertData as $item) {
+                $status=DB::table('buildformtable_prospect')->insert($item);
+           }
         }
+        
         return response()->json([
             'status' => $insertData]
         );
