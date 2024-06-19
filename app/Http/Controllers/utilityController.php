@@ -221,7 +221,7 @@ class utilityController extends Controller
         return 0;
     }
     
-    
+        
     public function email_employee_spotCheck(Request $req){
         $keyID=$req->keyID;
              

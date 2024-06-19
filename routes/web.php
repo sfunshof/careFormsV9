@@ -54,9 +54,8 @@ Route:: post('/prospect/mobileSave', [serviceUserController::class, 'save_servic
 Route:: post('/prospect/mobileSubmit', [mobileprospectController::class, 'submit_prospect'])->name('prospectsubmit');
 
 //This is for the employee to verify by email
-Route::get('/spotcheck/{ranNo}', [employeeController::class, 'check_employee_spotCheck']);
 Route::post('/spotcheck/checksave', [employeeController::class, 'check_employee_spotCheck_save']);
-
+Route::get('/spotcheck/{ranNo}', [employeeController::class, 'check_employee_spotCheck'])->where('ranNo', '.*');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get("backoffice/feedback_dashboard", [backofficeController::class, 'show_feedback_dashboard'])->middleware(['auth','verified']);

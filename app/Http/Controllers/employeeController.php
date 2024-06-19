@@ -420,8 +420,8 @@ class employeeController extends Controller
     }
     
     public function check_employee_spotCheck(Request $request){
-        $ranNo = $request->route('ranNo');
-        
+         $ranNo = $request->route('ranNo');
+       
         $array=[];
         $array['companyName']=""; 
         $spotcheck = DB::table('responsetable_spotcheck')
