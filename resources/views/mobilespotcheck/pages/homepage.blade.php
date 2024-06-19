@@ -1,4 +1,4 @@
-@extends('mobilespotcheck.layouts.layout')
+@extends('mobilecompliance.layouts.layout')
 
 @section('css-custom')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -9,12 +9,13 @@
             color: #fff; /* Set your desired text color */
             height:'auto';
         }
-      
     </style>
+    <link href="{{asset('custom/css/mobilespotcheck/mycss.css')}}"  rel="stylesheet">
+
 @endsection
 
 @section('title')
-    Home    
+    Spot Check Home    
 @endsection
 
 @section('header-contents')
@@ -29,6 +30,7 @@
             </div>
         </div>
     </div>
+     
     <div id="app"  v-cloak>
         <div v-show="showSelectCarersPage">
              @include('mobilespotcheck.fakecomponents.selectcarers')
@@ -54,16 +56,19 @@
 @endsection
 @section('footer-contents')
    @include('mobilespotcheck.inc.footer')
-@endsection    
+@endsection 
+ 
 @push('scripts')
     <script>
         let save_mobileSpotCheckURL= "{{ url('/spotcheck/mobileSave')}}"; 
         let show_mobileSpotCheckDataURL="{{ url('/spotcheck/mobileHome') }}";
         let token = "{{ csrf_token() }}";
-        let loginURL="{{ route('spotchecklogin') }}";
+        let loginURL="{{ route('compliancelogin') }}";
+        let menuURL="{{ route('compliancemenu') }}";
         var my2AssociativeArray = @json($records);
        // alert(JSON.stringify(my2AssociativeArray));
     </script>
     <script src="{{asset('custom/js/mobilespotcheck/app.js')}}"></script>  
+    <script src="{{asset('custom/js/mobilespotcheck/common.js')}}"></script>
     <script src="{{asset('custom/js/mobilespotcheck/myjs.js')}}"></script>
 @endpush   

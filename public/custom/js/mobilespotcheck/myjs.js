@@ -3,25 +3,14 @@ let confirmCarerFunc=function(){}
 let assignServiceUserFunc=function(){}
 let cancelSelectedServiceUserFunc=function(){}
 let selectServiceUserFunc=function(){}
-let toggleNextIconFunc=function(){}
-let togglePrevIconFunc=function(){}
-let toggleShowNextIconFunc=function(){}
-let toggleShowPrevIconFunc=function(){}
 let displaySelectedInfoFunc=function(){}
-let prevIconFunc=function(){}
-let nextIconFunc=function(){}
-let radioClickFunc=function(){}
-let textAreaClickFunc=function(){}
-let otherTextAreaClickFunc=function(){}
 let submitSpotCheckFunc=function(){}
 let rateStarFunc=function(){}
 let reportFunc=function(){}
 let reportRadioFunc=function(){}
 let initCarerPageFunc=function(){}
 let showDurationSelectFunc=function(){}
-let logoutFunc=function(){}
-let spotCheckResult=[]
-let spotCheckReview=0
+
 
 function ready(callbackFunc) {
     if (document.readyState !== 'loading') {
@@ -40,15 +29,8 @@ function ready(callbackFunc) {
     }
 }
 
-function showSpinner() {
-    const spinnerElement = document.getElementById('spinner');
-    spinnerElement.style.display = 'block'; // Show the spinner
-}
-function hideSpinner() {
-    const spinnerElement = document.getElementById('spinner');
-    spinnerElement.style.display = 'none'; // Hide the spinner
-}
 
+ 
 function showSpinner_modal() {
    const spinnerElement = document.getElementById('spinner_modal');
    spinnerElement.style.display = 'block'; // Show the spinner
@@ -119,163 +101,7 @@ ready(function() {
       });
     }
    
-    function validateResponse(current_index){
-      function checkElementExistence(pos) {
-        // Check if a radio button with the name "radio" exists and is visible
-        function checkVisibility(pos) {
-            let radioName = 'radio'+pos // Change this to whatever dynamic name you have
-            let radio = document.querySelector('input[type="radio"][name="' + radioName + '"]');
-            if (radio ) {
-              // alert(JSON.stringify(radio))
-                return  1
-            } else {
-                return 99
-            }
-        }
-        //radio
-        let radioStatus=checkVisibility(pos)
-        //alert(radioStatus)
 
-        if (radioStatus==1){
-            return 1;
-        }  
-        // Check if an element with id "text1" exists
-        let textElement = document.getElementById('text' + pos);
-        if (textElement) {
-            return 0;
-        }
-
-        // If neither "radio1" nor "text1" exists, return -1
-        return -1;
-      } 
-      if (typeof spotCheckResult[current_index] === 'undefined') {
-          //check the element
-          let status= checkElementExistence(current_index)     
-          //alert(status)
-          if (status==1){
-              //please select an option
-              warning("Please select an option")  
-              return -1
-          }else if (status==0){
-              //please fill the text
-              warning("Please enter some text") 
-              return -1
-          }else if (status==-1){
-              //Nothing to fill
-              spotCheckResult[current_index]=[] 
-          } 
-           
-      }
-    }
-
-    function next() {
-        // Get all div elements with ids starting with 'div'
-        var divs = document.querySelectorAll('[id^="div"]');
-              
-        // Check if the last div is visible
-        if (divs[divs.length - 1].style.display !== 'none') {
-            // If the last div is visible, return 0
-            toggleNextIconFunc(0)
-            return 0;
-        }
-        
-        // Find the index of the currently visible div
-        var currentIndex = -1;
-        divs.forEach(function(div, index) {
-            if (div.style.display !== 'none') {
-                currentIndex = index;
-            }
-        });
-        
-        if (validateResponse(currentIndex)==-1){
-           return -1
-        }
-        
-        // Hide the currently visible div
-        if (currentIndex !== -1) {
-            divs[currentIndex].style.display = 'none';
-            
-            // Show the next div, or the first one if the last one was visible
-            var nextIndex = (currentIndex + 1) % divs.length;
-            divs[nextIndex].style.display = 'block';
-        }
-         // Check if the last div was hidden and now visible
-         var lastIndex = divs.length - 1;
-         if (divs[lastIndex].style.display === 'block' || divs[lastIndex].style.display === '') {
-             // If the last div is now visible, return 0
-             toggleNextIconFunc(0)
-             return 0;
-         }
- 
-    }
-
-    function previous() {
-      // Get all div elements with ids starting with 'div'
-      var divs = document.querySelectorAll('[id^="div"]');
-
-      toggleNextIconFunc(1)
-          
-      // Check if div0 is visible
-      if (divs[0].style.display !== 'none') {
-          // If div0 is visible, return 0
-          Fnon.Ask.Danger({
-            title:'Warning!!!',
-            message:'Going past this page will result in data losss <br> Do you wish to continue?',
-            btnOkText: 'Yes',
-            btnOkBackground: '#dc3545',
-            btnOkColor: '#fff',
-            btnCancelText: 'No',
-            btnCancelColor: '#fff',
-            btnCancelBackground: '#808080',
-            callback:(result)=>{
-                // callback
-                if (result) {
- 
-                  showServiceUserPageFunc()
-
-                }
-            }
-        });
-         
-          
-          return 0;
-      }
-      
-      // Check if div7 is visible
-      if (divs[divs.length - 1].style.display !== 'none') {
-          // If div7 is visible, hide it and show div6
-          divs[divs.length - 1].style.display = 'none';
-          divs[divs.length - 2].style.display = 'block';
-          return;
-      }
-      
-      // Find the index of the currently visible div
-      var currentIndex = -1;
-      divs.forEach(function(div, index) {
-          if (div.style.display !== 'none') {
-              currentIndex = index;
-          }
-      });
-  
-      // Hide the currently visible div
-      if (currentIndex !== -1) {
-          divs[currentIndex].style.display = 'none';
-          
-          // Show the previous div, or the last one if the first one was visible
-          var prevIndex = (currentIndex - 1 + divs.length) % divs.length;
-          divs[prevIndex].style.display = 'block';
-      }
-  }
-  
-
-    let showSpotCheckQuesFunc=function(direction){
-        if (direction==1){
-          next()
-        }else if (direction==-1){
-          previous()
-        }
-          
-    }
 
     confirmCarerFunc=function(id, name){
       // component methods accessible on return value from mount()
@@ -313,7 +139,7 @@ ready(function() {
                  toggleShowPrevIconFunc(1)
                  toggleShowNextIconFunc(1)
                  togglePrevIconFunc(1)
-                  toggleNextIconFunc(0)
+                 toggleNextIconFunc(0)
 
               }else{
                 store.remove('selectedCarer');
@@ -338,6 +164,7 @@ ready(function() {
         }else{
           Fnon.Hint.Danger('Please select the service user', {
               animation: 'slide-bottom', 
+              position:'center-center',
               callback:function(){
                 // callback
                 toggleNextIconFunc(0)
@@ -353,51 +180,8 @@ ready(function() {
         root.showDisplaySelectedInfoPage=false
       
     }
-    
-    const prevIcon = document.getElementById('prevId').querySelector('i');
-    const nextIcon = document.getElementById('nextId').querySelector('i');
-    
-    togglePrevIconFunc=function(isEnable) {
-        if (isEnable){
-            if (prevIcon.classList.contains('disabled-icon')) {
-                prevIcon.classList.remove('disabled-icon');
-            }
-        }else { //disabled
-              prevIcon.classList.add('disabled-icon');
-        }
-    }
+ 
 
-    toggleNextIconFunc=function(isEnable) {
-        if (isEnable){
-            if (nextIcon.classList.contains('disabled-icon')) {
-                nextIcon.classList.remove('disabled-icon');
-            }
-        }else { //disabled
-              nextIcon.classList.add('disabled-icon');
-        }
-    }
-    
-    toggleShowPrevIconFunc=function(isShow){
-      if (isShow){
-          if (prevIcon.classList.contains('d-none')) {
-              prevIcon.classList.remove('d-none');
-          }
-      }else { //hide
-            prevIcon.classList.add('d-none');
-            
-      }
-    }    
-    
-    toggleShowNextIconFunc=function(isShow){
-      if (isShow){
-          if (nextIcon.classList.contains('d-none')) {
-              nextIcon.classList.remove('d-none');
-          }
-      }else { //hide
-            nextIcon.classList.add('d-none');
-      }
-    }
-    
     displaySelectedInfoFunc=function(){
         let carer=store.get('selectedCarer')   
         let serviceUser=store.get('selectedServiceUser')
@@ -406,12 +190,22 @@ ready(function() {
         root.selectedServiceUser=serviceUser.name
         toggleNextIconFunc(1)
     }
+
+    let showSpotCheckQuesFunc=function(direction){
+        if (direction==1){
+            next()
+        }else if (direction==-1){
+            previous()
+        }
+        
+     }
+
     
     prevIconFunc=function(){
       let pageId= root.get_currentPage()
-      if (prevIcon.classList.contains('disabled-icon')) {
-         return 0;
-      }
+      //if (prevIcon.classList.contains('disabled-icon')) {
+      //   return 0;
+      //}
       switch(pageId) {
         case 2:
           // code block
@@ -430,9 +224,9 @@ ready(function() {
     
     nextIconFunc=function(){
       let pageId= root.get_currentPage()
-      if (nextIcon.classList.contains('disabled-icon')) {
-         return 0;
-      }  
+     // if (nextIcon.classList.contains('disabled-icon')) {
+      //   return 0;
+      //}  
       switch(pageId) {
         case 2:
           // code block
@@ -452,6 +246,7 @@ ready(function() {
           warning("Please select a star rating") 
           return -1
         }
+        togglePrevIconFunc(0)
         let carer=store.get('selectedCarer')
         let serviceUser=store.get('selectedServiceUser')
         showSpinner()
@@ -461,6 +256,7 @@ ready(function() {
             spotCheckData: spotCheckResult,
             spotCheckReview: spotCheckReview
         }
+      
        fetch(save_mobileSpotCheckURL, {
           method: 'POST',
           body: JSON.stringify(post_data),
@@ -491,55 +287,11 @@ ready(function() {
       })
       .catch(error => {
           hideSpinner();
+          togglePrevIconFunc(1)
           //console.error('Fetch error:', error);
       });
 
       //alert(JSON.stringify(spotCheckResult))
-    }
-
-    textAreaClickFunc=function(pos){
-          function captureText() {
-              let id="text"+pos
-              const textarea = document.getElementById(id);
-              const userInput = textarea.value.trim(); // Remove leading/trailing spaces
-              // Check if the user input is empty
-              if (userInput === '') {
-                  return undefined;
-              } else {
-                  return userInput;
-              }
-          }
-          spotCheckResult[pos]=[captureText()]
-    }
-    
-    otherTextAreaClickFunc=function(pos) {
-      let id="other"+pos
-      // Get the value of the textarea
-      const inputValue = document.getElementById(id).value;
-      // Add the input value to the array
-      let otherText="Others: " + inputValue
-
-      spotCheckResult[pos].push(otherText);
-    }
-
-    radioClickFunc=function(pos, value){
-      //alert(pos + '   ' + value)
-
-      let id="box"+pos
-      const othersId = document.getElementById(id);
-      if (value=="Others"){
-          othersId.style.display = 'block';
-          let textId="other"+pos
-          const textarea = document.getElementById(textId);
-          if (textarea) {
-              const text = value + ': '
-              spotCheckResult[pos]=[text]
-           }    
-
-      }else{
-          othersId.style.display = 'none';
-          spotCheckResult[pos]=[value]
-      }
     }
 
     reportFunc=function(){
@@ -547,30 +299,36 @@ ready(function() {
       const bsModal = new bootstrap.Modal(modalEl);
       bsModal.show();
     }
-    logoutFunc=function(){
-        Fnon.Ask.Primary({
-            title:'Logout',
-            message:'Do you wish to logout',
-            btnOkText: 'Yes',
-            btnOkBackground: '#0d6efd',
-            btnOkColor: '#fff',
-            btnCancelText: 'No',
-            btnCancelColor: '#fff',
-            btnCancelBackground: '#808080',
-            callback:(result)=>{
-                // callback
+
+
+   previous_with_first_quespage=function(){
+         // If div0 is visible, return 0
+        Fnon.Ask.Danger({
+        title:'Warning!!!',
+        message:'Going past this page will result in data losss <br> Do you wish to continue?',
+        btnOkText: 'Yes',
+        btnOkBackground: '#dc3545',
+        btnOkColor: '#fff',
+        btnCancelText: 'No',
+        btnCancelColor: '#fff',
+        btnCancelBackground: '#808080',
+        callback:(result)=>{
+            // callback
                 if (result) {
-                  showSpinner()  
-                  store.clear()
-                  // Redirect to the spotcheck/mobile route
-                  window.location.href = loginURL;  
+                  const myForm = document.getElementById('myForm');
+                  myForm.reset()
+                  showServiceUserPageFunc()
+                  spotCheckResult=[] 
                 }
             }
-         });
-    }
+        });
+                
+        return 1;
+      
+   }
 
     initCarerPageFunc=function(){
-      Fnon.Ask.Primary({
+      Fnon.Ask.Danger({
         title:'Start Up Page',
         message:'Going to the Start will clear all data. Do you wish to continue?',
         btnOkText: 'Yes',
@@ -582,7 +340,11 @@ ready(function() {
         callback:(result)=>{
             // callback
             if (result) {
-               showCarerPageFunc()
+              const myForm = document.getElementById('myForm');
+              myForm.reset()
+              go_to_first_quespage()
+              spotCheckResult=[]
+              showCarerPageFunc()
             }
         }
      });
@@ -632,7 +394,6 @@ ready(function() {
     
     //Hides selected duration: shows btn and table
     reportRadioFunc=function(strvalue,Mnths){
-        
       function update_otherReports(strvalue){
           let durationBtn = document.getElementById("durationBtnID");
           let durationSelect = document.getElementById("durationSelectID");
@@ -640,7 +401,7 @@ ready(function() {
           let caption = document.getElementById('reportCaptionID');
   
           // Change the caption text
-          caption.textContent = strvalue +  ' Spot Checks';
+          caption.textContent = "The last " + strvalue +  ' Spot Checks';
           
           // Slide up the duration select with transition
           durationSelect.style.height = durationSelect.scrollHeight + "px";
@@ -662,7 +423,7 @@ ready(function() {
             showSpinner_modal()
             const legend = document.querySelector('legend');
             // Update the legend text with the selected value
-            legend.textContent = 'Selected Duration: ' + strvalue;
+            legend.textContent = 'Updated Duration:  last ' + strvalue;
 
             const asyncMobileCall = async () => {
             let post_data={

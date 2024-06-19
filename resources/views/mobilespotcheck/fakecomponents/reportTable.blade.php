@@ -1,8 +1,9 @@
+
 @if ((count($records)==0 ) && (count($not_yet_spotCheckedIDs)==0))
     <p class="fs-4 text-center  text-danger  "> There are no Spot checks data on the system </p>
 @else
     <table  class="table caption-top">
-        <caption id="reportCaptionID" class="text-primary fw-bold">3 Months Spots Check</caption>
+        <caption id="reportCaptionID" class="text-primary fw-bold">The Last 3 Months Spot Checks</caption>
         <thead>
             <tr>
                 <th>Date</th>

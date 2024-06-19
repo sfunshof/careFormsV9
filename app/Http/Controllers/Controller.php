@@ -9,6 +9,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 
 class Controller extends BaseController
@@ -21,6 +22,9 @@ class Controller extends BaseController
             $companyID=-1;
             if (Auth::user()){
                 $companyID= Auth::user()->id;
+                $userName= Auth::user()->email;
+                Session::put('companyID', $companyID);
+                Session::put('userName', $userName);
             }
             //take this from authentication
             $this->company_settings= DB::select("select * from companyprofiletable where companyID=? ", [$companyID]);

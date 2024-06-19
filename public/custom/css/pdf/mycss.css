@@ -1,0 +1,21 @@
+/* Body styles */
+body {
+    font-family: Arial, sans-serif;  /* Set a default font for the body */
+    margin: 20px;                  /* Add some margin around the body content */
+    line-height: 1.5;                /* Adjust line spacing for better readability */
+  }
+  
+  /* Paragraph styles */
+  p {
+    color: #333;                     /* Set a dark grey text color */
+    font-size: 16px;                 /* Set a comfortable font size for paragraphs */
+  }
+
+  .container {
+    width: 80%; /* Adjust width as needed */
+    margin: 0 auto; /* Center the container horizontally */
+    padding: 1rem; /* Add some padding for content */
+    /* Optional: Add a background color or border */
+  }
+
+  

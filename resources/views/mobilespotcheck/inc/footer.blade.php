@@ -17,6 +17,18 @@
                  Report
             </span>
         </div>
+        
+        <div class="col">
+            <!-- Empty column for center spacing -->
+        </div>
+        <div class="col">
+            <span class="text-white" onClick="menuFunc()">
+                <i class="fas fa-bars"></i>
+                <br>
+                Menu
+            </span>
+        </div>
+
         <div class="col">
             <!-- Empty column for center spacing -->
         </div>

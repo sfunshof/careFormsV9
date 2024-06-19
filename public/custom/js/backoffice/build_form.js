@@ -8,6 +8,7 @@ let cqcChangeFunc=function(){}
 let quesTypeChangeFunc=function(){}
 let add_optionsFunc=function(){}
 let del_optionsFunc=function(){}
+let hide_buildFormFrameFunc=function(){}
 
 function ready(callbackFunc) {
     if (document.readyState !== 'loading') {
@@ -346,10 +347,30 @@ ready(function() {
             asyncPostCall()
         } 
         //*** end of update */
-
-        
         
     }
+
+     
+    hide_buildFormFrameFunc=function(){
+        function nullifyFrameStyle() {
+            var frame = document.getElementById('scrollableFrame');
+            frame.style.cssText = 'max-height: none; overflow-y: visible; border-bottom: none; padding: 0;';
+        }
+        
+        // Function to restore the frame style
+        function restoreFrameStyle() {
+            var frame = document.getElementById('scrollableFrame');
+            frame.style.cssText = 'max-height: 350px; overflow-y: auto; overflow-x:hidden; border-bottom: 1px solid #ccc; padding: 10px;';
+        }
+
+        var checkbox = document.getElementById('buildFormFrameID');
+        if (checkbox.checked) {
+            nullifyFrameStyle()
+         }else{
+            restoreFrameStyle()
+         }
+    }
+
 
 
 

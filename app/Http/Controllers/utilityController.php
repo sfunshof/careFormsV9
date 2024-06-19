@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\employee_feedbackMail;
+use App\Mail\employee_spotcheckMail;
+use Illuminate\Support\Str;
 
 class utilityController extends Controller
 {
@@ -218,6 +220,72 @@ class utilityController extends Controller
         print_r($req);
         return 0;
     }
+    
+    
+    public function email_employee_spotCheck(Request $req){
+        $keyID=$req->keyID;
+             
+        $spotcheck = DB::table('responsetable_spotcheck')
+            ->select('companyID', 'carerID')
+            ->where('keyID', $keyID)
+            ->first();
+        if ($spotcheck) {
+            // Access companyName and spotCheckMsg attributes
+            $companyID = $spotcheck->companyID;
+            $carerID = $spotcheck->carerID;
+        } else {
+            // Handle the case where no company is found
+            // ...
+            return response()->json(['status' => -1, 'msg' => "West"]); 
+        }
 
+         //get the spotcheck msg and company name
+         $company = DB::table('companyprofiletable')
+            ->select('companyName' )   //,'spotCheckMsg')
+            ->where('companyID', $companyID)
+            ->first();
+     
+        if ($company) {
+            // Access companyName and spotCheckMsg attributes
+            $companyName = $company->companyName;
+            $spotCheckMsg = $company . " needs your comments regarding the recent spot check carried out";
+        } else {
+            // Handle the case where no company is found
+            // ...
+            return response()->json(['status' => -2, 'msg' => "West"]); 
+        }
+        //get the carer Email
+        $email = DB::table('employeedetailstable')
+                ->where('userID', $carerID)
+                ->value('email');
+
+        //has the key and this is to be sent to the employee
+        $randomString = Str::random(6);
+        $randomString=$keyID . "-" . $randomString;
+        $randomKey = \Hash::make($randomString);
+        $URL= url( '/spotcheck/' .  $randomKey); 
+        $msgX= $spotCheckMsg . "<br> Please complete this by clicking on the link <a href= " . $URL . "> " .  $URL . "</a>";
+        $details=[
+            'msg'=> $msgX,                    //
+            'subject' => $companyName . ' ' . 'Spot Check',
+            'title' => "Care giver's Spot check",
+        ];    
+                
+        try {
+            Mail::to($email)->send(new employee_spotcheckMail($details));
+            DB::table('responsetable_spotcheck')
+            ->where('keyID', $keyID)
+            ->update(['randomNo' => $randomKey]);
+            return response()->json(['status' => $keyID, 'msg' => "Success"]);
+        } catch (Exception $e) {
+            // Log the error or take other appropriate actions
+            return response()->json(['status' => -3, 'msg' => "Email sending failed: " . $e->getMessage()]);
+        }
+
+
+
+            
+        ;
+    }
     
 }

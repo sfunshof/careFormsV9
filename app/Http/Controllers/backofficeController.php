@@ -427,7 +427,8 @@ class backofficeController extends Controller
         ];
         if ($userTable =="serviceuserdetailstable"){
             $whereArray=[
-                'companyID'=>$companyID
+                'companyID'=>$companyID,
+                'isProspect' => 0
             ];
         };
         //dd($companyID);
@@ -673,4 +674,5 @@ class backofficeController extends Controller
                ]);
     }
 
+   
 }

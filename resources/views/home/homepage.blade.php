@@ -23,7 +23,7 @@
     </section>
 
     <!-- ======= Problem Section ======= -->
-    <section id="problem" class="problem">
+    <section id="problem" class="about">
         @include('home.inc.problem')
     </section><!-- End About Section -->
   

@@ -17,7 +17,13 @@
                     </div>
                 </div>
                 
-                <button  id="durationBtnID"   onClick="showDurationSelectFunc()"  type="button" class="btn btn-primary w-100" >Select the Duration</button>
+                
+                <button id="durationBtnID"     type="button"      class="btn btn-primary w-100"
+                    @if (count($records) === 0 && count($not_yet_spotCheckedIDs) === 0)
+                        disabled
+                    @endif
+                    onclick="showDurationSelectFunc()"> Change the Duration
+                </button>
                 <div style="display: flex; align-items: center; justify-content: center;">            
                     <fieldset id="durationSelectID"  style="display:none">
                         <legend class="mb-3">Selected Duration: 3 Months</legend>
@@ -36,9 +42,10 @@
                             <label class="form-check-label mb-3"  for="1year">1 Year</label><br>
                         </div>
                     </fieldset>
-                </div>
+                </div> 
 
                 <div class="table-wrapper"  id="durationTableID" >
+                    <!-- This must be for 3 months -->
                     @include('mobilespotcheck.fakecomponents.reportTable')
                 </div>
 

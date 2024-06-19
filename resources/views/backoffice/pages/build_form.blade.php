@@ -13,13 +13,20 @@
                         <span class="fw-bold text-danger"> Reset All Questions </span > button to add system inputted questions
                     </p>    
                 </div>
-                
-                <div class="accordion accordion-flush " id="accordionBodyID">
-                    {{--  This is where the form details are written to by js --}}
+                <div class="form-check form-switch text-right">
+                    <input class="form-check-input" type="checkbox" id="buildFormFrameID" 
+                           onchange="hide_buildFormFrameFunc()">
+                    <label class="form-check-label" for="buildFormFrameID">Remove Build Frame</label>
                 </div>
-
+                <div id="scrollableFrame">
+                    <div class="accordion accordion-flush " id="accordionBodyID">
+                        {{--  This is where the form details are written to by js --}}
+                    </div>
+                </div>
+                {{--
                 <hr class="bg-danger border-2 border-top border-danger">
-                <div class="d-flex justify-content-between">
+                --}}
+                <div class="d-flex justify-content-between mt-3">
                     <div>
                         <button class="btn btn-primary" type="button" onClick="add_quesFunc(1)">Add Question</button>
                         <button class="btn btn-primary" type="button" onClick="update_formFunc()">Update Form</button>

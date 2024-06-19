@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Str;
 
 class employeeController extends Controller
 {
@@ -19,14 +20,47 @@ class employeeController extends Controller
     }   
     public function save_employee(Request $req){
         $userID=$req->userID;
-
-        $rules= ([
+        $COSrules=[
+            'appDate'=>'required',
+            'interDate' => 'required',
+            'COSdate'=> 'required',
+            'arrDate' =>'required',
+            'DBSdate' => 'required',
+            'startDate' => 'required' 
+        ];
+        $COSmsg=[
+            'appDate.required'=> 'Application date is required',
+            'interDate.required'=> 'Interview date is required',
+            'COSdate.required'=> 'COS issue date is required',
+            'arrDate.required'=> 'UK arrival date is required',
+            'DBSdate.required'=> 'DBS issue date is required',
+            'startDate.required'=> 'Contract Start date is required',
+        ];    
+        $rules= [
             'firstName' => 'required|max:30',
             'lastName' => 'required|max:40', 
             'mobile' =>  ['required', 'regex:/^\+44\d{7,11}$/'],
             'email' => 'required|email'
-        ]);
-        $validator = Validator::make($req->all(), $rules);
+        ];
+        $msg=[
+            'firstName.required'=>'First Name is required',
+            'lastName.required'=>'Last Name is required',
+        ];
+
+        // Combine the rules and messages
+        if ($req->isCOS==1){
+            $rules = array_merge($rules, $COSrules);
+            $msg = array_merge($msg, $COSmsg);
+        }
+        $validator = Validator::make($req->all(), $rules, $msg);
+        $COSdates = array("appDate" => $req->appDate,
+                     "interDate" =>$req->interDate,
+                     "COSdate" => $req->COSdate,
+                     "arrDate" => $req->arrDate,
+                     "DBSdate" => $req->DBSdate,
+                     "startDate" => $req->startDate
+        ) ;
+
         if ($validator->passes()) {
             $fieldSet=[
                 'firstName'=>$req->firstName,
@@ -34,7 +68,9 @@ class employeeController extends Controller
                 'email' =>$req->email,
                 'tel'=>$req->mobile,
                 'jobFunction'=>$req->job,
-                'companyID'=>$req->companyID
+                'companyID'=>$req->companyID,
+                'isCOS' => $req->isCOS,
+                'COSdates' => json_encode($COSdates)
             ];
             if ($userID==-1){
                 $insertStatus=DB::table('employeedetailstable')->insert($fieldSet);
@@ -100,7 +136,8 @@ class employeeController extends Controller
         ->where('isDisable', 0)
         ->where('companyID', $companyID)
         ->get();
-       return view('backoffice.pages.browse_employees', ['employees'=> $user, 'pageNo' => $pageNo, 'isDisabledFlag' => 1]);
+        $exist= $this->if_any_disabledUsers(0);
+       return view('backoffice.pages.browse_employees', ['employees'=> $user, 'pageNo' => $pageNo, 'isDisabledFlag' => 1, 'exist' => $exist]);
     }   
     
     //both valid and in valid employees
@@ -144,6 +181,8 @@ class employeeController extends Controller
         $result=formsController::survey_status($date, "employeedetailstable",$resTypeID,$companyID,$sendByEmail);
         $responseStatus=$result['responseStatus'];
         $usersDetails=$result['userDetails'];    
+        
+          
         return view('backoffice.pages.browse_surveyFeedback',
             ['responseStatus' => $responseStatus, 'usersDetails'=> $usersDetails,
             'isServiceUser' => 0,
@@ -195,6 +234,7 @@ class employeeController extends Controller
         $userDetails = DB::table('serviceuserdetailstable')
             ->select('userID', DB::raw("CONCAT(title, ' ', firstName, ' ', lastName) AS full_name"))
             ->where('companyID', $companyID)
+            ->where('isProspect', 0)
             ->get()
             ->pluck('full_name', 'userID')
             ->toArray();
@@ -235,7 +275,7 @@ class employeeController extends Controller
         ->toArray();
                  
         $records = DB::table('responsetable_spotcheck')
-            ->selectRaw("DATE(date_issue) as date, keyID, carerID, serviceUserID, star")
+            ->selectRaw("DATE(date_issue) as date, keyID, carerID, serviceUserID, star, checkDate, checkComments")
             ->where('companyID', $companyID)
             ->whereDate('date_issue', '>=', $startDate)
             ->get();
@@ -286,16 +326,16 @@ class employeeController extends Controller
     private function display_spotcheckData($keyID){
         // Perform the query
         $data = DB::table('responsetable_spotcheck')
-            ->select( 'carerID', 'supervisor', 'serviceUserID', 'date_issue', 'responses', 'quesNames', 'quesTypeID', 'quesOptions', 'star')
+            ->select( 'carerID', 'companyID', 'supervisor', 'serviceUserID', 'date_issue', 'responses', 'quesNames', 'quesTypeID', 'quesOptions', 'star', 'checkDate','checkComments')
             ->where('keyID', $keyID)
             ->get();
 
-        // Initialize arrays to store each field
+        // Initialize arrays to store each field: do not be confused. each cell is json array
         $responses_array = [];
         $quesNames_array = [];
         $quesTypeID_array = [];
         $quesOptions_array = [];
-    
+        
 
         // Extract data into respective arrays
         foreach ($data as $item) {
@@ -310,10 +350,18 @@ class employeeController extends Controller
             //]            
             $quesOptions_array =json_decode($item->quesOptions,true);
         }
-             
         
+          
         //Get the companyName
-        $companyName=$this->getCompanyName();        
+        $companyID=$data[0]->companyID;
+        $companyName = DB::table('companyprofiletable') 
+            ->select('companyName')
+            ->where('companyID', $companyID)
+            ->first();
+        if ($companyName) {
+            $companyName= $companyName->companyName;
+        }
+        
         //Get the supervisor
         $supervisor=$data[0]->supervisor;
         //Carer
@@ -324,7 +372,7 @@ class employeeController extends Controller
         $date_issue=$data[0]->date_issue;
         $rating=$data[0]->star;
         $array=[
-            'companyName' => $companyName,
+            'companyName' => $companyName, 
             'carerName'=> $carerName,
             'serviceUserName' => $serviceUserName,
             'supervisor' => $supervisor,
@@ -335,10 +383,22 @@ class employeeController extends Controller
             'quesNames_array' => $quesNames_array,
             'quesTypeID_array' => $quesTypeID_array,
             'quesOptions_array' => $quesOptions_array,
-            'pdf_print' => 0
+            'pdf_print' => 0,
+            'checkDate' =>$data[0]->checkDate,
+            'checkComments'=>$data[0]->checkComments
 
         ];
         return $array;
+    }
+
+    private function if_any_disabledUsers(){
+        $recordExists = DB::table('employeedetailstable')
+        ->exists();
+        if ($recordExists){
+            return 1;
+        }else{
+            return 0;
+        }    
     }
     
     public function view_employee_spotCheck(Request $req){
@@ -349,17 +409,98 @@ class employeeController extends Controller
         $array=$this->display_spotcheckData($keyID);
         return view('backoffice.pages.view_employee_spotCheck',$array);       
     }
+    
+    public function edit_employee_spotCheck(Request $req){
+        $keyID=$req->keyID;
+        //We put this in a session so thath print pdf can use it
+        //print pdf is a GET
+        session(['keyID' => $keyID]);
+        $array=$this->display_spotcheckData($keyID);
+        return view('backoffice.pages.edit_employee_spotCheck',$array);       
+    }
+    
+    public function check_employee_spotCheck(Request $request){
+        $ranNo = $request->route('ranNo');
+        
+        $array=[];
+        $array['companyName']=""; 
+        $spotcheck = DB::table('responsetable_spotcheck')
+            ->select('keyID')
+            ->where('randomNo', $ranNo)
+            ->first();
+        $keyID=-1;    
+        if ($spotcheck) {
+            // Access companyName and spotCheckMsg attributes
+            $status= 1;
+            $keyID= $spotcheck->keyID;
+            $array=$this->display_spotcheckData($keyID);
+        } else {
+            // Handle the case where no company is found
+            // ...
+            $status=0;
+        } 
+
+        $array['status']=$status;
+        $array['keyID']=$keyID;
+        return view('backoffice.pages.check_employee_spotCheck',$array);
+    }
+
+    public function check_employee_spotCheck_save(Request $req){
+        $keyID=$req->keyID;
+        $comments=$req->comments;
+        // Generate a random number
+        $randomNo = Str::random(4);
+        //$randomNo = $this->generateAlphanumericCode(4);  // Generate a random number between 
+
+        $query = DB::table('responsetable_spotcheck')
+            ->where('keyID', $keyID)
+            ->update([
+                'checkComments' => $comments,
+                'checkDate' => now(),
+                'randomNo' => $randomNo,
+        ]);
+        $msg= '<div class="alert alert-danger" role="alert">
+                   There is a problem submitting your response. Please try again!
+               </div>';
+        if ($query > 0){
+           $msg=  '<div class="alert alert-primary" role="alert">
+                   Care giver spot check responses successfully submitted
+                 </div>';   
+        }
+        return  $msg;
+    }
 
     public function browse_employee_spotCheck(){
         $spotCheckData=$this->get_spotcheck_record(3);
         return view('backoffice.pages.browse_employee_spotCheck',$spotCheckData);
     }
     
+    //the update here is wit the dates
     public function update_employee_spotcheck(Request $req){
         $selectMnth=$req->selectedMnth;
         $spotCheckData=$this->get_spotcheck_record($selectMnth);
         return view('backoffice.pages.browse_employee_spotCheck_component', $spotCheckData);        
     }
+    
+    public function save_employee_spotCheck(Request $req){
+           
+      $keyID=$req->keyID;
+       $responses=$req->responses;
+       $rating=$req->rating;
+       
+       $jsonResponses = json_encode($responses);
+       // Update the response and star fields
+        DB::table('responsetable_spotcheck')
+            ->where('keyID', $keyID)
+            ->update([
+                'responses' => $jsonResponses,
+                'star' => $rating
+        ]);
+        return response()->json($jsonResponses);  
+
+    }
+
+
     public function pdf_employee_spotCheck(){
         //get the keyID *** tech debt Please check for vaid session before proceeding
         $keyID = session('keyID'); //
@@ -376,4 +517,6 @@ class employeeController extends Controller
       //  return 1; //$pdf->stream();
    
     }
+
+
 }

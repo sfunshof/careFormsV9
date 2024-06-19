@@ -1,6 +1,6 @@
-@extends('mobilespotcheck.layouts.layout')
+@extends('mobilecompliance.layouts.layout')
 @section('title')
-    Spot Check Login    
+    Compliance Login    
 @endsection
 @section('contents')
     <div class="container mt-5">
@@ -19,8 +19,8 @@
                         </div>
 
                         <h3 class="card-title text-center">Login</h3>
-                        <h6 class="text-center">Spot Checks</h6>
-                        <form method="POST" action="{{ route('spotcheckloginlogic') }}" id="loginFormID">
+                        <h6 class="text-center">Compliance</h6>
+                        <form method="POST" action="{{ route('complianceloginlogic') }}" id="loginFormID">
                             @csrf
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
@@ -78,7 +78,7 @@
     </script>
     
     <script>
-        var PWA_name="Spot Check" 
+        var PWA_name="Compliance" 
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/6.0.0/bootbox.min.js" integrity="sha512-oVbWSv2O4y1UzvExJMHaHcaib4wsBMS5tEP3/YkMP6GmkwRJAa79Jwsv+Y/w7w2Vb/98/Xhvck10LyJweB8Jsw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script  src="{{ asset('custom/js/pwa/install.js')}}"></script>  

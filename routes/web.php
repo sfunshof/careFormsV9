@@ -10,7 +10,8 @@ use App\Http\Controllers\serviceUserController;
 use App\Http\Controllers\employeeController; 
 use App\Http\Controllers\homeController; 
 use App\Http\Controllers\mobilespotcheckController;
-
+use App\Http\Controllers\mobilecomplianceController;
+use App\Http\Controllers\mobileprospectController;
  
 /*
 |--------------------------------------------------------------------------
@@ -24,8 +25,8 @@ use App\Http\Controllers\mobilespotcheckController;
 */
 
 //This is the actual production one
-Route::domain('spotcheck.caretrail.co.uk')->group(function () {
-    Route::get('/', [mobilespotcheckController::class, 'showLoginForm'])->name('spotchecklogin');
+Route::domain('compliance.caretrail.co.uk')->group(function () {
+    Route::get('/', [mobilecomplianceController::class, 'showLoginForm'])->name('complianceloginx');
 });
 
 Route::get('/', [homeController::class, 'index']);
@@ -33,27 +34,29 @@ Route::get('/', [homeController::class, 'index']);
 //** Auth */
 
 
-/*
-Route::get('/register', function () {
-    return redirect('/#register');
-});
-
-Route::get('/login', function () {
-    return redirect('/#login');
-});
-*/
 
 Route::get('{unique_value}', [mobileController::class, 'index']);
 Route::post("user/save_feedback", [mobileController::class, 'save_userFeedback']);
 Route::get("user/successSaved/{companyID}", [mobileController::class, 'successSaved']);
 
 //This is for testing
-Route::get('/spotcheck/mobile', [mobilespotcheckController::class, 'showLoginForm']);
+Route::get('/compliance/mobile', [mobilecomplianceController::class, 'showLoginForm'])->name('compliancelogin') ;
 
-Route::post('/spotcheck/mobile', [mobilespotcheckController::class, 'login'])->name('spotcheckloginlogic');
+Route::post('/compliance/mobile', [mobilecomplianceController::class, 'login'])->name('complianceloginlogic');
+Route::get('/compliance/menu', [mobilecomplianceController::class, 'showMenuForm'])->name('compliancemenu');
+
 Route::get('/spotcheck/mobileHome', [mobilespotcheckController::class, 'showHomePage'])->name('spotcheckhome');
 Route::post('/spotcheck/mobileSave', [mobilespotcheckController::class, 'saveSpotCheckData'])->name('spotchecksave');
 Route:: post('/spotcheck/mobileHome', [backofficeController::class, 'show_mobile_spotcheck_data']);
+
+Route::get('/prospect/mobileHome', [mobileprospectController::class, 'showHomePage'])->name('prospecthome');
+Route:: post('/prospect/mobileSave', [serviceUserController::class, 'save_serviceUser'])->name('prospectsave');
+Route:: post('/prospect/mobileSubmit', [mobileprospectController::class, 'submit_prospect'])->name('prospectsubmit');
+
+//This is for the employee to verify by email
+Route::get('/spotcheck/{ranNo}', [employeeController::class, 'check_employee_spotCheck']);
+Route::post('/spotcheck/checksave', [employeeController::class, 'check_employee_spotCheck_save']);
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get("backoffice/feedback_dashboard", [backofficeController::class, 'show_feedback_dashboard'])->middleware(['auth','verified']);
@@ -74,6 +77,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get("serviceUser/browse_surveyfeedback", [serviceUserController::class, 'browse_surveyFeedback_serviceUser']);
     Route::get("serviceUser/browse_surveyfeedback/{month}/{year}/{pageNo}", [serviceUserController::class, 'browse_surveyFeedback_serviceUser']);
 
+    //prospect shares controllers with serviceuser
+    Route::get("prospect/addnew", [serviceUserController::class, 'addnew_prospect']);
+    Route::post("prospect/submit",[mobileprospectController::class, 'submit_prospect'])->name('submitprospect');
+    Route::get("prospect/browse", [serviceUserController::class, 'browse_prospects']);
+    Route::get("prospect/browse/{pageNo}", [serviceUserController::class, 'browse_prospects']);
+    Route::post("prospect/get_details", [serviceUserController::class, 'get_prospectDetails']);
+    Route::get("prospect/browse_all", [serviceUserController::class, 'browse_all_prospects']);
+    Route::post("prospect/convert", [serviceUserController::class, 'convert_prospect']);
+    Route::post("prospect/pdf_prospect", [serviceUserController::class, 'pdf_prospectDetails'])->name('printPdfProspect');
+
+
+
     Route::get("employee/addnew", [employeeController::class, 'addnew_employee']);
     Route::post("employee/save", [employeeController::class, 'save_employee']);
     Route::post("employee/disable", [employeeController::class, 'disable_employee']);
@@ -87,14 +102,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get("employee/browse_spotcheck", [employeeController::class, 'browse_employee_spotCheck']);
     Route::post("employee/browse_spotcheck", [employeeController::class, 'update_employee_spotCheck']);
     Route::post("employee/view_spotcheck", [employeeController::class, 'view_employee_spotCheck']);
+    //edit is similar to view different from update
+    Route::post("employee/edit_spotcheck", [employeeController::class, 'edit_employee_spotCheck']);
     Route::get("employee/pdf_spotcheck", [employeeController::class, 'pdf_employee_spotCheck']);
-
+    Route::post("employee/save_spotcheck", [employeeController::class, 'save_employee_spotCheck']);
+    Route::post("employee/email_spotcheck", [utilityController::class, 'email_employee_spotCheck']);
 
     Route::get("user/view_feedback/{userID}/{unique_value}/{responseTypeID}", [formsController::class, 'view_feedback'])->where(['userID'=>'[0-9]+',  'responseTypeID'=>'[0-9]+']);
 
     Route::get("buildforms/serviceUserFeedback", [formsController::class, 'build_serviceUserFeedback']);
     Route::get("buildforms/employeeFeedback", [formsController::class, 'build_employeeFeedback']);
     Route::get("buildforms/spotCheck", [formsController::class, 'build_spotcheck']);
+    Route::get("buildforms/prospect", [formsController::class, 'build_prospect']); 
     Route::post("buildforms/update_form", [formsController::class, 'update_form']);
     Route::post("buildforms/reset_form", [formsController::class, 'reset_form']);
 

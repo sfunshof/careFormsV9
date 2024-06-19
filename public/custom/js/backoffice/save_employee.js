@@ -1,6 +1,7 @@
 "use strict";
 let  update_employeeFunc= function(){};
 let  addnew_employeeFunc=function(){};
+let  show_COSFunc=function(){};
 
 function ready(callbackFunc) {
     if (document.readyState !== 'loading') {
@@ -39,8 +40,8 @@ ready(function() {
                 form.classList.add('was-validated')
             }, false)
            })
-           
-    })()
+        
+       })()
     
     let save_employeeFunc= function(userID) {
         //Begin the spinner
@@ -61,8 +62,17 @@ ready(function() {
             'mobile':   document.querySelector('input[name="mobile"]').value,
             'job':    document.querySelector('select[name="jobFunction"]').value,
             'companyID': companyID,
-            'userID' : userID
+            'userID' : userID,
+            'isCOS': document.getElementById('COSswitchID').checked  ? 1 : 0,
+            'appDate': document.querySelector('input[name="appDate"]').value,
+            'interDate': document.querySelector('input[name="interDate"]').value,
+            'COSdate': document.querySelector('input[name="COSdate"]').value,
+            'arrDate': document.querySelector('input[name="arrDate"]').value,
+            'DBSdate': document.querySelector('input[name="DBSdate"]').value,
+            'startDate': document.querySelector('input[name="startDate"]').value,
+
         }
+  
         let URLpath=save_employeeURL;;
         const asyncPostCall = async () => {
             
@@ -112,6 +122,33 @@ ready(function() {
     }
     update_employeeFunc=function(userID){
         save_employeeFunc(userID)
+    }
+    show_COSFunc=function(){
+        document.querySelectorAll('[data-datepicker]').forEach(function (element) {
+            flatpickr(element, {
+                dateFormat: "Y-m-d",
+                altInput: true,
+                altFormat: "F j, Y",
+                allowInput: false
+            });
+        });
+
+        const isChecked = document.getElementById("COSswitchID").checked;
+        var slideShowElement = document.querySelector('.COSshowID');
+        if (isChecked) {
+            // Slide up and make visible
+            slideShowElement.style.display = 'block';
+            setTimeout(function () {
+                slideShowElement.classList.add('visible');
+            }, 10); // Adding a slight delay to trigger the transition
+        } else {
+            // Slide down and hide
+            slideShowElement.classList.remove('visible');
+            slideShowElement.addEventListener('transitionend', function handler() {
+                slideShowElement.style.display = 'none';
+                slideShowElement.removeEventListener('transitionend', handler);
+            });
+        }
     }
 
 })

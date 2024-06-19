@@ -24,21 +24,55 @@
         <div class="tab-content">
 
             <div class="tab-pane fade show active" id="tab1">
+                <div class="d-flex align-items-center mt-4">
+                    <i class="bi bi-check2"></i>
+                    <h4>Ineffective communication:</h4>
+                </div>
                 <p>
-                    In the home care sector, communication between service users and caregivers often falls short, 
-                    leading to misunderstandings, unmet needs, and dissatisfaction. 
-                    Service users struggle to voice concerns or provide feedback effectively,
-                    while caregivers may miss crucial insights into their clients' preferences and
-                    requirements, hindering the delivery of personalized care
+                    Current methods hinder clear communication between service users and caregivers.
                 </p>
+  
+                <div class="d-flex align-items-center mt-4">
+                    <i class="bi bi-check2"></i>
+                    <h4>Unsatisfied clients:</h4>
+                </div>
+                <p>
+                    Clients struggle to provide feedback, leading to unmet needs and dissatisfaction.
+                </p>   
+
+                <div class="d-flex align-items-center mt-4">
+                    <i class="bi bi-check2"></i>
+                    <h4>Ineffective communication:</h4>
+                </div>
+                <p>
+                    Current methods hinder clear communication between service users and caregivers.
+                </p>
+  
+                <div class="d-flex align-items-center mt-4">
+                    <i class="bi bi-check2"></i>
+                    <h4>Missed insights:</h4>
+                </div>
+                <p>
+                    Caregivers lack crucial information about client preferences and requirements.
+                </p>
+
+                <div class="d-flex align-items-center mt-4">
+                    <i class="bi bi-check2"></i>
+                    <h4>Hindered personalisation:</h4>
+                </div>
+                <p>
+                    Ineffective communication makes it difficult to deliver personalised care.
+                </p>
+                
             </div><!-- End Tab 1 Content -->
 
             <div class="tab-pane fade show" id="tab2">
                 <p>
                     Imagine a scenario where a service user feels their caregiver
-                    isn't attentive to their specific needs, but lacks a convenient way to express this. 
+                    isn't attentive to their specific needs, but lacks a convenient way to express this. <br><br>
                     Conversely, caregivers may feel disconnected from their clients' evolving requirements, 
-                    leading to gaps in service quality. Without effective channels for feedback and 
+                    leading to gaps in service quality. <br><br>
+                    Without effective channels for feedback and 
                     communication, the potential for misunderstandings and dissatisfaction looms large, 
                     impacting both the quality of care delivered and the overall satisfaction of all parties
                     involved.
@@ -46,17 +80,49 @@
             </div><!-- End Tab 2 Content -->
 
             <div class="tab-pane fade show" id="tab3">
-                <p>
-                    Our innovative SaaS platform addresses these critical communication gaps 
-                    head-on. With dedicated feedback forms tailored for both service users and 
-                    caregivers, we empower seamless and transparent communication channels. 
-                    Additionally, our mobile-enabled spot check and assessment features ensure 
-                    real-time monitoring and evaluation, fostering accountability and 
-                    enhancing the quality of care delivered. By leveraging technology to 
-                    facilitate meaningful interactions between service users and caregivers, 
-                    we revolutionize the home care experience, ensuring that every individual's 
-                    needs are met with precision and compassion
-                </p>
+                <div class="tab-pane fade show active" id="tab1">
+                    <div class="d-flex align-items-center mt-4">
+                        <i class="bi bi-check2"></i>
+                        <h4>Bridges communication gaps: :</h4>
+                    </div>
+                    <p>
+                        Current methods hinder clear communication between service users and caregivers.
+                    </p>
+      
+                    <div class="d-flex align-items-center mt-4">
+                        <i class="bi bi-check2"></i>
+                        <h4>Real-time monitoring:</h4>
+                    </div>
+                    <p>
+                        Mobile-enabled spot checks and assessments 
+                        enable real-time evaluation and improved accountability
+                    </p>   
+    
+                    <div class="d-flex align-items-center mt-4">
+                        <i class="bi bi-check2"></i>
+                        <h4>Enhanced care quality:</h4>
+                    </div>
+                    <p>
+                        Improved communication fosters better care delivery and quality.
+                    </p>
+      
+                    <div class="d-flex align-items-center mt-4">
+                        <i class="bi bi-check2"></i>
+                        <h4>Enhanced care quality:</h4>
+                    </div>
+                    <p>
+                        Caregivers lack crucial information about client preferences and requirements.
+                    </p>
+    
+                    <div class="d-flex align-items-center mt-4">
+                        <i class="bi bi-check2"></i>
+                        <h4>Revolutionised experience</h4>
+                    </div>
+                    <p>
+                        Leverages technology to create a personalised and compassionate 
+                        home care experience.
+                    </p>   
+                
             </div><!-- End Tab 3 Content -->
 
         </div>

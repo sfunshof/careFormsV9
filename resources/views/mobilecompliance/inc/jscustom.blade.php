@@ -34,3 +34,5 @@
      {{-- JS Customs  --}}
      <script src="https://cdn.jsdelivr.net/npm/storejs@2.0.6/dist/store.min.js"></script>
      <script src="{{asset('custom/js/mobilespotcheck/fnon.min.js')}}"></script>
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>

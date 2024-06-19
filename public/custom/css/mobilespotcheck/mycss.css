@@ -61,8 +61,13 @@
         /* Style for the disabled icon */
         .disabled-icon {
             color: grey;
+            opacity: 0.5; /* Reduce brightness */
             pointer-events: none; /* Disable click events */
         }
+
+
+
+
         .hidden-icon {
             display: none;
         }
@@ -204,3 +209,5 @@
             margin-left: 0;
             margin-right: 0;
         }
+
+ 

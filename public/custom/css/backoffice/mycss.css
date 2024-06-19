@@ -1,0 +1,73 @@
+/* Initial hidden state */
+.COSshowID {
+    display: none;
+    overflow: hidden;
+    transition: max-height 0.5s ease-out;
+    max-height: 0; /* Initially hidden */
+}
+
+/* Visible state */
+.COSshowID.visible {
+    display: block;
+    max-height: 300px; /* Adjust to a suitable value depending on the content height */
+}
+
+.my-horizontal-line {
+    border-top: 1px solid #0b0825b2; /* Set border thickness and color */
+}
+
+/* ====== name ============== */
+.named-line {
+        display: flex; /* Allow elements to sit side-by-side */
+        align-items: center; /* Vertically center content */
+  }
+  
+  .line {
+        flex: 1 1 auto; /* Expand line to fill remaining space */
+        height: 1px; /* Set line thickness */
+        background-color: rgb(34, 20, 168); /* Set line color */
+        margin: 0 10px; /* Add spacing between line and text */
+  }
+  
+  .name {
+     font-weight: bold; /* Make text bold (optional) */
+  }
+  
+
+  .star-rating {
+    font-size: 2em;
+    color: gray;
+  }
+
+  .star-rating .star {
+    cursor: pointer;
+  }
+  .star-rating .gold {
+    color: gold;
+  }
+
+  .disabled {
+    pointer-events: none; /* Disable pointer events */
+    opacity: 0.5; /* Visual indication of disabled state */
+  }
+  .radio-box {
+    border-bottom: 1px solid #ced4da;
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+}
+/* same as text-danger this is used for assessment esubmit */
+.clone_danger {
+   color: #dc3545 !important;
+}
+.hidden {
+  display: none;
+}
+
+#scrollableFrame {
+  max-height: 350px; /* Adjust the height as needed */
+  overflow-y: auto;
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+  border-bottom: 1px solid #ccc; /* Only bottom border */
+  padding: 10px;
+}

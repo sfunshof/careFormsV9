@@ -1,10 +1,9 @@
 <section class="section">
               
     {{--  include the spotcheck duration here  --}}
-     @include('backoffice.fakecomponents.spotcheck_duration_component')         
-
+     @include('backoffice.fakecomponents.spotcheck_duration_component')      
     <div class="row">
-        <div class="col-lg-12">   
+        <div class="col-md-12">   
             <div class="card">
                 <div class="card-body">
                     @if((count($table_records) ==0) &&(count($not_yet_spotCheckedIDs)==0))
@@ -20,8 +19,9 @@
                                     <th>Carer</th>
                                     <th>Service User</th>
                                     <th>Rating</th>
-                                    <th>Spot Checks Cases </th>
-                                    <th> View </th>   
+                                    <th>Cases </th>
+                                    <th>Action</th>   
+                                    <th>Status</th>   
                                 </tr>
                             </thead>
                             <tbody>  
@@ -33,9 +33,22 @@
                                         <td class="text-danger">---</td>
                                         <td class="text-danger">---</td>
                                         <td class="text-danger">---</td>
+                                        <td class="text-danger">---</td>
                                     </tr>   
                                 @endforeach
                                 @foreach($table_records as $rec)
+                                    @php
+                                        $employeeAccept=0;
+                                        if ($rec->checkComments) {
+                                            $employeeAccept=1;
+                                        }
+                                        $editColor=" text-success ";
+                                        $style="cursor:pointer";
+                                        if ($employeeAccept==1){
+                                            $editColor=" text-danger";
+                                            $style="cursor: not-allowed; opacity: 0.5;   pointer-events: none;";
+                                        }    
+                                    @endphp
                                     <tr>
                                         <td>{{$rec->date}}</td>
                                         <td>{{ $carerNames[$rec->carerID]}}</td>
@@ -43,8 +56,26 @@
                                         <td>{{$rec->star}}</td>
                                         <td>{{ $count_carerID[$rec->carerID]}}</td>
                                         <td> 
-                                            <span style="cursor:pointer" onClick="viewSpotCheckFunc({{$rec->keyID}})">  
-                                            <i class="bi bi-eye text-success"></i> </span>
+                                            <div class="row">
+                                                <div class="col"> 
+                                                    <span style="cursor:pointer" onClick="viewSpotCheckFunc({{$rec->keyID}}, {{$employeeAccept}})">  
+                                                        <i class="bi bi-eye text-success"></i> 
+                                                    </span>  
+                                                </div>
+                                                <div class="col"> 
+                                                    <span style="{{$style}}"  onclick="editSpotCheckFunc({{$rec->keyID}})">  
+                                                        <i class ="ri-edit-2-fill  {{ $editColor }}"> </i> 
+                                                    </span>  
+                                                </div>  
+                                                <div class="col"> </div>  
+                                            </div>
+                                        </td>   
+                                        <td>
+                                            @if ($employeeAccept==1)
+                                                <i class="fas fa-user-check text-success"></i> 
+                                            @else
+                                                <i class="bi bi-exclamation-triangle text-danger"></i>
+                                             @endif
                                         </td>   
                                     </tr>   
                                 @endforeach

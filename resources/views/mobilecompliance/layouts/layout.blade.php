@@ -16,7 +16,7 @@
         <meta name="author" content="" />
         <meta name="csrf-token" content="{{ csrf_token() }}" />
               
-        @include('mobilespotcheck.inc.cssheader')
+        @include('mobilecompliance.inc.cssheader')
         {{-- CSS Custom --}}
         @yield('css-custom')
         {{-- End CSS Custom --}}
@@ -43,10 +43,10 @@
         </div>    
         {{--  End the contents here --}}
 
-        <footer class="fixed-bottom bg-dark text-white text-center">
+        <footer class="fixed-bottom bg-secondary text-white text-center">
             @yield('footer-contents')      
         </footer>   
-        @include('mobilespotcheck.inc.jscustom')
+        @include('mobilecompliance.inc.jscustom')
         @stack('scripts')
         {{-- End JSCustoms --}}
         

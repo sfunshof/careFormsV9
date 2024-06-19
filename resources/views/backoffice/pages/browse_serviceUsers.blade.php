@@ -9,18 +9,13 @@
                 <h4 class="text-danger">
                     There are no Service Users registered on the system
                 </h4>
+                @if ($exist==1)
+                   @include('backoffice.pages.checkbox_serviceUser_component')
+                @endif
             @else    
                 <div class="col-lg-12">   
-                        <?php 
-                            $isChecked="";
-                            if ($isDisabledFlag==0) $isChecked="checked='checked'";
-                        ?>
-                    
-                        <div class="form-check form-switch form-switch-md">
-                            <input class="form-check-input" type="checkbox" id="showDisabledUsersID"   onClick="browse_all_serviceUsersFunc()"  {{ $isChecked }}>
-                            <label class="form-check-label" style="padding-left:.5rem;padding-top:.2rem;" for="showDisabledUsersID">Show Disengaged Users</label>
-                        </div>
-                    
+                    @include('backoffice.pages.checkbox_serviceUser_component')
+                  
                     <hr class="bg-primary border-2 border-top border-primary">
                     
                     <table class="table table-striped"   id="serviceUserBrowseTableID" >
@@ -56,7 +51,7 @@
                                     <td><span data-bs-toggle="tooltip" data-bs-placement="top"   title="{{$proxyTel}}"  class="{{$textColor}} {{$disableFont}}    "> {{ $serviceUser->tel }} </span></td>
                                     <td> 
                                         <div class="row">
-                                            <div class="col"> <i  role="button"    data-bs-toggle="tooltip" data-bs-placement="top"   title="Update"   class =" ri-edit-2-fill  text-success"  onClick="serviceUserdetailsUpdateFunc({{$serviceUser->userID}})" ></i>   </div>
+                                            <div class="col"> <i  role="button"    data-bs-toggle="tooltip" data-bs-placement="top"   title="Update"   class =" ri-edit-2-fill  text-success"  onClick="serviceUserdetailsUpdateFunc({{$serviceUser->userID}}, 0,0)" ></i>   </div>
                                             @if ($disableFont)
                                                 <div class="col"> <i  role="button"  data-bs-toggle="tooltip"  data-bs-placement="top" title="Restore"    class = "bx bxs-analyse text-primary "  onClick="serviceUserEnableFunc({{$serviceUser->userID}})"></i> </div>
                                             @else
@@ -80,8 +75,7 @@
         let disable_serviceUserURL= "{{ url('serviceUser/disable') }}";
         let enable_serviceUserURL= "{{ url('serviceUser/enable') }}";
         let browse_serviceUsersURL="{{ url('serviceUser/browse') }}";
-        let browse_all_serviceUsersURL="{{ url('serviceUser/browse_all') }}";
-
+        let browse_all_serviceUsersURL= "{{ url('serviceUser/browse_all') }}";
          //adjust the datatable 's page
         let pageNo="{{ $pageNo }}";
         if (pageNo> 0){

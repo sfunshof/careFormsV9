@@ -47,7 +47,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <textarea  name="smsPreTextEmp" class="form-control" placeholder="SMS Pre Text for Employees" id="smsPreTextEmpID" style="height: 120px;"> {{ $companyProfile->smsPreTextEmp}}</textarea>
+                                        <textarea  name="smsPreTextEmp" class="form-control" placeholder="SMS Feedback Pre Text for Employees" id="smsPreTextEmpID" style="height: 120px;"> {{ $companyProfile->smsPreTextEmp}}</textarea>
                                         <label for="smsPreTextEmp">SMS Pre Text For Employees</label>
                                     </div>
                                     <span class="text-danger smsPreTextEmp_err"></span> 
@@ -55,7 +55,7 @@
                                 
                                <div class="col-md-6">
                                     <div class="form-floating">
-                                        <textarea  name="smsPreTextSu" class="form-control" placeholder="SMS Pre Text for Service Users" id="smsPreTextSuID" style="height: 120px;"> {{ $companyProfile->smsPreTextSu}}</textarea>
+                                        <textarea  name="smsPreTextSu" class="form-control" placeholder="SMS Feedback Pre Text for Service Users" id="smsPreTextSuID" style="height: 120px;"> {{ $companyProfile->smsPreTextSu}}</textarea>
                                         <label for="smsPreTextSu">SMS Pre Text for Service Users</label>
                                     </div>
                                     <span class="text-danger smsPreTextSu_err"></span>   

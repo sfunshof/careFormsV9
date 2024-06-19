@@ -28,8 +28,14 @@ class formsController extends Controller
             ->select("*")
             ->where(['companyID'=>$companyID])
             ->get();
+        }else if  ($resTypeID == 4){
+            $forms=DB::table("buildformtable_prospect")
+            ->select("*")
+            ->where(['companyID'=>$companyID])
+            ->get();
         }
         
+
         $options=DB::table("optionstable")
         ->select("*")
         ->get(); 
@@ -98,7 +104,12 @@ class formsController extends Controller
                 ];
               break;
             case 4:
-                $buildTableName="buildformtable_accessment";
+                $buildTableName="buildformtable_prospect";
+                $fieldsToCopy=['quesName','quesAttrib','quesID','quesTypeID' ];
+                $updateArray = [
+                   'companyID' => DB::raw('companyID * -1'),
+                    'updateDate' => now()->toDateString()
+                ];
             break;
         } 
         $companyID=$this->company_settings[0]->companyID;
@@ -139,7 +150,7 @@ class formsController extends Controller
                 $title = ' Spot Checks forms' ;     
               break;
             case 4:
-                $title = ' Accessment forms' ;     
+                $title = ' Assessment forms' ;     
             break;
         } 
 
@@ -170,6 +181,10 @@ class formsController extends Controller
         return view('backoffice.pages.build_form', $build_array);
     }   
     
+    public function build_prospect(){
+        $build_array=$this->build_common_functions(4);
+        return view('backoffice.pages.build_form', $build_array);
+    }   
 
     //** This is for service user and employee survey */
     static function survey_status($date,$userTable,$resTypeID,$companyID,$sendByEmail){

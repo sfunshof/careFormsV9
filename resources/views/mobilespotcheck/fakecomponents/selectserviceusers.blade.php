@@ -24,7 +24,7 @@
   <div  {{$show}} class="modal fade" id="staticBackdrop"  tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
       <div class="modal-content">
-        <div class="modal-header bg-primary text-center">
+        <div class="modal-header bg-success text-center">
             {{-- <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1> --}}
             <p class="fs-4 text-white "  id="staticBackdropLabel" > Select the Service User</p>
             {{--

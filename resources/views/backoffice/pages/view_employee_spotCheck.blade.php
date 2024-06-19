@@ -54,11 +54,13 @@
                                         {{ $item }}
                                    </li>
                                 @endforeach
-                                 <span class="d-flex align-items-center position-relative ms-4">
+                            @endif   
+                            @if (!empty($choosenString))
+                                <span class="d-flex align-items-center position-relative ms-4">
                                     <span class="me-2 fs-4">&#42;</span> 
                                     <span class="fst-italic"> <strong>{{ $choosenString }}</strong> </span>
-                                </span>
-                            @endif    
+                                </span> 
+                             @endif   
                         </ul>
                     </p>
                     <div class="text-center my-4"> <!-- Centered text with top and bottom margin -->
@@ -87,9 +89,25 @@
                             @endfor
                         </div>
                     @endif   
-                                       
-
                 </div>
+                @if ($checkDate)
+                    <div>
+                        <br>
+                         <hr>
+                        <p>
+                            The carer has responded with the following comments:
+                        <p>
+                            <p>
+                            <strong>
+                                {{ $checkComments}}
+                            </strong>
+                            </p>
+                        <p>
+                            Date: {{ $checkDate}}      
+                        </p>
+                    </div>
+                @endif
+
             </div>
         </form>
     </div>

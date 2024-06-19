@@ -15,7 +15,7 @@
         </button>
     </div>
 </nav>   
---}}<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+--}}<nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top">
     <div class="container-fluid justify-content-between mx-0 px-3">
         <!-- Left section with previous button -->
         <div class="d-flex align-items-center">

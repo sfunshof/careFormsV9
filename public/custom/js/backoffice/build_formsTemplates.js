@@ -97,7 +97,7 @@ ready(function() {
         //console.log(randomNo)
         //SpotCheck
         let hideCQC="";
-        if (respTypeID==3){
+        if ((respTypeID==3)||(respTypeID==4)){
             hideCQC="d-none"
         }
         let template_inside=""+    
@@ -199,5 +199,5 @@ ready(function() {
         }
         return  template_all;
     }
-
+    
 })    
