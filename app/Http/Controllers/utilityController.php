@@ -248,7 +248,7 @@ class utilityController extends Controller
         if ($company) {
             // Access companyName and spotCheckMsg attributes
             $companyName = $company->companyName;
-            $spotCheckMsg = $company . " needs your comments regarding the recent spot check carried out";
+            $spotCheckMsg = $companyName . " needs your comments regarding the recent spot check carried out";
         } else {
             // Handle the case where no company is found
             // ...

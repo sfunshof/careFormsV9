@@ -127,7 +127,7 @@ ready(function() {
                     body: JSON.stringify(post_data)
                 });
                 let data = await response.json();
-                alert(JSON.stringify(data))
+                //alert(JSON.stringify(data))
                 if (data['status'] > 0){
                     show_alertInfo("Success: Spot check sent to carer for review")
                 }else {
