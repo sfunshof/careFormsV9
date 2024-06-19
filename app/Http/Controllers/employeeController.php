@@ -442,7 +442,7 @@ class employeeController extends Controller
 
         $array['status']=$status;
         $array['keyID']=$keyID;
-        return view('backoffice.pages.check_employee_spotCheck',$array);
+        return view('backoffice.pages.check_employee_spotcheck',$array);
     }
 
     public function check_employee_spotCheck_save(Request $req){
