@@ -51,7 +51,7 @@
                             @if ($strLength==0) {{--  Empty string length --}}
                                 {{--  <li></li> --}}
                                 @if (!empty($selectedValue))
-                                    <textarea id="{{ $textAreaId}}"   class="form-control">{{ $selectedValue }}</textarea>
+                                    <textarea  rows="5" id="{{ $textAreaId}}"   class="form-control custom-textarea">{{ $selectedValue }}</textarea>
                                 @endif
                             @else
                                 @foreach ($quesOptions_inner_array as $item)

@@ -70,11 +70,11 @@
                 
                 <div id="box{{$i}}" style="display:{{$otherStyle}}">
                     <label  class="form-label" for="other{{$i}}"> What are the other points?</label>
-                    <textarea  onBlur="otherTextAreaClickFunc({{$i}})"    placeholder="Add them here ..."  id="other{{$i}}" class="form-control p-2 border border-success">{{$otherString}}</textarea>
+                    <textarea  rows="5" onBlur="otherTextAreaClickFunc({{$i}})"    placeholder="Add them here ..."  id="other{{$i}}" class="form-control p-2 border border-success custom-textarea">{{$otherString}}</textarea>
                 </div>
             @elseif ($quesTypeID==1) 
                 <label class="form-label" for="text{{$i}}">Add them here </label>
-                <textarea onInput="textAreaClickFunc({{$i}})"     placeholder="..."  id="text{{$i}}" class="form-control p-2 border border-success">{{$printedString}}</textarea>      
+                <textarea rows="5" onInput="textAreaClickFunc({{$i}})"     placeholder="..."  id="text{{$i}}" class="form-control p-2 border border-success custom-textarea">{{$printedString}}</textarea>      
             @endif
             @if (!empty($printedString))
                 <span class="d-flex align-items-center position-relative ms-4">

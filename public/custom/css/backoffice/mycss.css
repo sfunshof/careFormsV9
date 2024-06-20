@@ -71,3 +71,9 @@
   border-bottom: 1px solid #ccc; /* Only bottom border */
   padding: 10px;
 }
+
+.custom-textarea {
+  height: auto; /* or specific height */
+  min-height: 50px;
+  max-height: 200px;
+}

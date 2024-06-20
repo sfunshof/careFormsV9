@@ -43,11 +43,11 @@
                 @endforeach
                 <div id="box{{$i}}" style="display:none">
                     <label  class="form-label" for="other{{$i}}"> What are the other points?</label>
-                    <textarea  onBlur="otherTextAreaClickFunc({{$i}})"    placeholder="Add them here ..."  id="other{{$i}}" class="form-control p-2 border border-success"></textarea>
+                    <textarea rows="5" onBlur="otherTextAreaClickFunc({{$i}})"    placeholder="Add them here ..."  id="other{{$i}}" class="form-control p-2 border border-success custom-textarea"></textarea>
                 </div>
             @elseif ($quesTypeID==1) 
                 <label class="form-label" for="text{{$i}}">Add them here </label>
-                <textarea onInput="textAreaClickFunc({{$i}})"     placeholder="..."  id="text{{$i}}" class="form-control p-2 border border-success"></textarea>      
+                <textarea rows ="5" onInput="textAreaClickFunc({{$i}})"     placeholder="..."  id="text{{$i}}" class="form-control p-2 border border-success custom-textarea"></textarea>      
             @endif
             <!-- Never shown but used by desktop version -->
             <span class="clone_danger"  id="err_{{$quesNo}}" style="display:none"> Please respond to Ques.  {{$quesNo}}  </span>   
