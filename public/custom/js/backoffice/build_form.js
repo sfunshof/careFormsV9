@@ -336,7 +336,7 @@ ready(function() {
                     });
                      const data = await response.json();
                        // enter you logic when the fetch is successful
-                       // alert(JSON.stringify(data));
+                        alert(JSON.stringify(data));
                         hide_spinner()
                         show_alertInfo("Success: "  + formTitle + "  has been updated")
                     }catch(error) {
