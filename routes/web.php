@@ -26,7 +26,7 @@ use App\Http\Controllers\mobileprospectController;
 
 //This is the actual production one
 Route::domain('compliance.caretrail.co.uk')->group(function () {
-    Route::get('/', [mobilecomplianceController::class, 'showLoginForm'])->name('complianceloginx');
+    Route::get('/', [mobilecomplianceController::class, 'showLoginForm'])->name('compliancelogin');
 });
 
 Route::get('/', [homeController::class, 'index']);
@@ -40,7 +40,7 @@ Route::post("user/save_feedback", [mobileController::class, 'save_userFeedback']
 Route::get("user/successSaved/{companyID}", [mobileController::class, 'successSaved']);
 
 //This is for testing
-Route::get('/compliance/mobile', [mobilecomplianceController::class, 'showLoginForm'])->name('compliancelogin') ;
+Route::get('/compliance/mobile', [mobilecomplianceController::class, 'showLoginForm'])->name('complianceloginx') ;
 
 Route::post('/compliance/mobile', [mobilecomplianceController::class, 'login'])->name('complianceloginlogic');
 Route::get('/compliance/menu', [mobilecomplianceController::class, 'showMenuForm'])->name('compliancemenu');
