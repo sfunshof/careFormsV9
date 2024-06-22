@@ -96,7 +96,7 @@
         <div class="mb-3">
             <div class="form-floating col-10">
                 <input name="mobile" type="text" class="form-control" id="phoneID" placeholder="Mobile Number" value="{{$mobile}}"  >
-                <label for="phoneID">Mobile Number (inc +44)</label>
+                <label for="phoneID">Mobile Number (please inc +44)</label>
             </div>
             <span class="text-danger mobile_err"></span> 
         </div>

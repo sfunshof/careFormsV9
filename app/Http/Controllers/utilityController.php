@@ -226,13 +226,14 @@ class utilityController extends Controller
         $keyID=$req->keyID;
              
         $spotcheck = DB::table('responsetable_spotcheck')
-            ->select('companyID', 'carerID')
+            ->select('companyID', 'carerID', 'date_issue')
             ->where('keyID', $keyID)
             ->first();
         if ($spotcheck) {
             // Access companyName and spotCheckMsg attributes
             $companyID = $spotcheck->companyID;
             $carerID = $spotcheck->carerID;
+            $date_issue=$spotcheck->date_issue;
         } else {
             // Handle the case where no company is found
             // ...
@@ -248,7 +249,7 @@ class utilityController extends Controller
         if ($company) {
             // Access companyName and spotCheckMsg attributes
             $companyName = $company->companyName;
-            $spotCheckMsg = $companyName . " needs your comments regarding the recent spot check carried out";
+            $spotCheckMsg = $companyName . " needs your comments regarding  the spot check carried out on you on " . $date_issue;
         } else {
             // Handle the case where no company is found
             // ...
@@ -263,11 +264,12 @@ class utilityController extends Controller
         $randomString = Str::random(6);
         $randomString=$keyID . "-" . $randomString;
         $randomKey = \Hash::make($randomString);
+        $randomKey = str_replace("/", "X", $randomKey);
         $URL= url( '/spotcheck/' .  $randomKey); 
         $msgX= $spotCheckMsg . "<br> Please complete this by clicking on the link <a href= " . $URL . "> " .  $URL . "</a>";
         $details=[
             'msg'=> $msgX,                    //
-            'subject' => $companyName . ' ' . 'Spot Check',
+            'subject' => $companyName . ' ' . 'Spot Check on ' . $date_issue,
             'title' => "Care giver's Spot check",
         ];    
                 

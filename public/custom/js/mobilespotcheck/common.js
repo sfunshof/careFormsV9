@@ -176,12 +176,12 @@ ready(function() {
       // If neither "radio1" nor "text1" exists, return -1
       return -1;
     } 
-    if (typeof spotCheckResult[current_index] === 'undefined') {
+    if ((typeof spotCheckResult[current_index] === 'undefined')|| (spotCheckResult[current_index]=='')){
         //check the element
         let status= checkElementExistence(current_index)     
         if (status==1){
             //please select an option
-            Fnon.Hint.Warning('Please select an option', {
+            Fnon.Hint.Danger('Please select an option', {
                 position:'center-center',
                 callback:function(){
                 // callback
@@ -190,7 +190,7 @@ ready(function() {
             return -1
         }else if (status==0){
             //please fill the text
-            Fnon.Hint.Warning('Please fill in some text', {
+            Fnon.Hint.Danger('Please fill in some text', {
                 position:'center-center',
                 callback:function(){
                 // callback
@@ -204,6 +204,13 @@ ready(function() {
          
     }
   }
+    function go_to_top(){
+        window.scroll({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+        });
+    }  
 
     next = function() {
         // Get all div elements with ids starting with 'div'
@@ -236,6 +243,7 @@ ready(function() {
             // Show the next div, or the first one if the last one was visible
             var nextIndex = (currentIndex + 1) % divs.length;
             divs[nextIndex].style.display = 'block';
+            go_to_top()
         }
         // Check if the last div was hidden and now visible
         var lastIndex = divs.length - 1;
@@ -245,7 +253,7 @@ ready(function() {
             return 0;
         }
         togglePrevIconFunc(1)
-
+        go_to_top()
     }
 
     previous = function() {
@@ -264,6 +272,7 @@ ready(function() {
             // If div7 is visible, hide it and show div6
             divs[divs.length - 1].style.display = 'none';
             divs[divs.length - 2].style.display = 'block';
+            go_to_top()
             return;
         }
         
@@ -282,6 +291,7 @@ ready(function() {
             // Show the previous div, or the last one if the first one was visible
             var prevIndex = (currentIndex - 1 + divs.length) % divs.length;
             divs[prevIndex].style.display = 'block';
+            go_to_top()
             //on 1st page disable the prev button
             if (prevIndex==0){
                 previous_after_first_quespage()
@@ -295,6 +305,7 @@ ready(function() {
             div.style.display = 'none'
         });
         divs[0].style.display='block'     
+        go_to_top()
     }
 
     logoutFunc=function(){
