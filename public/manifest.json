@@ -1,7 +1,7 @@
 {
     "name": "Home Care Compliance",
-    "short_name": "Spot Check",
-    "start_url": "/index.php",
+    "short_name": "Compliance",
+    "start_url": "/index.php/compliance/mobile",
     "background_color": "#6777ef",
     "description": "This is Care giver compliance",
     "display": "fullscreen",
