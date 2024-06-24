@@ -63,7 +63,7 @@
         let save_mobileSpotCheckURL= "{{ url('/spotcheck/mobileSave')}}"; 
         let show_mobileSpotCheckDataURL="{{ url('/spotcheck/mobileHome') }}";
         let token = "{{ csrf_token() }}";
-        let loginURL="{{ route('compliancelogin') }}";
+       /* let loginURL="{{ route('compliancelogin') }}"; */
         let menuURL="{{ route('compliancemenu') }}";
         var my2AssociativeArray = @json($records);
        // alert(JSON.stringify(my2AssociativeArray));

@@ -22,7 +22,10 @@
 
 @push('scripts')
     <script src="{{asset('custom/js/mobilecompliance/myjs.js')}}"></script>
+    <script src="{{asset('custom/js/pwa/spa.js')}}"></script>
     <script>
         let loginURL="{{ route('compliancelogin') }}";
+        let spotCheckURL= "{{ route('spotcheckhome')}}";
+        let prospectURL= "{{ route('prospecthome')}}";
      </script>
 @endpush   

@@ -68,6 +68,32 @@
             }, 2000); // Hide the error message after 2 seconds (2000 milliseconds)
         }
     </script>
+    <script>
+        var PWA_name="Compliance" 
+    </script>
+   
+    {{--  PWA JS files --}}
+    <script src="{{ asset('/sw.js') }}"></script>
+    <script>
+        if ("serviceWorker" in navigator) {
+            // Register a service worker hosted at the root of the
+            // site using the default scope.
+            navigator.serviceWorker.register("/sw.js").then(
+            (registration) => {
+                console.log("Service worker registration succeeded:", registration);
+            },
+            (error) => {
+                console.error(`Service worker registration failed: ${error}`);
+            },
+            );
+        } else {
+            console.error("Service workers are not supported.");
+        }
+    </script>
+    {{--  End PWA JS files --}} 
+
+
+
 @endsection
 
 @push('scripts')
@@ -76,11 +102,7 @@
             document.getElementById('spinner').style.display = 'block';
         });
     </script>
-    
-    <script>
-        var PWA_name="Compliance" 
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/6.0.0/bootbox.min.js" integrity="sha512-oVbWSv2O4y1UzvExJMHaHcaib4wsBMS5tEP3/YkMP6GmkwRJAa79Jwsv+Y/w7w2Vb/98/Xhvck10LyJweB8Jsw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/6.0.0/bootbox.min.js" integrity="sha512-oVbWSv2O4y1UzvExJMHaHcaib4wsBMS5tEP3/YkMP6GmkwRJAa79Jwsv+Y/w7w2Vb/98/Xhvck10LyJweB8Jsw==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
     <script  src="{{ asset('custom/js/pwa/install.js')}}"></script>  
 @endpush   
 

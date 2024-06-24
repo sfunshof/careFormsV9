@@ -71,7 +71,7 @@
         let token = "{{ csrf_token() }}";
         let saveURL="{{ route('prospectsave') }}";
         let submitURL="{{ route('prospectsubmit') }}";
-        let loginURL="{{ route('compliancelogin') }}";
+      /*  let loginURL="{{ route('compliancelogin') }}"; */
         let menuURL="{{ route('compliancemenu') }}";
     </script>
     <script src="{{asset('custom/js/mobileprospect/app.js')}}"></script>

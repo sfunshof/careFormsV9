@@ -13,10 +13,12 @@ let previous=function(){}  // newly defined
 let previous_with_first_quespage=function(){}
 let previous_after_first_quespage=function(){}
 let go_to_first_quespage=function(){}
+/*
 let showSpinner=function(){}
 let hideSpinner=function(){}
+*/
 let menuFunc=function(){}
-let logoutFunc=function(){}
+/* let logoutFunc=function(){} */
 let spotCheckResult=[]
 let spotCheckReview=0
 

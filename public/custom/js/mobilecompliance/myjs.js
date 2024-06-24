@@ -1,11 +1,12 @@
 "use strict";
 let logoutFunc=function(){}
+let pageLoader=function(){}
 
-function showSpinner() {
+let  showSpinner=function() {
     const spinnerElement = document.getElementById('spinner');
     spinnerElement.style.display = 'block'; // Show the spinner
 }
-function hideSpinner() {
+let hideSpinner=function() {
     const spinnerElement = document.getElementById('spinner');
     spinnerElement.style.display = 'none'; // Hide the spinner
 }
@@ -45,7 +46,8 @@ ready(function() {
                   showSpinner()  
                   store.clear()
                   // Redirect to the spotcheck/mobile route
-                  window.location.href = loginURL;  
+                  //window.location.href = loginURL;
+                  pageLoader(loginURL)  
                 }
             }
          });

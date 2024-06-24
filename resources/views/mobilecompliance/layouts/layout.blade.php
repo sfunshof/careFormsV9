@@ -25,7 +25,7 @@
             @yield('title')
         </title>
         
-           <script src="https://cdn.jsdelivr.net/npm/vue@3.3.8/dist/vue.global.prod.js"></script>
+           <script src="https://cdn.jsdelivr.net/npm/vue@3.3.8/dist/vue.global.prod.js" defer></script>
         {{-- 
         <script src="https://unpkg.com/vue@3.2.5/dist/vue.global.js"></script>  
         --}}
