@@ -1,7 +1,7 @@
 {
     "name": "Home Care Compliance",
     "short_name": "Compliance",
-    "start_url": "https://compliance.caretrail.co.uk",
+    "start_url": "{{ env('APP_START_URL') }}",
     "background_color": "#6777ef",
     "description": "This is Care giver compliance",
     "display": "fullscreen",
