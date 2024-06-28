@@ -36,6 +36,9 @@
 <div class="scrollable-form-container">
     <form method="POST"  class="row g-3 needs-validation"   id="addnew_formID"  novalidate  >
         @csrf <!-- CSRF token -->
+        
+        <input  name="userID"   type="hidden"  value=-1   >
+
         <h4 class="mb-4 text-center">Please fill all these fields</h4>
         <div class="mb-3">
             <div class="form-floating col-8">
@@ -71,7 +74,7 @@
         </div>
         <div class="mb-3">
             <div class="form-floating col-10">
-                <input name="DOB"  type="text" class="form-control" id="DOBID" placeholder="Date Of Birth" value="{{ $DOB}}"  data-datepicker>
+                <input name="DOB"  type="text" class="form-control" id="DOBID" placeholder="Date Of Birth" value="{{ $DOB}}" data-datepicker>
                 <label for="DOBID">Date of Birth</label>
             </div>
             <span class="text-danger DOB_err"></span>   

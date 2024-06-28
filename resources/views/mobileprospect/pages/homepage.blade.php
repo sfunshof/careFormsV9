@@ -51,7 +51,10 @@
             </div>    
         </div>
         
-
+        <div v-show="showProspectReportPage">
+            @include('mobileprospect.fakecomponents.report')
+        </div>
+        
         <div id="spinner" style="display: none;">
             <div class="text-center mt-5">
                 <div class="spinner-border" role="status">

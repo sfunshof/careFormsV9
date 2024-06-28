@@ -9,11 +9,11 @@
 <div class="main-container">
     <div class="boxes-container">
         <a href="#" class="box" onClick="showSpinner();pageLoader(spotCheckURL,[])">
-            <i class="fas fa-2x fa-check"></i>
+           <i class="fas  fa-2x fa-user-check"></i>
             <span class= "text-success">Spot Checks</span>
         </a>
         <a href="#" class="box" onClick="showSpinner();pageLoader(prospectURL,[])">
-            <i class="fas fa-2x fa-star"></i>
+            <i class="fas fa-2x fa-address-card"></i>
             <span class= "text-success"> Assessment</span>
         </a>
     </div>   

@@ -70,7 +70,12 @@ class serviceUserController extends Controller
         $userID=$req->userID;
         $companyID = Session::get('companyID');
         //check if you updated without filling the prospect ques
-        
+        if ($userID >=0){
+            //Do nothing
+        }else{
+            $userID=-1;
+        }
+
         if ($userID==-1){
             $prospectRandomNo=$req->prospectRandomNo;
             if ($prospectRandomNo){

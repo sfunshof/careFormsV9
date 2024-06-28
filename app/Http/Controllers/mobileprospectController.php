@@ -22,11 +22,33 @@ class mobileprospectController extends Controller
             $quesResultArray=$this->get_prospectQues();
             $arrayDetails['spotCheckQues']=$quesResultArray;
             $arrayDetails['count']=count($quesResultArray);
+            $arrayDetails['uncompleted_prospects']= $this->get_uncompletedProspects();
             return view('mobileprospect.pages.homepage')->with($arrayDetails);
         }else{
             return redirect()->route('compliancelogin');
         }
     }   
+    
+    private function get_uncompletedProspects(){
+        $companyID = session()->get('companyID'); 
+       
+        $results = DB::table('serviceuserdetailstable')
+        ->select('serviceuserdetailstable.*', DB::raw("CONCAT(title, ' ', firstName, ' ', lastName) as fullName"))
+        ->where('companyID', $companyID)
+        ->where('isDisable', 0)
+        ->whereNotNull('prospectJSON')
+        ->whereNotIn('userID', function ($query) use ($companyID) {
+            $query->select('serviceUserID')
+                ->from('responsetable_prospect')
+                ->where('companyID', $companyID);
+        })
+        ->get()
+        ->map(function ($item) {
+            return (array) $item;
+        })
+        ->toArray();
+        return $results;
+    }
     
 
     private function get_prospectQues(){
@@ -63,21 +85,16 @@ class mobileprospectController extends Controller
             $randomDigits = $request->input('randomDigits');
             $prospectData=$request->input('prospectData');
             $userID=$request->userID;
-            //if an update simply rupdate and return
-            if ($userID >=0){
-                 //updates
-                DB::table('responsetable_prospect')
-                    ->where('serviceUserID', $userID)
-                    ->update([
-                    'responses' => json_encode($prospectData),
-                ]);
-                return response()->json(['success'=>'Updated assessment', 'status' => 1]);
-            }
-            
+                     
             // Retrieve the service userID
-            $serviceUserID = DB::table('serviceuserdetailstable')
-                ->where('randomNo', $randomDigits)
-                ->value('userID');
+            if ($userID >=0){
+                $serviceUserID=$userID;  
+            }else {
+                $serviceUserID = DB::table('serviceuserdetailstable')
+                    ->where('randomNo', $randomDigits)
+                    ->value('userID');
+            }
+
 
             $companyID = session()->get('companyID'); 
             $userName = session()->get('userName');
@@ -102,18 +119,35 @@ class mobileprospectController extends Controller
             $quesTypeID=json_encode($quesTypeID);
             $quesOptions = json_encode($quesOptions);
             // Save data to the MySQL table
-            DB::table('responsetable_prospect')->insert([
-                'companyID' => $companyID,
-                'serviceUserID' => $serviceUserID,
-                'supervisor' => $userName,
-                'responses'=> json_encode($prospectData),
-                'quesNames' =>$quesNames,
-                'quesTypeID' => $quesTypeID,
-                'quesOptions' => $quesOptions,
-                'date_issue' => now(),
-            ]);
+            //DB::table('responsetable_prospect')->insert();
             
-            return response()->json(['success'=>'Added new  assessment', 'status' => 1]);
+             //We do insert or update here. If upddate from the back office: it is an update
+            //if you update from mobile it is inseet. 
+            //The backoffice works on the ques itself while the mobile goes from prospect then to 
+            //the Ques
+            
+            $exists = DB::table('responsetable_prospect')->where('serviceUserID', $userID)->exists();
+
+            // Insert or update the record
+            DB::table('responsetable_prospect')->updateOrInsert(
+                ['serviceUserID' => $serviceUserID], // Condition to check
+                [
+                    'companyID' => $companyID,
+                    'serviceUserID' => $serviceUserID,
+                    'supervisor' => $userName,
+                    'responses'=> json_encode($prospectData),
+                    'quesNames' =>$quesNames,
+                    'quesTypeID' => $quesTypeID,
+                    'quesOptions' => $quesOptions,
+                    'date_issue' => now(),
+                ]
+            );
+            if ($exists) {
+                return response()->json(['success'=>' Updated existing assessment', 'status' => 1]);
+            } else {
+                return response()->json(['success'=>'Added new  assessment', 'status' => 1]);
+            }           
+         
         }else{
             return redirect()->route('compliancelogin');
         }   

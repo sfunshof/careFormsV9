@@ -48,7 +48,7 @@
             </div>    
         </div>
         
-        <div>
+        <div v-show="showSpotCheckReportPage">
             @include('mobilespotcheck.fakecomponents.report')
         </div>
     </div>

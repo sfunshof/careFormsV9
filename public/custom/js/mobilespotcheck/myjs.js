@@ -295,6 +295,7 @@ ready(function() {
     }
 
     reportFunc=function(){
+      root.showSpotCheckReportPage=true
       const modalEl = document.getElementById('staticBackdrop2');
       const bsModal = new bootstrap.Modal(modalEl);
       bsModal.show();
@@ -305,7 +306,7 @@ ready(function() {
          // If div0 is visible, return 0
         Fnon.Ask.Danger({
         title:'Warning!!!',
-        message:'Going past this page will result in data losss <br> Do you wish to continue?',
+        message:'You will lose the current data by going past this page <br> Do you wish to continue?',
         btnOkText: 'Yes',
         btnOkBackground: '#dc3545',
         btnOkColor: '#fff',
@@ -328,9 +329,9 @@ ready(function() {
    }
 
     initCarerPageFunc=function(){
-      Fnon.Ask.Danger({
-        title:'Start Up Page',
-        message:'Going to the Start will clear all data. Do you wish to continue?',
+      Fnon.Ask.Primary({
+        title:'Warning',
+        message:'Any unsaved current data will be lost. <br> Do you wish to continue?',
         btnOkText: 'Yes',
         btnOkBackground: '#0d6efd',
         btnOkColor: '#fff',

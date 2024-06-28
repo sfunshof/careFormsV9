@@ -10,7 +10,7 @@ const app = Vue.createApp({
             showReportModalPage:false,
             selectedCarer:'',
             selectedServiceUser: '',
-        
+            showSpotCheckReportPage:false
              
         };
     },

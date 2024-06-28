@@ -312,8 +312,8 @@ ready(function() {
 
     logoutFunc=function(){
         Fnon.Ask.Primary({
-            title:'Logout',
-            message:'Do you wish to logout? <br> Doing this will clear the data you entered',
+            title:'Warning',
+            message:'Do you wish to logout? <br> By doing this any unsaved current data will be lost',
             btnOkText: 'Yes',
             btnOkBackground: '#0d6efd',
             btnOkColor: '#fff',
@@ -334,8 +334,8 @@ ready(function() {
     
     menuFunc=function(){
       Fnon.Ask.Primary({
-          title:'Back to Menu',
-          message:'Do you wish to go back to the main menu? <br> Doing this will clear the data you entered',
+          title:'Warning',
+          message:'Do you wish to go back to the main menu? <br> By doing this any unsaved current data will be lost',
           btnOkText: 'Yes',
           btnOkBackground: '#0d6efd',
           btnOkColor: '#fff',

@@ -5,7 +5,7 @@ const app = Vue.createApp({
             showProspectEntryPage: true,
             showProspectQuesPage:false,
             showSuccessSavedPage:false,
-       
+            showProspectReportPage:false
         };
     },
     methods:{
