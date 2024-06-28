@@ -35,7 +35,7 @@ if (env('APP_ENV') === 'production') {
         Route::get('/', [mobilecomplianceController::class, 'showLoginForm'])->name('compliancelogin');
     });
 } else {
-    Route::get('/compliance/mobile', [mobilecomplianceController::class, 'showLoginForm'])->name('compliancelogin');
+    //Route::get('/compliance/mobile', [mobilecomplianceController::class, 'showLoginForm'])->name('compliancelogin');
 }
 
 Route::get('/', [homeController::class, 'index']);
