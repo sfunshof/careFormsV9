@@ -32,7 +32,7 @@ Route::get('/manifest.json', function () {
 //This is the actual production one
 if (env('APP_ENV') === 'production') {
     Route::domain('compliance.caretrail.co.uk')->group(function () {
-        Route::get('/', [mobilecomplianceController::class, 'showLoginForm'])->name('complianceloginx');
+        Route::get('/', [mobilecomplianceController::class, 'showLoginForm'])->name('compliancelogin');
     });
 } else {
     Route::get('/compliance/mobile', [mobilecomplianceController::class, 'showLoginForm'])->name('compliancelogin');
