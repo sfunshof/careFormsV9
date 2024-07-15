@@ -27,9 +27,15 @@
       </div>
     </div>
     <div class="col-lg-6 order-1 order-lg-2">
-      
-      <img src="{{asset('home/assets/img/hero-img.svg')}}" class="img-fluid" alt="" data-aos="zoom-out" data-aos-delay="100">
-      
+        <div class="image-container" > 
+            <img src="{{asset('home/assets/img/hero-img.svg')}}" class="img-fluid" alt="" data-aos="zoom-out" data-aos-delay="100">
+            <a href="{{ route('mileage') }}"  target="_blank">
+              <div class="overlay-text"  style="cursor: pointer;">
+                  Calculate your care worker's mileage
+                  <br> It's free
+              </div>   
+            </a>  
+        </div>
     </div>
   </div>
 </div>

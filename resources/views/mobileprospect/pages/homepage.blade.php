@@ -24,9 +24,12 @@
         .form-floating {
             box-shadow: none !important; /* Remove Bootstrap shadow */
         }
+        [v-cloak] {
+            display: none;
+        }
     </style>
     <link href="{{asset('custom/css/mobilespotcheck/mycss.css')}}"  rel="stylesheet">
-
+    
 @endsection
 
 @section('title')

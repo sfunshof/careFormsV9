@@ -1,0 +1,101 @@
+.delete-icon {
+    cursor: pointer;
+    color: red;
+    margin-left: 10px;
+}
+.text-field-container {
+    width: 100%;
+}
+.text-field-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.text-field {
+    flex: 1;
+    margin-right: 10px;
+}
+.textFields-wrapper {
+    border: 1px solid #ccc;
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+    position: relative;
+}
+.labels {
+    display: flex;
+    background: white;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: 10px 0;
+}
+.labels .label {
+    flex: 1;
+    text-align: center;
+}
+.error-message {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+.scrollable-table-container {
+    height: 368px; /* Set the height of the container */
+    overflow-y: auto; /* Enable vertical scrolling */
+    /* border: 1px solid #ccc;  Optional: Add border */
+    position: relative;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th {
+    position: sticky;
+    top: 0;
+    background: #f2f2f2;
+    z-index: 1;
+  }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+
+  .fixed-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    z-index: 10; /* Set a higher z-index to stay on top */
+  }
+
+  .logo {
+    margin-right: 1rem;
+  }
+
+  .text-center {
+    flex: 1; /* Flex to occupy remaining space */
+    text-align: center;
+  }
+  body {
+    padding-top: 6rem; /* Add some padding below the fixed header */
+  }
+
+  .hidden-text {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+    display:none
+}
+.show-text {
+    max-height: 1000px; /* A large enough value to display the full text */
+}
+.toggle-link {
+    color: blue;
+    cursor: pointer;
+}

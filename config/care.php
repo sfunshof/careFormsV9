@@ -1,5 +1,6 @@
 <?php
 return [
     'click_send_username' => env('CLICK_SEND_USERNAME', 'y@email.com'),
-    'click_send_password' => env('CLICK_SEND_PASSWORD', 'ABC')
+    'click_send_password' => env('CLICK_SEND_PASSWORD', 'ABC'),
+    'here_api_key' => env('HERE_API_KEY'),
 ]; 

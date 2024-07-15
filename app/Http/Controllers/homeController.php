@@ -10,4 +10,7 @@ class homeController extends Controller
     public function index(){
         return view('home.homepage');
     }
+    public function mileagePage(){
+        return view('mileage.homepage');
+    }
 }

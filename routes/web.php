@@ -39,6 +39,7 @@ if (env('APP_ENV') === 'production') {
 }
 
 Route::get('/', [homeController::class, 'index']);
+Route::get('/mileage', [homeController::class, 'mileagePage'])->name('mileage');
 
 
 //** Auth */
