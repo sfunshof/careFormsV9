@@ -187,10 +187,11 @@ ready(function() {
                     body: JSON.stringify(post_data)
                 });
                 const data = await response.json();
+                alert(JSON.stringify(data));
                 const div = document.getElementById('detailsDateID');
                 div.style.display = 'block';
                 
-                //alert(JSON.stringify(data));
+                
                 const level1 = document.getElementById('level1_componentID');
                 const head1 = document.getElementById('level1_headID'); 
                      
