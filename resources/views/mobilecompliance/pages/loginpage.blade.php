@@ -1,4 +1,16 @@
 @extends('mobilecompliance.layouts.layout')
+@section('css-custom')
+    <style>
+        #spinner {
+            display: none;
+            position: fixed; /* or 'absolute' if you want it to be relative to a parent */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999; /* Ensures it's on top of other elements */
+        }
+    </style>
+@endsection
 @section('title')
     Compliance Login    
 @endsection
@@ -10,7 +22,7 @@
                     <div class="card-body">
                         
                         <!-- Show spinner when form is submitted -->
-                        <div id="spinner" style="display: none;">
+                        <div id="spinner">
                             <div class="text-center">
                                 <div class="spinner-border" role="status">
                                     <span class="visually-hidden">Loading...</span>
@@ -45,7 +57,7 @@
                            
                             <button type="submit" class="btn btn-primary w-100">Login</button>
                         </form>
-                        <p class="mt-4 fs-6  fst-italic  fw-lighter  text-end"> Powered by CareTrail.co.uk</p>
+                        <p class="mt-4 fs-6  fst-italic  fw-lighter  text-end"> Powered by Metricsart</p>
                         {{--  IOS modal prompt --}}
                         @include('backoffice.inc.modal') 
                         
@@ -67,6 +79,25 @@
                 errorMessage.style.display = 'none';
             }, 2000); // Hide the error message after 2 seconds (2000 milliseconds)
         }
+
+        
+        let timeout;
+
+        function resetTimeout() {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                location.reload();
+            }, 10 * 60 * 1000); // 10 minutes
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            resetTimeout(); // Set timeout on page load
+
+            // Reset timeout on any interaction
+            document.addEventListener('mousemove', resetTimeout);
+            document.addEventListener('keypress', resetTimeout);
+        });
+        
     </script>
     <script>
         var PWA_name="Compliance" 

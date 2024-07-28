@@ -11,13 +11,17 @@
         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
           <li class="dropdown-header">
             <h6>{{auth()->user()->email}}</h6>
-            <span>Company Admin</span>
+            @if (auth()->user()->is_admin==1)
+               <span>Company Admin</span>
+            @else
+              <span>Care Worker</span>  
+            @endif  
           </li>
-          <li>
+          <li class= "{{ session('is_admin') == 1 ? '' : 'd-none' }} ">
             <hr class="dropdown-divider">
           </li>
 
-          <li>
+          <li class= "{{ session('is_admin') == 1 ? '' : 'd-none' }} ">
              <a class="dropdown-item d-flex align-items-center"   href="{{ url('/backoffice/companyprofile')}}" onclick="show_spinner()">
               <i class="bi bi-person"></i>
               <span>Company Profile</span>

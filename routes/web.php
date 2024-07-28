@@ -12,7 +12,10 @@ use App\Http\Controllers\homeController;
 use App\Http\Controllers\mobilespotcheckController;
 use App\Http\Controllers\mobilecomplianceController;
 use App\Http\Controllers\mobileprospectController;
- 
+use App\Http\Controllers\mobilemileageController;
+use App\Http\Controllers\mobilenightController;
+use App\Http\Controllers\distanceController;
+use App\Http\Controllers\mileageController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,29 +41,45 @@ if (env('APP_ENV') === 'production') {
     Route::get('/compliance/mobile', [mobilecomplianceController::class, 'showLoginForm'])->name('compliancelogin');
 }
 
+/** start of website exposed */
 Route::get('/', [homeController::class, 'index']);
 Route::get('/mileage', [homeController::class, 'mileagePage'])->name('mileage');
+/** end of website mileage  */
 
 
-//** Auth */
+//** Feedback */
 Route::get('{unique_value}', [mobileController::class, 'index']);
 Route::post("user/save_feedback", [mobileController::class, 'save_userFeedback']);
 Route::get("user/successSaved/{companyID}", [mobileController::class, 'successSaved']);
+//** End of feedback  */
+
+Route::post('/get-distance', [distanceController::class, 'getDistances'])->name('postCodeDistance');
+
 
 Route::post('/compliance/mobile', [mobilecomplianceController::class, 'login'])->name('complianceloginlogic');
-Route::get('/compliance/menu', [mobilecomplianceController::class, 'showMenuForm'])->name('compliancemenu');
+Route::middleware(['mobileLoggedIn'])->group(function () {
+    Route::get('/compliance/menu', [mobilecomplianceController::class, 'showMenuForm'])->name('compliancemenu');
 
-Route::get('/spotcheck/mobileHome', [mobilespotcheckController::class, 'showHomePage'])->name('spotcheckhome');
-Route::post('/spotcheck/mobileSave', [mobilespotcheckController::class, 'saveSpotCheckData'])->name('spotchecksave');
-Route:: post('/spotcheck/mobileHome', [backofficeController::class, 'show_mobile_spotcheck_data']);
+    Route::get('/spotcheck/mobileHome', [mobilespotcheckController::class, 'showHomePage'])->name('spotcheckhome');
+    Route::post('/spotcheck/mobileSave', [mobilespotcheckController::class, 'saveSpotCheckData'])->name('spotchecksave');
+    Route:: post('/spotcheck/mobileHome', [backofficeController::class, 'show_mobile_spotcheck_data']);
 
-Route::get('/prospect/mobileHome', [mobileprospectController::class, 'showHomePage'])->name('prospecthome');
-Route:: post('/prospect/mobileSave', [serviceUserController::class, 'save_serviceUser'])->name('prospectsave');
-Route:: post('/prospect/mobileSubmit', [mobileprospectController::class, 'submit_prospect'])->name('prospectsubmit');
+    Route::get('/prospect/mobileHome', [mobileprospectController::class, 'showHomePage'])->name('prospecthome');
+    Route:: post('/prospect/mobileSave', [serviceUserController::class, 'save_serviceUser'])->name('prospectsave');
+    Route:: post('/prospect/mobileSubmit', [mobileprospectController::class, 'submit_prospect'])->name('prospectsubmit');
 
-//This is for the employee to verify by email
+    Route::get('/mileage/mobileHome', [mobilemileageController::class, 'showHomePage'])->name('mileagehome');
+    Route::post('/mileage/mobileSave', [mobilemileageController::class, 'saveMileageData'])->name('mileagesave');
+    Route::post('/mileage/mobileGet', [mobilemileageController::class, 'getMileageData'])->name('getPostcodeFromDatabase');
+
+    Route::get('/night/mobileHome', [mobilenightController::class, 'showHomePage'])->name('nighthome');
+    Route::post('/night/mobileSave', [mobilenightController::class, 'saveNightData'])->name('nightsave');
+});
+
+//This is for the employee to respond to spotchecking by email
 Route::post('/spotcheck/checksave', [employeeController::class, 'check_employee_spotCheck_save']);
 Route::get('/spotcheck/{ranNo}', [employeeController::class, 'check_employee_spotCheck'])->where('ranNo', '.*');
+// **** End employee verify spot check */
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get("backoffice/feedback_dashboard", [backofficeController::class, 'show_feedback_dashboard'])->middleware(['auth','verified']);
@@ -90,8 +109,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get("prospect/browse_all", [serviceUserController::class, 'browse_all_prospects']);
     Route::post("prospect/convert", [serviceUserController::class, 'convert_prospect']);
     Route::post("prospect/pdf_prospect", [serviceUserController::class, 'pdf_prospectDetails'])->name('printPdfProspect');
-
-
 
     Route::get("employee/addnew", [employeeController::class, 'addnew_employee']);
     Route::post("employee/save", [employeeController::class, 'save_employee']);
@@ -126,6 +143,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get("backoffice/companyprofile", [backofficeController::class, 'show_companyProfile']);
     Route::post("backoffice/upate_companyprofile", [backofficeController::class, 'update_companyProfile']);
+    
+    Route::get("backoffice/admin/mileage", [mileageController::class, 'admin_mileage'])->name('adminMileage');
+    Route::post("backoffice/admin/level1", [mileageController::class, 'admin_level1'])->name('adminLevel1');
+    Route::post("backoffice/admin/level2", [mileageController::class, 'admin_level2'])->name('adminLevel2');
+    Route::post("backoffice/reload_admin_mileage", [mileageController::class, 'reload_admin_mileage'])->name('reload_admin_mileage');
+
+    Route::get("backoffice/client/mileage", [mileageController::class, 'client_mileage'])->name('clientMileage');
+    Route::post("backoffice/client/summary_report_mileage", [mileageController::class, 'client_summary_mileage'])->name('clientSummaryReport');
+    Route::post("backoffice/check_postcode_validity", [distanceController::class, 'validatePostcodes'])->name('check_postcodeValidity');
+    Route::post("backoffice/update_daily_postcodes", [mileageController::class, 'update_dailyPostcodes'])->name('update_dailyPostcodes');
+    Route::post("backoffice/set_daily_postcodes", [mileageController::class, 'set_dailyPostcodes'])->name('set_dailyPostcodes');
+    Route::post("backoffice/reload_client_mileage", [mileageController::class, 'reload_client_mileage'])->name('reload_client_mileage');
 });
 
 //Route::get("serviceUser/show_complaints", [serviceUserController::class, 'show_complaints_serviceUser']);

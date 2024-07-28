@@ -13,6 +13,7 @@ let previous=function(){}  // newly defined
 let previous_with_first_quespage=function(){}
 let previous_after_first_quespage=function(){}
 let go_to_first_quespage=function(){}
+let warning=function(){}
 /*
 let showSpinner=function(){}
 let hideSpinner=function(){}
@@ -49,7 +50,18 @@ hideSpinner = function() {
     const spinnerElement = document.getElementById('spinner');
     spinnerElement.style.display = 'none'; // Hide the spinner
 }
- 
+
+warning=function(xText){
+    Fnon.Hint.Danger(xText, {
+        position:'center-center',
+        displayDuration: 6000,
+        width: '400px',
+        callback:function(){
+        // callback
+        }
+    });
+}
+
 ready(function() {
     const prevIcon = document.getElementById('prevId');
     const nextIcon = document.getElementById('nextId');

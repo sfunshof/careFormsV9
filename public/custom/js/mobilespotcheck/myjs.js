@@ -241,6 +241,8 @@ ready(function() {
       }
     } 
     
+        
+
     submitSpotCheckFunc=function(){
         if (spotCheckReview==0){
           warning("Please select a star rating") 
@@ -256,43 +258,62 @@ ready(function() {
             spotCheckData: spotCheckResult,
             spotCheckReview: spotCheckReview
         }
+      const asyncPostCall = async () => {
+          try {
+              const response = await fetch(save_mobileSpotCheckURL, {
+                  method: 'POST',
+                  headers: {
+                      "Content-Type": "application/json",
+                      "Accept": "application/json, text-plain, */*",
+                      "X-Requested-With": "XMLHttpRequest",
+                      'Access-Control-Allow-Origin': '*',
+                      "X-CSRF-TOKEN": token
+                  },
+                  body: JSON.stringify(post_data)
+              });
       
-       fetch(save_mobileSpotCheckURL, {
-          method: 'POST',
-          body: JSON.stringify(post_data),
-          headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json, text-plain, */*",
-            "X-Requested-With": "XMLHttpRequest",
-            "X-CSRF-TOKEN": token
-        },
-      })
-      .then(response => {
-          hideSpinner();
-          if (response.ok) {
+              if (!response.ok) {
+                  hideSpinner()
+                  // Check for CSRF token mismatch error
+                  const errorData = await response.json();
+                  if (errorData.message && errorData.message.includes('CSRF token mismatch')) {
+                    warning("Session expired: Please login and repeat") 
+                     window.location.href = loginURL;
+                      return;
+                  }
+                  throw new Error('Network response was not ok');
+              }
               root.showSuccessSavedPage=true
               setTimeout(() => {
                    showCarerPageFunc()
                   //console.log('x is now false');
               }, 4000);
-            return response.json();
-          } else {
-              throw new Error(`Error: ${response.status} ${response.statusText}`);
-          }
-      })
-      .then(data => {
-          hideSpinner();
-          //console.log('Response from server:', data);
-          // Handle the response data as needed
-      })
-      .catch(error => {
-          hideSpinner();
-          togglePrevIconFunc(1)
-          //console.error('Fetch error:', error);
-      });
+              //return response.json();
+ 
+              const data = await response.json();
+              //alert(JSON.stringify(data));
+              hideSpinner()
+          } catch(error) {
+              // enter your logic for when there is an error (ex. error toast)
+              //console.log(error)
+              //alert(error);
+              //in case it went bad jsut recall
+              if (error.message && error.message.includes('CSRF token mismatch')) {
+                warning("Session expired: Please login and repeat")   
+                window.location.href = loginURL;
+              }
+              hideSpinner();
+              togglePrevIconFunc(1)
+          } 
+      }    
+      asyncPostCall()
+  }
+         
 
-      //alert(JSON.stringify(spotCheckResult))
-    }
+
+
+
+
 
     reportFunc=function(){
       root.showSpotCheckReportPage=true
@@ -441,6 +462,18 @@ ready(function() {
                       },
                       body: JSON.stringify(post_data)
                   });
+                 
+                  if (!response.ok) {
+                    // Check for CSRF token mismatch error
+                    const errorData = await response.json();
+                    if (errorData.message && errorData.message.includes('CSRF token mismatch')) {
+                        window.location.href = loginURL;
+                        warning("Session expired: Please login and repeat") 
+                        return;
+                    }
+                    throw new Error('Network response was not ok');
+                  }
+
                   //const data = await response.json();
                   let data = await response.text(); //server returns text
                    //document.documentElement.innerHTML = data;
@@ -456,8 +489,12 @@ ready(function() {
               } catch(error) {
                   // enter your logic for when there is an error (ex. error toast)
                   //alert(error);
-                  window.location.href = loginURL;   //session dead
                   hideSpinner_modal()
+                  if (error.message && error.message.includes('CSRF token mismatch')) {
+                    warning("Session expired: Please login and repeat") 
+                        window.location.href = loginURL;
+                }
+             
               } 
           }    
           asyncMobileCall()

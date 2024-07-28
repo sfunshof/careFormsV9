@@ -77,3 +77,15 @@
   min-height: 50px;
   max-height: 200px;
 }
+
+/* better than the one at client/admin mileage */
+.scrollable-table-container {
+  max-height: 60vh; /* Set the height of the container */
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+.table thead th {
+  position: sticky;
+  top: 0;
+  background-color: #fff; /* Adjust the background color as needed */
+  z-index: 1; /* Ensure the header stays above the table content */
+}

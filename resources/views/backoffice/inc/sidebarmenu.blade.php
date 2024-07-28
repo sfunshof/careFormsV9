@@ -30,7 +30,7 @@
       {{-- End Dashboard Nav --}}
 
       
-      <li class="nav-item">
+      <li class="nav-item  {{ session('is_admin') == 1 ? '' : 'd-none' }}  ">
         <a class="nav-link collapsed" data-bs-target="#serviceuser-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-ui-radios fs-6"></i><span>Service Users</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
@@ -64,10 +64,10 @@
           </li>
           --}}   
         </ul>
-      </li>
+      </li> 
       {{-- End Service user Nav --}}
 
-      <li class="nav-item">
+      <li class="nav-item  {{ session('is_admin') == 1 ? '' : 'd-none' }} ">   
         <a class="nav-link collapsed" data-bs-target="#employee-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-ui-checks fs-6"></i><span>Employees</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
@@ -97,7 +97,7 @@
       {{-- End employee Nav --}}
      
       {{--  Start of Assessment --}}
-      <li class="nav-item">
+      <li class="nav-item  {{ session('is_admin') == 1 ? '' : 'd-none' }}   ">
         <a class="nav-link collapsed" data-bs-target="#prospect-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-menu-button-wide"></i><span>Assessment</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
@@ -119,7 +119,7 @@
 
 
       {{-- BuildForms --}} 
-      <li class="nav-item">
+      <li class="nav-item {{ session('is_admin') == 1 ? '' : 'd-none' }}  ">
           <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
             <i class="fab fa-wpforms fs-6"></i>Build Forms</span><i class="bi bi-chevron-down ms-auto"></i>
           </a>
@@ -147,12 +147,32 @@
       {{-- End Forms Nav --}}
 
       {{--  Company Profile --}}
-      <li class="nav-item">
+      <li class="nav-item  {{ session('is_admin') == 1 ? '' : 'd-none' }}">
         <a class="nav-link " href="{{ url('/backoffice/companyprofile')}}" onclick="show_spinner()">
           <i class="bi bi-building fs-6"></i>
           <span>Company Profile</span>
         </a>
+      </li> 
       {{--  End company Profile --}}
+
+      {{--  Mikeage Admin--}}
+      <li class="nav-item  {{ session('is_admin') == 1 ? '' : 'd-none' }}">
+        <a class="nav-link " href="{{ route('adminMileage')}}" onclick="show_spinner()">
+          <i class="bi bi-building fs-6"></i>
+          <span>Mileage</span>
+        </a>
+      </li> 
+      {{--  End Mikeage Admin --}}
+      
+
+      {{--  Mileage Client--}}
+      <li class="nav-item  {{ session('is_admin') == 0 ? '' : 'd-none' }}">
+        <a class="nav-link " href="{{ route('clientMileage')}}" onclick="show_spinner()">
+          <i class="bi bi-building fs-6"></i>
+          <span>Mileage</span>
+        </a>
+      </li> 
+      {{--  End Mileage Client --}}
 
     </ul>
 

@@ -10,7 +10,7 @@
 @endsection
 
 @section('contents')
-    <div id="spinner" style="display: none;">
+    <div id="spinner">
         <div class="text-center">
             <div class="spinner-border" role="status">
                 <span class="visually-hidden">Loading...</span>
@@ -27,5 +27,7 @@
         let loginURL="{{ route('compliancelogin') }}";
         let spotCheckURL= "{{ route('spotcheckhome')}}";
         let prospectURL= "{{ route('prospecthome')}}";
+        let mileageURL= "{{ route('mileagehome')}}";
+        let nightURL= "{{ route('nighthome')}}";
      </script>
 @endpush   

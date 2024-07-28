@@ -210,4 +210,11 @@
             margin-right: 0;
         }
 
- 
+        #spinner {
+            display: none;
+            position: fixed; /* or 'absolute' if you want it to be relative to a parent */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999; /* Ensures it's on top of other elements */
+        }

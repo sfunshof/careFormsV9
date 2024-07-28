@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\backofficeController;
+use Illuminate\Support\Facades\Auth;
 
 class mobilecomplianceController extends Controller
 {
@@ -19,7 +20,6 @@ class mobilecomplianceController extends Controller
         Session::forget('companyID');
         return view('mobilecompliance.pages.loginpage', [ $companyDetails] );
     }    
-
     
     public function login(Request $request){
         $request->validate([
@@ -35,7 +35,28 @@ class mobilecomplianceController extends Controller
             $userName=$user->email;
             $companyID=$user->companyID;
             $userID=$user->id;
-           
+            
+            $request->session()->put('loggedIn', true);
+
+
+            //*** Mileage UserID must be swapped for the one in employeedetails **//
+            $is_admin=$user->is_admin;
+            Session::put('is_admin', $is_admin);
+            $userId=-1;
+            $postCode="";
+            if($is_admin==0){
+                //it is careworker so get the carerworkerID
+                $users = DB::table('employeedetailstable')
+                    ->select('userID', 'officePostcode')
+                    ->where('email', $userName)
+                    ->first();
+                $userId=$users->userID;
+                $postCode=$users->officePostcode;
+            }
+            Session::put('careWorkerLoginID', $userId);
+            Session::put('officePostcode',$postCode);
+            //*** End of the Mileage  ***/      
+     
             $companyName = DB::table('companyprofiletable')
             ->where('companyID', $companyID)
             ->value('companyName');
@@ -111,7 +132,7 @@ class mobilecomplianceController extends Controller
             $viewArray['serviceUsers']=$serviceUsersArray;
             
             // Save the companyID into the session
-            Session::put('companyID', $companyID);
+            Session::put('companyID', $companyID); 
             Session::put('userName',$viewArray['userName']);
             Session::put('spotCheckQues',$viewArray['spotCheckQues']);
             Session::put('count',$viewArray['count']);

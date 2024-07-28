@@ -45,7 +45,9 @@ ready(function() {
     
     let save_employeeFunc= function(userID) {
         //Begin the spinner
-        show_spinner()
+        let spinner_status=0
+        if (userID >=0) spinner_status=1 
+        show_spinner(spinner_status)
         
         //Clear previous error
         const errClass =  document.querySelectorAll(".text-danger");
@@ -61,6 +63,7 @@ ready(function() {
             'email':  document.querySelector('input[name="email"]').value,
             'mobile':   document.querySelector('input[name="mobile"]').value,
             'job':    document.querySelector('select[name="jobFunction"]').value,
+            'officePostcode':  document.querySelector('input[name="officePostcode"]').value,
             'companyID': companyID,
             'userID' : userID,
             'isCOS': document.getElementById('COSswitchID').checked  ? 1 : 0,
@@ -89,7 +92,7 @@ ready(function() {
                     body: JSON.stringify(formData)
                 });
                 const data = await response.json();
-                                                
+                alert(JSON.stringify(data))                               
                 let status=data["status"]
                 if (status==1){
                     show_alertInfo("Records Successfully Saved")
@@ -105,13 +108,13 @@ ready(function() {
                         document.querySelector(classX).textContent=errors[el]; 
                     }
                 }
-                hide_spinner()
+                hide_spinner(spinner_status)
                 
             } catch(error) {
                     // enter your logic for when there is an error (ex. error toast)
                     console.log(error)
                     alert(error);
-                    hide_spinner()
+                    hide_spinner(spinner_status)
                     
             } 
         }    

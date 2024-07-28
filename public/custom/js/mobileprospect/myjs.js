@@ -88,6 +88,20 @@ ready(function() {
                     },
                     body: JSON.stringify(formData)
                 });
+               
+                if (!response.ok) {
+                    hide_spinner()
+                    // Check for CSRF token mismatch error
+                    const errorData = await response.json();
+                    if (errorData.message && errorData.message.includes('CSRF token mismatch')) {
+                        window.location.href = loginURL;
+                        warning("Session expired: Please login and repeat") 
+                        return;
+                    }
+                    throw new Error('Network response was not ok');
+                }
+
+
                 const data = await response.json();
                 //alert(JSON.stringify(data))
                 let status=data["status"]
@@ -134,9 +148,13 @@ ready(function() {
                 
             } catch(error) {
                     // enter your logic for when there is an error (ex. error toast)
-                    console.log(error)
+                    //console.log(error)
                     //alert(error);
-                    hide_spinner(1)
+                    hide_spinner()
+                    if (error.message && error.message.includes('CSRF token mismatch')) {
+                        warning("Session expired: Please login and repeat") 
+						window.location.href = loginURL;
+                    }
                     
             } 
         }    
@@ -262,7 +280,21 @@ ready(function() {
                     },
                     body: JSON.stringify(post_data)
                 });
+             
+                if (!response.ok) {
+                    hide_spinner()
+                    // Check for CSRF token mismatch error
+                    const errorData = await response.json();
+                    if (errorData.message && errorData.message.includes('CSRF token mismatch')) {
+                        window.location.href = loginURL;
+                        warning("Session expired: Please login and repeat") 
+                        return;
+                    }
+                    throw new Error('Network response was not ok');
+                }
+                
                 const data = await response.json();
+                
                 //alert(JSON.stringify(data));
                 document.getElementById("mobile_prospectQuesFormID").reset();
                 root.showSuccessSavedPage=true
@@ -279,6 +311,10 @@ ready(function() {
                     //in case it went bad jsut recall
                     togglePrevIconFunc(1)
                     hide_spinner()
+                    if (error.message && error.message.includes('CSRF token mismatch')) {
+                        warning("Session expired: Please login and repeat") 
+						window.location.href = loginURL;
+                    }
             } 
         }    
         asyncPostCall()

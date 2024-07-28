@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 class employeeController extends Controller
 {
@@ -20,6 +21,13 @@ class employeeController extends Controller
     }   
     public function save_employee(Request $req){
         $userID=$req->userID;
+        //check if you updated without filling the prospect ques
+        if ($userID >=0){
+            //Do nothing
+        }else{
+            $userID=-1;
+        }
+        
         $COSrules=[
             'appDate'=>'required',
             'interDate' => 'required',
@@ -40,12 +48,23 @@ class employeeController extends Controller
             'firstName' => 'required|max:30',
             'lastName' => 'required|max:40', 
             'mobile' =>  ['required', 'regex:/^\+44\d{7,11}$/'],
-            'email' => 'required|email'
+            'email' => 'required|email',
+            'officePostcode' => ['required','regex:/^([A-Z]{1,2}[0-9][0-9A-Z]?\s?[0-9][A-Z]{2}|[AB][0-9][0-9]\s?[0-9][A-Z]{2})$/i']
+
         ];
         $msg=[
             'firstName.required'=>'First Name is required',
             'lastName.required'=>'Last Name is required',
         ];
+
+        // Add uniqueness rule for email if it's a new user
+        if ($userID==-1) {
+            //$rules['email'] .= '|unique:employeedetailstable,email|unique:userstable,email';
+            $rules['email'] .= '|unique:employeedetailstable,email|unique:userstable,email';
+        } else { //Email does not change
+            // Validation rules for updating an existing user
+            //$rules['email'] .= '|unique:employeedetailstable,email,' . $userID . ',userID';
+        }
 
         // Combine the rules and messages
         if ($req->isCOS==1){
@@ -70,11 +89,21 @@ class employeeController extends Controller
                 'jobFunction'=>$req->job,
                 'companyID'=>$req->companyID,
                 'isCOS' => $req->isCOS,
-                'COSdates' => json_encode($COSdates)
+                'COSdates' => json_encode($COSdates),
+                'officePostcode' =>$req->officePostcode
             ];
+            
+            $loginFieldSet=[
+                'email'=>$req->email,
+                'is_admin' => 0,
+                'companyID' => $req->companyID,
+                'password' => Hash::make('password')
+            ];
+
             if ($userID==-1){
                 $insertStatus=DB::table('employeedetailstable')->insert($fieldSet);
                 if ($insertStatus==1){
+                    $insertStatus=DB::table('userstable')->insert($loginFieldSet);
                     return response()->json(['success'=>'Added new records.',
                                          'status' => 1]);
                 }else{

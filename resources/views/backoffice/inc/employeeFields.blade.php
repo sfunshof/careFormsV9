@@ -20,12 +20,14 @@
                 $DBSdate='';
                 $startDate='';
                 $style='';
+                $officePostcode='';
                 if ($user){
                     $firstName=$user->firstName;
                     $middleName=$user->middleName;
                     $lastName=$user->lastName;   
                     $email=$user->email;
                     $mobile=$user->tel;
+                    $officePostcode=$user->officePostcode;
                     $isCOS=$user->isCOS;
                     if ($isCOS === 1) {
                         $style = 'display: block; overflow: visible;';
@@ -68,9 +70,11 @@
                 <span class="text-danger lastName_err"></span>   
             </div>
             
-            <div class="col-md-5">
+            <div class="col-md-5"> 
                 <div class="form-floating">
-                    <input name="email"  type="text" class="form-control" id="emailID" placeholder="Email" value="{{ $email}}" required>
+                    <input name="email"  type="text" 
+                     class="form-control @if ($user) disabled @endif"
+                     id="emailID"    placeholder="Email" value="{{ $email}}" required>
                     <label for="email">Email</label>
                 </div>
                 <span class="text-danger email_err"></span>   
@@ -103,6 +107,13 @@
                         <label for="selectJobID">Job Function</label> 
                     </div>
                 </div>
+            </div>
+            <div class="col-md-4 mt-1">
+                <div class="form-floating">
+                    <input  name="officePostcode"   type="text" class="form-control" id="officePostcodeID" placeholder="Office Postcode"  value=  "{{$officePostcode}}" >
+                    <label for="officePostcodeID">Office Postcode </label>
+                </div>
+                <span class="text-danger officePostcode_err"></span>   
             </div>
 
             <div class="form-check form-switch text-right d-none">
