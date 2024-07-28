@@ -187,7 +187,7 @@ ready(function() {
                     body: JSON.stringify(post_data)
                 });
                 const data = await response.json();
-                alert(JSON.stringify(data));
+                //alert(JSON.stringify(data));
                 const div = document.getElementById('detailsDateID');
                 div.style.display = 'block';
                 

@@ -330,7 +330,7 @@ class mileageController extends Controller
         //$companyID = auth()->user()->company_id; // Assuming you're getting companyID from the authenticated user
         $dates = $this->getMileageData($userID, $startDate, $endDate, $companyID);
         //get the full name to be used in heading
-        $employee = DB::table('employeedetailsTable')
+        $employee = DB::table('employeedetailstable')
             ->select(DB::raw('concat(firstName," ", lastName) as fullName'))
             ->where('userID', $userID)
             ->where('companyID', $companyID)
