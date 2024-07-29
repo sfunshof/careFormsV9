@@ -141,7 +141,7 @@ class utilityController extends Controller
         $feedbackMsg="";
         $smsPreText="";
         $lineBreak=" %0a " ;
-        $URL= url( '/' .  $unique_value); 
+        $URL= url( '/f/' .  $unique_value); 
         if ($isSMS==0){
             $lineBreak=" <br> " ;
             $URL= "<a href= " . $URL . "> " .  $URL . "</a>";

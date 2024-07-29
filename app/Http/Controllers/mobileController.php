@@ -10,14 +10,14 @@ use Illuminate\Support\Facades\View;
 class mobileController extends Controller
 {
     //
-    public function index(Request $request){
+    public function index($unique){
         //get the service user details
         //http://west/4ew2hy54xs7
 
         View::share('mobile_companyName', '');
         $campaign='Unknown Campaign';
-        $unique_value=$request->unique_value;
-        
+        $unique_value=$unique;
+   
         //ResponseTypeID is valid; what is the csmpaign name
         $resp = DB::table("responsetable")
             ->select('*')

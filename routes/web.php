@@ -48,7 +48,7 @@ Route::get('/mileage', [homeController::class, 'mileagePage'])->name('mileage');
 
 
 //** Feedback */
-Route::get('{unique_value}', [mobileController::class, 'index']);
+Route::get('f/{unique_value}', [mobileController::class, 'index']);
 Route::post("user/save_feedback", [mobileController::class, 'save_userFeedback']);
 Route::get("user/successSaved/{companyID}", [mobileController::class, 'successSaved']);
 //** End of feedback  */
