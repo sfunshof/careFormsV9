@@ -36,9 +36,12 @@ Route::get('/manifest.json', function () {
 if (env('APP_ENV') === 'production') {
     Route::domain('compliance.caretrail.co.uk')->group(function () {
         Route::get('/', [mobilecomplianceController::class, 'showLoginForm'])->name('compliancelogin');
+        //compliance.caretrail.co.uk/anything PWA going there
+        /*
         Route::get('/{any}', function () {
             return redirect('/');
         })->where('any', '.*');
+        */
     });
   
 } else if (env('APP_ENV') === 'local') {
@@ -164,3 +167,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 //Route::get("serviceUser/show_complaints", [serviceUserController::class, 'show_complaints_serviceUser']);
 //Route::get("serviceUser/show_compliments", [serviceUserController::class, 'show_compliments_serviceUser']);
 
+if (env('APP_ENV') === 'production') {
+    Route::domain('compliance.caretrail.co.uk')->group(function () {
+        //compliance.caretrail.co.uk/anything PWA going there
+        Route::get('/{any}', function () {
+            return redirect('/');
+        })->where('any', '.*');
+    });
+}    

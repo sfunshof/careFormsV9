@@ -38,15 +38,4 @@ class Handler extends ExceptionHandler
             //
         });
     }
-    
-    public function render($request, Throwable $exception)
-    {
-        if ($exception instanceof NotFoundHttpException) {
-            if (app()->environment('production')) {
-                return redirect()->route('compliancelogin');
-            }
-        }
-
-        return parent::render($request, $exception);
-    }
 }
