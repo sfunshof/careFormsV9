@@ -37,15 +37,6 @@ if (env('APP_ENV') === 'production') {
     Route::domain('compliance.caretrail.co.uk')->group(function () {
         Route::get('/', [mobilecomplianceController::class, 'showLoginForm'])->name('compliancelogin');
     });
-    Route::get('/{any}', function () {
-        // Check if the path starts with '/compliance/mobile'
-        if (request()->is('/compliance/mobile') || request()->is('/compliance/mobile*')) {
-            // If it does, don't redirect
-            return null;
-        }
-        // Otherwise, redirect to root
-        return redirect('/');
-    })->where('any', '.*')->fallback();
 } else if (env('APP_ENV') === 'local') {
     Route::get('/compliance/mobile', [mobilecomplianceController::class, 'showLoginForm'])->name('compliancelogin');
 }
