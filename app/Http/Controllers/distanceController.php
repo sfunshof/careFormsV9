@@ -13,7 +13,7 @@ class distanceController extends Controller
 
     public function __construct()
     {
-        $this->apiKey = "123"; // config('care.here_api_key'); // Initialize the API key in the constructor
+        $this->apiKey = config('care.here_api_key'); // Initialize the API key in the constructor
     }
 
     public function getDistances(Request $request)

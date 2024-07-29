@@ -16,7 +16,7 @@ let hide_spinner=function(isNotModal=1) {
     if (isNotModal==0) spinnerElement = document.getElementById('modal_spinner');
     spinnerElement.style.display = 'none'; // Hide the spinner
 }
-const apiKey ='123' ;// hereApiKey;
+const apiKey = hereApiKey;
 
 function ready(callbackFunc) {
     if (document.readyState !== 'loading') {
