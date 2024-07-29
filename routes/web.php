@@ -35,13 +35,20 @@ Route::get('/manifest.json', function () {
 //This is the actual production one
 if (env('APP_ENV') === 'production') {
     Route::domain('compliance.caretrail.co.uk')->group(function () {
-        Route::get('/', [mobilecomplianceController::class, 'showLoginForm'])->name('compliancelogin');
-        //compliance.caretrail.co.uk/anything PWA going there
-        /*
+        // Define the specific route we want to keep
+        Route::post('/compliance/mobile', [mobilecomplianceController::class, 'login'])
+            ->name('complianceloginlogic');
+    
+        // Catch-all route for everything else
         Route::get('/{any}', function () {
+            // Check if the path starts with '/compliance/mobile'
+            if (request()->is('compliance/mobile') || request()->is('compliance/mobile/*')) {
+                // If it does, don't redirect
+                return null;
+            }
+            // Otherwise, redirect to root
             return redirect('/');
-        })->where('any', '.*');
-        */
+        })->where('any', '.*')->fallback();
     });
   
 } else if (env('APP_ENV') === 'local') {
@@ -66,7 +73,7 @@ Route::post('/get-distance', [distanceController::class, 'getDistances'])->name(
 Route::post('/compliance/mobile{hash?}', [mobilecomplianceController::class, 'login'])
     ->where('hash', '#?')
     ->name('complianceloginlogic');
-    
+
 Route::middleware(['mobileLoggedIn'])->group(function () {
     Route::get('/compliance/menu', [mobilecomplianceController::class, 'showMenuForm'])->name('compliancemenu');
 
@@ -170,11 +177,3 @@ Route::middleware(['auth', 'verified'])->group(function () {
 //Route::get("serviceUser/show_complaints", [serviceUserController::class, 'show_complaints_serviceUser']);
 //Route::get("serviceUser/show_compliments", [serviceUserController::class, 'show_compliments_serviceUser']);
 
-if (env('APP_ENV') === 'production') {
-    Route::domain('compliance.caretrail.co.uk')->group(function () {
-        //compliance.caretrail.co.uk/anything PWA going there
-        Route::get('/{any}', function () {
-            return redirect('/');
-        })->where('any', '.*');
-    });
-}    
