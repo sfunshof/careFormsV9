@@ -39,7 +39,7 @@ if (env('APP_ENV') === 'production') {
     });
     Route::get('/{any}', function () {
         // Check if the path starts with '/compliance/mobile'
-        if (request()->is('compliance/mobile') || request()->is('compliance/mobile/*')) {
+        if (request()->is('/compliance/mobile') || request()->is('/compliance/mobile*')) {
             // If it does, don't redirect
             return null;
         }
