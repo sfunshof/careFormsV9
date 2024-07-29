@@ -35,22 +35,17 @@ Route::get('/manifest.json', function () {
 //This is the actual production one
 if (env('APP_ENV') === 'production') {
     Route::domain('compliance.caretrail.co.uk')->group(function () {
-        // Define the specific route we want to keep
-        Route::post('/compliance/mobile', [mobilecomplianceController::class, 'login'])
-            ->name('complianceloginlogic');
-    
-        // Catch-all route for everything else
-        Route::get('/{any}', function () {
-            // Check if the path starts with '/compliance/mobile'
-            if (request()->is('compliance/mobile') || request()->is('compliance/mobile/*')) {
-                // If it does, don't redirect
-                return null;
-            }
-            // Otherwise, redirect to root
-            return redirect('/');
-        })->where('any', '.*')->fallback();
+        Route::get('/', [mobilecomplianceController::class, 'showLoginForm'])->name('compliancelogin');
     });
-  
+    Route::get('/{any}', function () {
+        // Check if the path starts with '/compliance/mobile'
+        if (request()->is('compliance/mobile') || request()->is('compliance/mobile/*')) {
+            // If it does, don't redirect
+            return null;
+        }
+        // Otherwise, redirect to root
+        return redirect('/');
+    })->where('any', '.*')->fallback();
 } else if (env('APP_ENV') === 'local') {
     Route::get('/compliance/mobile', [mobilecomplianceController::class, 'showLoginForm'])->name('compliancelogin');
 }
@@ -70,6 +65,7 @@ Route::get("user/successSaved/{companyID}", [mobileController::class, 'successSa
 Route::post('/get-distance', [distanceController::class, 'getDistances'])->name('postCodeDistance');
 
 
+Route::post('/compliance/mobile', [mobilecomplianceController::class, 'login'])->name('complianceloginlogic');
 Route::middleware(['mobileLoggedIn'])->group(function () {
     Route::get('/compliance/menu', [mobilecomplianceController::class, 'showMenuForm'])->name('compliancemenu');
 
