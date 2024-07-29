@@ -36,7 +36,11 @@ Route::get('/manifest.json', function () {
 if (env('APP_ENV') === 'production') {
     Route::domain('compliance.caretrail.co.uk')->group(function () {
         Route::get('/', [mobilecomplianceController::class, 'showLoginForm'])->name('compliancelogin');
+        Route::get('/{any}', function () {
+            return redirect('/');
+        })->where('any', '.*');
     });
+  
 } else if (env('APP_ENV') === 'local') {
     Route::get('/compliance/mobile', [mobilecomplianceController::class, 'showLoginForm'])->name('compliancelogin');
 }
