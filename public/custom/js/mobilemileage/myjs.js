@@ -329,7 +329,21 @@ ready(function() {
         //for (let i = 0; i < postcodeArray.length - 1; i += 2) {
         //    postcodePairs.push([postcodeArray[i], postcodeArray[i + 1]]);
         //}
-        alert(JSON.stringify(postcodePairs));
+        //alert(JSON.stringify(postcodePairs));
+        if (postcodePairs.length === 0) {
+            const noDataRow = document.createElement('tr');
+            const noDataCell = document.createElement('td');
+            noDataCell.colSpan = 3; // Adjust the colspan based on the number of columns
+            noDataCell.textContent = 'No Available Data';
+            noDataCell.style.textAlign = 'center';
+            // Add the style for red color
+            noDataCell.style.color = 'red';
+            noDataRow.appendChild(noDataCell);
+            tableBody.appendChild(noDataRow);
+            hide_spinner()
+           return 0;
+        }   
+
 
         const distances = await fetchDistances(postcodePairs);
 
@@ -357,8 +371,8 @@ ready(function() {
             row.appendChild(toCell);
             row.appendChild(distanceCell);
 
-            tableBody.appendChild(row);
-         }
+            tableBody.appendChild(row); 
+        }
         let total_distance=  distances.map(d => isNaN(d) ? 0 : Number(d)).reduce((acc, curr) => acc + curr, 0);
         total_distance=round_number(total_distance)
         let distanceVisit = document.getElementById('milesVisitID');

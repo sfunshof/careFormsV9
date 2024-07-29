@@ -92,7 +92,7 @@ ready(function() {
                     body: JSON.stringify(formData)
                 });
                 const data = await response.json();
-                alert(JSON.stringify(data))                               
+                //alert(JSON.stringify(data))                               
                 let status=data["status"]
                 if (status==1){
                     show_alertInfo("Records Successfully Saved")
