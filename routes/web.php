@@ -63,8 +63,10 @@ Route::get("user/successSaved/{companyID}", [mobileController::class, 'successSa
 Route::post('/get-distance', [distanceController::class, 'getDistances'])->name('postCodeDistance');
 
 
-Route::post('/compliance/mobile', [mobilecomplianceController::class, 'login'])->name('complianceloginlogic');
-Route::post('/compliance/mobile#', [mobilecomplianceController::class, 'login'])->name('complianceloginlogic');
+Route::post('/compliance/mobile{hash?}', [mobilecomplianceController::class, 'login'])
+    ->where('hash', '#?')
+    ->name('complianceloginlogic');
+    
 Route::middleware(['mobileLoggedIn'])->group(function () {
     Route::get('/compliance/menu', [mobilecomplianceController::class, 'showMenuForm'])->name('compliancemenu');
 
