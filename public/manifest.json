@@ -4,7 +4,7 @@
     "start_url": "{{ env('APP_START_URL') }}",
     "background_color": "#6777ef",
     "description": "This is Care giver compliance",
-    "display": "fullscreen",
+    "display": "standalone",
     "theme_color": "#6777ef",
     "icons": [
         {
