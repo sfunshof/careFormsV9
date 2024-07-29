@@ -64,6 +64,7 @@ Route::post('/get-distance', [distanceController::class, 'getDistances'])->name(
 
 
 Route::post('/compliance/mobile', [mobilecomplianceController::class, 'login'])->name('complianceloginlogic');
+Route::post('/compliance/mobile#', [mobilecomplianceController::class, 'login'])->name('complianceloginlogic');
 Route::middleware(['mobileLoggedIn'])->group(function () {
     Route::get('/compliance/menu', [mobilecomplianceController::class, 'showMenuForm'])->name('compliancemenu');
 
