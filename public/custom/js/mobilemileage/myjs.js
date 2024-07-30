@@ -101,7 +101,7 @@ ready(function() {
                 if (!response.ok) {
                     // Check for CSRF token mismatch error
                     const errorData = await response.json();
-                    alert(JSON.stringify(errorData));
+                    //alert(JSON.stringify(errorData));
                     hide_spinner(isLast)
                     if (errorData.message && errorData.message.includes('CSRF token mismatch')) {
                         warning("Session expired: Please login again to repeat") 
