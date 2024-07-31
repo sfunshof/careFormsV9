@@ -130,24 +130,15 @@ class distanceController extends Controller
     {
         $postcodes = $request->input('postCodes');
         $invalidPostcodes = [];
-
+    
         foreach ($postcodes as $postcode) {
-            $existsInDatabase = DB::table('postcode_distances')
-                ->where('postcode1', $postcode)
-                ->orWhere('postcode2', $postcode)
-                ->exists();
-
-            if (!$existsInDatabase) {
-                $response = Http::get('https://geocode.search.hereapi.com/v1/geocode', [
-                    'q' => $postcode,
-                    'apiKey' => env('HERE_API_KEY')
-                ]);
-
-                if ($response->failed() || empty($response->json()['items'])) {
-                    $invalidPostcodes[] = $postcode;
-                }
+            $response = Http::get("https://api.postcodes.io/postcodes/{$postcode}/validate");
+    
+            if ($response->failed() || !$response->json('result')) {
+                $invalidPostcodes[] = $postcode;
             }
         }
+    
         return response()->json(['invalid_postcodes' => $invalidPostcodes]);
     }
 

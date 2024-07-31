@@ -41,12 +41,66 @@ ready(function() {
     const modalText = document.getElementById('postCodeText');
 
     get_postCodeFunc=function(countVisit){
+       
+        /*
         if ('geolocation' in navigator) {
+            
             navigator.geolocation.getCurrentPosition(async (position) => {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
+                const lat = position.coords.latitude.toFixed(6);
+                const lon = position.coords.longitude.toFixed(6);
+                const reverseGeocodeUrl = `https://api.postcodes.io/postcodes?lon=${lon}&lat=${lat}&radius=300`;
+                try {
+                   // console.log('Attempting to fetch from:', reverseGeocodeUrl);
+                    const response = await fetch(reverseGeocodeUrl);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                
+                    //console.log('Response received:', response);
+                    const data = await response.json();
+                    console.log(data)
+                    if (data.status === 200 && data.result.length > 0) {
+                        const fullPostcode = data.result[0].postcode;
+                        printModal(1, countVisit, fullPostcode);
+                    } else {
+                        printModal(0, countVisit, "");
+                    }
+
+                    // Rest of your code...
+                } catch (error) {
+                    console.error('Fetch error:', error);
+                    printModal(0, countVisit, "");
+                }
+            }, (error) => {
+               // console.error('Error getting location:', error);
+                printModal(0, countVisit, "");
+            });
+        } else {
+           // console.log('Geolocation is not supported by your browser.');
+            printModal(0, countVisit, "");
+        }
+        */
+
+        
+        if ('geolocation' in navigator) {
+            //console.log(address)
+            async function getFullPostcode(partialPostcode) {
+                const url = `https://api.postcodes.io/postcodes?q=${partialPostcode}`;
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data.result && data.result.length > 0) {
+                  return data.result[0].postcode;
+                }
+                return partialPostcode; // Return original if no match found
+            }
+
+
+            navigator.geolocation.getCurrentPosition(async (position) => {
+                const lat = position.coords.latitude.toFixed(6);
+                const lon = position.coords.longitude.toFixed(6);
                                 
-                const reverseGeocodeUrl = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${lat},${lon}&lang=en-US&apiKey=${apiKey}`;
+                const reverseGeocodeUrl = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${lat},${lon}&lang=en-GB&limit=5&circle=${lat},${lon};r=10000&apiKey=${apiKey}`;
     
                 try {
                     const response = await fetch(reverseGeocodeUrl);
@@ -57,8 +111,11 @@ ready(function() {
                        return;
                     }
                     const address = data.items[0].address;
-                    const fullPostcode = address.postalCode ? address.postalCode : 'Postcode not available';
-                    //console.log(address)
+                    const postcode = address.postalCode ? address.postalCode : 'Postcode not available';
+                    
+                    // In your main code:
+                    const fullPostcode = await getFullPostcode(postcode);
+                    console.log(fullPostcode) 
                     
                     // resultElement.textContent =`Postcode: ${address.postalCode}`;
                      printModal(1,countVisit, fullPostcode)
@@ -75,6 +132,9 @@ ready(function() {
            //alert('Geolocation is not supported by your browser.');
            printModal(0, countVisit, "")
         }
+        
+      
+
     }
 
     function send_postCodeToController(postCode, isLast) {

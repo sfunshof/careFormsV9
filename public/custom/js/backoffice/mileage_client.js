@@ -103,12 +103,14 @@ ready(function() {
         }    
         asyncPostCall()
     }
+    
 
     insertRowFunc = function(element) {
         const currentRow = element.closest('.row-container');
         const newRow = currentRow.cloneNode(true);
         const inputField = newRow.querySelector('.form-control');
         const errorSpan = newRow.querySelector('.error_class');
+        const iconContainer = newRow.querySelector('.icon-container');
     
         // Clear any existing error message
         errorSpan.textContent = "";
@@ -117,24 +119,67 @@ ready(function() {
         inputField.value = "";
         inputField.placeholder = "Client's Postcode";
     
-        // Make delete icon visible
-        newRow.querySelector('.delete-icon').style.visibility = 'visible';
+        // Ensure both icons are present and visible
+        if (!iconContainer.querySelector('.fa-plus')) {
+            const plusIcon = document.createElement('i');
+            plusIcon.className = 'fas fa-plus text-success cursor_pointer';
+            plusIcon.onclick = function() { insertRowFunc(this); };
+            iconContainer.appendChild(plusIcon);
+        }
+        if (!iconContainer.querySelector('.fa-times')) {
+            const minusIcon = document.createElement('i');
+            minusIcon.className = 'fas fa-times text-danger delete-icon cursor_pointer';
+            minusIcon.onclick = function() { deleteRowFunc(this); };
+            iconContainer.appendChild(minusIcon);
+        }
     
         const rowContainer = document.getElementById('rowContainer');
-        const allRows = rowContainer.querySelectorAll('.row-container');
-    
+        
         // Insert the new row below the current row
         currentRow.parentNode.insertBefore(newRow, currentRow.nextSibling);
+    
+        // Update the last row to remove icons if necessary
+        updateLastRow();
     }
-    deleteRowFunc=function(element) {
+    
+    deleteRowFunc = function(element) {
         const rowContainer = document.getElementById('rowContainer');
         const rowToDelete = element.closest('.row-container');
-        if (rowContainer.children.length > 1) {
-            rowContainer.removeChild(rowToDelete);
+        const allRows = rowContainer.querySelectorAll('.row-container');
+    
+        if (allRows.length > 1) {
+            rowToDelete.remove();
+            updateLastRow();
         } else {
             alert("At least one row must remain.");
         }
     }
+    
+    function updateLastRow() {
+        const rowContainer = document.getElementById('rowContainer');
+        const allRows = rowContainer.querySelectorAll('.row-container');
+        const lastRow = allRows[allRows.length - 1];
+        const lastRowInput = lastRow.querySelector('.form-control');
+        const lastRowIconContainer = lastRow.querySelector('.icon-container');
+    
+        if (allRows.length === 1) {
+            // If there's only one row, ensure it only has the plus icon
+            lastRowIconContainer.innerHTML = '<i class="fas fa-plus text-success" onclick="insertRowFunc(this)"></i>';
+            lastRowInput.placeholder = "Office Postcode";
+        } else if (window.isLastZero === false) {
+            // If is_last is 1 (false), remove icons from the last row
+            lastRowIconContainer.innerHTML = '';
+            lastRowInput.placeholder = "Office Postcode";
+        } else {
+            // Ensure the last row has both icons
+            lastRowIconContainer.innerHTML = `
+                <i class="fas fa-plus text-success" onclick="insertRowFunc(this)"></i>
+                <i class="fas fa-times text-danger delete-icon" onclick="deleteRowFunc(this)"></i>
+            `;
+            lastRowInput.placeholder = "Client's Postcode";
+        }
+    }
+
     
     let  check_postcodeValidity =function(){}
 
@@ -169,6 +214,7 @@ ready(function() {
                 // Replace the content of the div
                 myDiv.innerHTML = data.html;
                 hide_spinner()
+                show_alertInfo("Postcodes Successfully Saved")
             } catch(error) {
                 hide_spinner()
             } 

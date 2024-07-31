@@ -10,7 +10,7 @@
       </li>
       --}}
       
-      <li class="nav-item">
+      <li class="nav-item  {{ session('is_admin') == 1 ? '' : 'd-none' }}  " >
         <a class="nav-link collapsed" data-bs-target="#dashboard-nav" data-bs-toggle="collapse" href="#">
           <i class="fab fa-connectdevelop fs-6"></i><span>Dashboards</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>

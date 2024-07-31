@@ -2,7 +2,7 @@
 @section('cssCustom')
     <style>
         #rowContainer {
-            max-height: 50vh; /* Adjust the height as needed */
+            max-height: 50vh;
             overflow-y: auto;
             border: 1px solid #ccc;
             padding: 1px;
@@ -13,16 +13,24 @@
             align-items: center;
             margin-bottom: 10px;
         }
-        .row-container .form-control {
+        .input-container {
             flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .row-container .form-control {
+            width: 100%;
         }
         .row-container .icon-container {
             display: flex;
             gap: 10px;
-        }
+            width: 60px; /* Adjust this value as needed */
+            justify-content: flex-end;
+        }  
         .row-container:first-child .delete-icon {
             visibility: hidden;
         }
+     
         .sticky-button {
             position: fixed;
             bottom: 0;
@@ -41,6 +49,9 @@
             display: flex;
             flex-direction: column;
         }
+        .cursor_pointer{
+            cursor:pointer
+        }
     </style>
 @endsection
 @section('title')
@@ -55,7 +66,7 @@
                         <h6 class="card-title">Select Dates </h6>
                          <div id="client_mileage_date">
                             @include('backoffice.fakecomponents.mileage_date_component',['data' => $data])   
-                         </div>  
+                        </div>  
                         <div class="">
                             <button type="button" class="btn btn-primary"  onClick="reload_client_mileageFunc()" >Apply</button>
                         </div>   
@@ -77,7 +88,7 @@
                     <div class="card-body">
                         <div id="client_mileage_daily">
                             @include('backoffice.fakecomponents.client_mileage_daily_component', ['data' => $data])                     
-                        </div>   
+                         </div>   
                     </div>
                 </div>         
             </div>
@@ -86,16 +97,16 @@
  
 @endsection
 
-<script>
-    let token = "{{ csrf_token() }}";
-    let sumRptURL="{{route('clientSummaryReport')}}";
-    let check_postcodeValidityURL="{{route('check_postcodeValidity')}}";
-    let update_dailyPostcodesURL= "{{ route('update_dailyPostcodes') }}" ;
-    let set_dailyPostcodesURL= "{{ route('set_dailyPostcodes') }}" ;
-    let reload_client_mileageURL= "{{ route('reload_client_mileage') }}" ;
-</script>
-
 @section('jscontents')
-   {{-- @include('backoffice.fakecomponents.ques_component') --}}
+    <script>
+        let token = "{{ csrf_token() }}";
+        let sumRptURL="{{route('clientSummaryReport')}}";
+        let check_postcodeValidityURL="{{route('check_postcodeValidity')}}";
+        let update_dailyPostcodesURL= "{{ route('update_dailyPostcodes') }}" ;
+        let set_dailyPostcodesURL= "{{ route('set_dailyPostcodes') }}" ;
+        let reload_client_mileageURL= "{{ route('reload_client_mileage') }}" ;
+        window.isLastZero = {{ $data['is_last'] ? 'false' : 'true' }};
+    </script>
+    {{-- @include('backoffice.fakecomponents.ques_component') --}}
    <script src="{{asset('custom/js/backoffice/mileage_client.js')}}"></script>
 @endsection    

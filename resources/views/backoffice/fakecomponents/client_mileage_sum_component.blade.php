@@ -23,7 +23,7 @@
                     <td>{{ $reversedDistances[$index] }}</td>
                     <td>
                         <span>
-                            <i class="fas fa-edit" onclick="set_daily_postcodeFunc('{{ $date }}')"></i> 
+                            <i class="fas fa-edit" style="cursor: pointer;" onclick="set_daily_postcodeFunc('{{ $date }}')"></i> 
                         </span>
                     </td>
                 </tr>

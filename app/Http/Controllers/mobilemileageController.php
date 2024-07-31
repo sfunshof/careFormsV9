@@ -60,8 +60,11 @@ class mobilemileageController extends Controller
             if ($existingData) {
                 $jsonPostCode = json_decode($existingData->jsonPostcodes, true);
                 //isLast always does the update
-                if ($isLast==1) $postCode=$officePostcode;
-
+                $isEndOfDay=0;
+                if ($isLast==1) {
+                    $postCode=$officePostcode;
+                    $isEndOfDay=1;
+                }
                 $jsonPostCode[] = $postCode;
                 $result=DB::table($tableName)
                     ->where('userID', $userID)
@@ -70,6 +73,7 @@ class mobilemileageController extends Controller
                     ->update([
                         'officeVisitCount' => DB::raw('officeVisitCount + ' . intval($isLast)),
                         'jsonPostcodes' => json_encode($jsonPostCode),
+                        'isEndOfDay' => $isEndOfDay
                     ]);
             } else {
                 //islast can never install new postcode
@@ -79,6 +83,7 @@ class mobilemileageController extends Controller
                         'userID' => $userID,
                         'companyID' => $companyID,
                         'jsonPostcodes' => json_encode($firstPostcode),
+                        'isEndOfDay' => 0,
                         'dates' => $today,
                     ]);
                 }    

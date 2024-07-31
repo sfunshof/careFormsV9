@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+
 
 class backofficeController extends Controller
 {
@@ -263,6 +265,9 @@ class backofficeController extends Controller
 
     
     public function show_feedback_dashboard(){
+        if (Auth::user()->is_admin==0){
+             return redirect()->route('clientMileage');
+        }
         
         $years = collect(range(2, 0))->map(function ($year) {
             return \Carbon\Carbon::now()->subYears($year)->year;

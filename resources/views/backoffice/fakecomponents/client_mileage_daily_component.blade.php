@@ -13,16 +13,26 @@
     @foreach($data['daily'] as $index => $value)
         <div class="row-container mb-0">
             <div class="input-container">
-                <input name="PostCode[]" type="text" class="form-control" value="{{ $value }}" placeholder="{{ $index === 0 ? 'Office Postcode' : 'Client\'s Postcode' }}">
-                <small class="fw-bold ms-3 mt-0 mb-1 error_class"></small> <!-- error class now directly under the text field -->
+                <input 
+                    name="PostCode[]" 
+                    type="text" 
+                    class="form-control" 
+                    value="{{ $value }}" 
+                    placeholder="{{ $index === 0 ? 'Office Postcode' : 'Client\'s Postcode' }}"
+                >
+                <small class="fw-bold ms-3 mt-0 mb-1 error_class"></small>
             </div>
-            
             <div class="icon-container ms-3 me-3">
-                <i class="fas fa-plus text-success" onclick="insertRowFunc(this)"></i>
-                <i class="fas fa-times text-danger delete-icon" onclick="deleteRowFunc(this)"></i>
+                <i class="fas fa-plus text-success cursor_pointer"  onclick="insertRowFunc(this)" 
+                   style="visibility: {{ ($index === count($data['daily']) - 1 && $data['is_last'] == 1) ? 'hidden' : 'visible' }};">
+                </i>
+                @if($index > 0)
+                    <i class="fas fa-times text-danger delete-icon cursor_pointer"   onclick="deleteRowFunc(this)" 
+                       style="visibility: {{ ($index === count($data['daily']) - 1 && $data['is_last'] == 1) ? 'hidden' : 'visible' }};">
+                    </i>
+                @endif
             </div>
-            
         </div>
-      @endforeach
-    <button type="button" class="sticky-button mb-4" onClick="validatePostcodesFunc()">Update</button> <!-- This position is fixed -->
+    @endforeach
+   <button type="button" class="sticky-button mb-4" onClick="validatePostcodesFunc()">Update</button> <!-- This position is fixed -->
 </div>

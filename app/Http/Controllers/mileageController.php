@@ -20,11 +20,10 @@ class mileageController extends Controller
         $today = Carbon::today();
         $startDate = $today->copy()->subDays(42);
         $data=$this->calculateMileage($today, $startDate);
-       
         $date = Carbon::parse($today)->toDateString();
         $data['endDate']=$date;
         $data['startDate']=$startDate->toDateString();
-        return view('backoffice.pages.client_mileage', compact('data'));
+         return view('backoffice.pages.client_mileage', compact('data'));
     }
 
     public function  reload_client_mileage(Request $req){
@@ -32,7 +31,7 @@ class mileageController extends Controller
         $startDate = $req->input('startDate');
         
         $data=$this->calculateMileage($endDate, $startDate);
-               
+                       
         $data['endDate']=$endDate;
         $data['startDate']=$startDate;
 
@@ -129,7 +128,7 @@ class mileageController extends Controller
         
         // Fetch records from the mileagetable for today
         $todayRecords = DB::table('mileagetable')
-            ->select('jsonPostcodes')
+            ->select('jsonPostcodes', 'isEndOfDay')
             ->where('companyID', $companyID)
             ->where('userID', $userID)
             ->where('dates', $today)
@@ -139,7 +138,7 @@ class mileageController extends Controller
         $countArray = [];
         $distanceArray = [];
         $endDateArray = [];
-       
+        $is_last=0;
         $summary_distance=0;
         foreach ($records as $record) {
             $postcodes = json_decode($record->jsonPostcodes);
@@ -149,7 +148,7 @@ class mileageController extends Controller
 
             $dateArray[] = $date;
             $countArray[] = $count;
-
+           
             // Calculate total distance for postcode pairs using DistanceController methods
             $totalDistance = $this->distanceController->calculateTotalDistance($postcodes);
             $distanceArray[] = $totalDistance;
@@ -160,6 +159,7 @@ class mileageController extends Controller
          foreach ($todayRecords as $todayRecord) {
             $postcodes = json_decode($todayRecord->jsonPostcodes);
             $endDateArray = array_merge($endDateArray, $postcodes);
+            $is_last=$todayRecord->isEndOfDay;
         }
 
         $dataArray= [
@@ -167,7 +167,8 @@ class mileageController extends Controller
              'counts' => $countArray,
              'distances' => $distanceArray,
              'daily' => $endDateArray,
-             'summary_distance' => $summary_distance
+             'summary_distance' => $summary_distance,
+             'is_last' => $is_last,
         ];
         $dataArray=$this->populate_date($dataArray,$startDate,$today); 
         return   $dataArray;   
@@ -178,19 +179,35 @@ class mileageController extends Controller
         $userID = Session::get('careWorkerLoginID');
         $companyID=Session::get('companyID');
         $officePostcode=Session::get('officePostcode');
-        $result = DB::table('mileagetable')
+        
+        $mileageData = DB::table('mileagetable')
+        ->select('jsonPostcodes', 'isEndOfDay')
         ->where('userID', $userID)
         ->where('companyID', $companyID)
         ->where('dates', $date)
-        ->value('jsonPostcodes');
-        
-        if (is_null($result)) {
-            $result = json_encode([$officePostcode]); // Set default value if result is null
-        }
-            
-        $data['daily']=json_decode($result, true);
+        ->first();
+    
+    $isEndOfDay = 0;
+    $jsonPostcodes = [];
+    
+    if ($mileageData) {
+        // Ensure we're decoding to an array and handle potential JSON errors
+        $jsonPostcodes = json_decode($mileageData->jsonPostcodes, true);
+        $isEndOfDay = $mileageData->isEndOfDay;
+    } else {
+        // Ensure $officePostcode is an array
+        $jsonPostcodes = [$officePostcode, $officePostcode]; 
+        $isEndOfDay=1; 
+    }
+    
+    // Ensure $jsonPostcodes is always an array
+    //$jsonPostcodes = is_array($jsonPostcodes) ? $jsonPostcodes : [];
+    
+        $data['daily'] = $jsonPostcodes;
         $data['endDate']=$date;
         $data['office_postcode']=$officePostcode;
+        $data['is_last'] =$isEndOfDay;
+        $data['total_elements']= count($data['daily']);
         
         $html = view('backoffice.fakecomponents.client_mileage_daily_component', compact('data'))->render();
         return response()->json(['html' => $html]);
@@ -233,6 +250,7 @@ class mileageController extends Controller
             'distances' => $newDistances,
             'daily' => $data['daily'],
             'summary_distance' => $data['summary_distance'],
+            'is_last' => $data['is_last'],
             'office_postcode'  => $officePostcode
         ];
     } 
@@ -330,7 +348,7 @@ class mileageController extends Controller
         //$companyID = auth()->user()->company_id; // Assuming you're getting companyID from the authenticated user
         $dates = $this->getMileageData($userID, $startDate, $endDate, $companyID);
         //get the full name to be used in heading
-        $employee = DB::table('employeedetailstable')
+        $employee = DB::table('employeedetailsTable')
             ->select(DB::raw('concat(firstName," ", lastName) as fullName'))
             ->where('userID', $userID)
             ->where('companyID', $companyID)

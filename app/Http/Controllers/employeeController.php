@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use App\Rules\ValidPostcode;
 
 class employeeController extends Controller
 {
@@ -49,8 +50,11 @@ class employeeController extends Controller
             'lastName' => 'required|max:40', 
             'mobile' =>  ['required', 'regex:/^\+44\d{7,11}$/'],
             'email' => 'required|email',
-            'officePostcode' => ['required','regex:/^([A-Z]{1,2}[0-9][0-9A-Z]?\s?[0-9][A-Z]{2}|[AB][0-9][0-9]\s?[0-9][A-Z]{2})$/i']
-
+            'officePostcode' => [
+                'required',
+                'regex:/^([A-Z]{1,2}[0-9][0-9A-Z]?\s?[0-9][A-Z]{2}|[AB][0-9][0-9]\s?[0-9][A-Z]{2})$/i',
+                new ValidPostcode()
+            ]
         ];
         $msg=[
             'firstName.required'=>'First Name is required',
