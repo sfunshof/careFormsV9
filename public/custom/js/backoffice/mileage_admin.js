@@ -186,6 +186,8 @@ ready(function() {
                     },
                     body: JSON.stringify(post_data)
                 });
+                alert(get_detailsLevel1URL)
+                alert(JSON.stringify(post_data));
                 const data = await response.json();
                 alert(JSON.stringify(data));
                 const div = document.getElementById('detailsDateID');
