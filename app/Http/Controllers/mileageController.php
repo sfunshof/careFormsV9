@@ -345,6 +345,7 @@ class mileageController extends Controller
         $endDate = $req->input('endDate');
         $startDate = $req->input('startDate');
         $companyID = Session::get('companyID');
+        return response()->json(['companyID' => $companyID, 'heading' => "OK"]);
         //$companyID = auth()->user()->company_id; // Assuming you're getting companyID from the authenticated user
         $dates = $this->getMileageData($userID, $startDate, $endDate, $companyID);
         //get the full name to be used in heading
