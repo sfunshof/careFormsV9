@@ -209,13 +209,14 @@
  
 @endsection
 
-<script>
-    let token = "{{ csrf_token() }}";
-    let get_detailsLevel1URL="{{ route('adminLevel1') }}";
-    let get_detailsLevel2URL="{{ route('adminLevel2') }}";
-    let reload_admin_mileageURL="{{ route('reload_admin_mileage')}}";
-</script>
+
 
 @section('jscontents')
+    <script>
+        let token = "{{ csrf_token() }}";
+        let get_detailsLevel1URL="{{ route('adminLevel1') }}";
+        let get_detailsLevel2URL="{{ route('adminLevel2') }}";
+        let reload_admin_mileageURL="{{ route('reload_admin_mileage')}}";
+    </script>
    <script src="{{asset('custom/js/backoffice/mileage_admin.js')}}"></script>
 @endsection    

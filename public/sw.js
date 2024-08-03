@@ -1,25 +1,22 @@
-const CACHE_VERSION = 'v2'; // Update the cache version
+const CACHE_VERSION = 'v2';
 const CACHE_NAME = `offline-${CACHE_VERSION}`;
 const FILES_TO_CACHE = [
     '/',
     '/offline.html'
 ];
 
-// Preload function to cache essential files
 const preLoad = function () {
     return caches.open(CACHE_NAME).then(function (cache) {
         return cache.addAll(FILES_TO_CACHE);
     });
 };
 
-// On install, preload essential files and take control immediately
 self.addEventListener('install', function (event) {
     event.waitUntil(
         preLoad().then(() => self.skipWaiting())
     );
 });
 
-// On activate, clear old caches
 self.addEventListener('activate', function (event) {
     const cacheWhitelist = [CACHE_NAME];
     event.waitUntil(
@@ -35,29 +32,23 @@ self.addEventListener('activate', function (event) {
     );
 });
 
-// Check response and add to cache if necessary
 const checkResponse = function (request) {
-    return new Promise(function (fulfill, reject) {
-        fetch(request).then(function (response) {
-            if (response.status !== 404) {
-                fulfill(response);
-            } else {
-                reject();
-            }
-        }, reject);
+    return fetch(request.clone()).then(function (response) {
+        if (response.status !== 404) {
+            return response;
+        } else {
+            throw new Error('Not found');
+        }
     });
 };
 
-const addToCache = function (request) {
-    if (!request.url.startsWith('http')) {
-        console.warn('Skipping caching for request with unsupported scheme:', request.url);
-        return;
+const addToCache = function (request, response) {
+    if (request.method !== 'GET') {
+        return Promise.resolve(); // Don't cache non-GET requests
     }
 
     return caches.open(CACHE_NAME).then(function (cache) {
-        return fetch(request).then(function (response) {
-            return cache.put(request, response);
-        });
+        return cache.put(request, response);
     });
 };
 
@@ -74,12 +65,18 @@ const returnFromCache = function (request) {
 };
 
 self.addEventListener('fetch', function (event) {
-    event.respondWith(
-        checkResponse(event.request).catch(function () {
-            return returnFromCache(event.request);
-        })
-    );
-    if (event.request.url.startsWith('http')) {
-        event.waitUntil(addToCache(event.request));
+    if (event.request.method !== 'GET') {
+        return; // Don't handle non-GET requests in the service worker
     }
+
+    event.respondWith(
+        checkResponse(event.request.clone())
+            .then(function(response) {
+                event.waitUntil(addToCache(event.request.clone(), response.clone()));
+                return response;
+            })
+            .catch(function () {
+                return returnFromCache(event.request);
+            })
+    );
 });
